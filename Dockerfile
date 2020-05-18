@@ -1,4 +1,4 @@
-FROM jupyter/datascience-notebook:latest
+FROM jupyter/datascience-notebook:7a0c7325e470
 
 RUN pip install iisignature
 RUN pip install kmapper
