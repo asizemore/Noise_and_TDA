@@ -11,4 +11,4 @@ build:
 
 run:
 	@open http://localhost:8081
-	@docker run -p 8081:8888 --rm -it $(local_name):$(tag) $(run_cmd)
+	@docker run -p 8081:8888 --rm -it -v $(local_name):$(tag) $(run_cmd)

@@ -24,15 +24,21 @@ RUN julia -e 'using Pkg; Pkg.add("Distributions")'
 RUN julia -e 'using Pkg; Pkg.add("Random")'
 RUN julia -e 'using Pkg; Pkg.add("CSV")'
 
+RUN conda install -c anaconda jupyter_client=5.3.1
+
 
 
 USER root
 RUN apt-get update && apt-get install -y \
   libz-dev
-USER jovyan
 
 
 COPY code .
 
+RUN chown -R jovyan: /home/jovyan
+USER jovyan
+
+
 
 EXPOSE 8888
+
