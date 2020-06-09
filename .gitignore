@@ -7,6 +7,8 @@ figures/*
 !figures/.gitkeep
 processed_data/*
 !processed_data/.gitkeep
+Dockerfile
+Makefile
 
 .config/
 .cufflinks/
