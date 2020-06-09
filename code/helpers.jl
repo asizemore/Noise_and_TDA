@@ -245,7 +245,7 @@ function construct_graphs(nNodes,nReps,rho,p,scale_factor, dims, a, b, graph_mod
 
     end
     
-    return weighted_graph_array, weighted_graph_array_iidNoise, weighted_graph_array_iidNoise_ord, betti_file_name 
+    return weighted_graph_array, weighted_graph_array_iidNoise, weighted_graph_array_iidNoise_ord, betti_file_name, parameters 
 end
 
 
