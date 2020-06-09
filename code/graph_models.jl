@@ -52,12 +52,23 @@ function make_ring_lattice_wei(nNodes)
         for n in 1:(nNodes-1)
             adj = [adj; zeros(1,n) transpose(v[1,1:(nNodes-n)])]
         end
-        adj = adj .+ (1/(nNodes^4))*rand(nNodes,nNodes)
         adj = adj+transpose(adj)
         adj[diagind(adj)].=0
         
+    else
+        v = ones(1,(nNodes-1)) ./ [transpose(collect(1:(nNodes/2))) transpose(reverse(collect(1:(nNodes/2 - 1))))]
+        v = [0 v]
+        adj = deepcopy(v)
+        for n in 1:(nNodes-1)
+            adj = [adj; zeros(1,n) transpose(v[1,1:(nNodes-n)])]
+        end
+        adj = adj+transpose(adj)
+        adj[diagind(adj)].=0
         
     end
+    
+    # Check for symmetry
+    tf = is_symmetric(adj)
     
     return adj
 end
