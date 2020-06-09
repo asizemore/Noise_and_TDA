@@ -8,6 +8,9 @@ figures/*
 processed_data/*
 !processed_data/.gitkeep
 
+Dockerfile
+Makefile
+
 .config/
 .cufflinks/
 .local/
@@ -16,6 +19,7 @@ processed_data/*
 .jlassetregistry.json
 .Rhistory
 
+*.jld
 
 # <<< Python >>>
 
