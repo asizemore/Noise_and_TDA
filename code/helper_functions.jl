@@ -20,6 +20,7 @@ function threshold_graph(G,rho,nNodes)
     # Count edges and edges we need to keep
     nEdges = binomial(nNodes,2)
     thresh_edge_number = ceil(Int,rho*nEdges)
+    println("Thresholding at edge number $(thresh_edge_number)")
     
     # Obtain value on which to threshold
     sorted_edges = sort(unique([G...]),rev = true)
