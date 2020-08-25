@@ -190,8 +190,12 @@ for graph_model_name in GRAPH_MODEL_NAMES
                 betti_file_name = "$(betti_file_name)_$(replace(string(parameter),"." => ""))"
             end
 
-        end
-    end
+        end # ends if-elses
+
+        # Store created graph G_i
+        weighted_graph_array[:,:,rep] = G_i
+
+    end # ends replicate runs
 
     println("Finished creating $(NREPS) $(graph_model_name) graphs with parameters $(parameters)")
 
@@ -199,18 +203,20 @@ for graph_model_name in GRAPH_MODEL_NAMES
     # Run checks on the created graphs
     println("make some graph checks! TODO")
 
+    ## if not all unique edge weights, add noise.
+
 
     # Save graphs
-    save("./processed_data/$(betti_file_name)_$(DATE_STRING)_graphs.jld",
+    save("./processed_data/graphs/$(NNODES)nodes/$(betti_file_name)_$(DATE_STRING)_graphs.jld",
         "weighted_graph_array", weighted_graph_array,
         "parameters", parameters)
 
-    printstyled("Saved graphs to ./processed_data/$(betti_file_name)_$(DATE_STRING)_graphs.jld \n \n", color=:cyan)
+    printstyled("Saved graphs to ./processed_data/graphs/$(NNODES)nodes/$(betti_file_name)_$(DATE_STRING)_graphs.jld \n \n", color=:cyan)
 
 
 
 
-end
+end # ends graph model run
 
 printstyled("Finished creating all graph models.\n")
 printstyled("Elapsed time = $(time() - script_start_time)\n", color = :yellow)

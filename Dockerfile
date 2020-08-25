@@ -23,12 +23,14 @@ RUN julia -e 'using Pkg; Pkg.add("StatsBase")'
 RUN julia -e 'using Pkg; Pkg.add("Distributions")'
 RUN julia -e 'using Pkg; Pkg.add("Random")'
 RUN julia -e 'using Pkg; Pkg.add("CSV")'
+RUN julia -e 'using Pkg; Pkg.add("ColorSchemes")'
 
 
 
 USER root
 RUN apt-get update && apt-get install -y \
-  libz-dev
+  libz-dev \
+  libqt4-dev
 USER jovyan
 
 
