@@ -7,8 +7,8 @@ figures/*
 !figures/.gitkeep
 processed_data/*
 !processed_data/.gitkeep
-Dockerfile
-Makefile
+matlab/*
+
 
 .config/
 .cufflinks/

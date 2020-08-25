@@ -1,3 +1,6 @@
+# Graph model functions
+
+
 function is_symmetric(adj)
     tf = isequal(adj,transpose(adj))
     if !tf
@@ -5,6 +8,7 @@ function is_symmetric(adj)
     end
     return tf
 end
+
 
 
 function make_iid_weighted_graph(nNodes)
@@ -42,31 +46,35 @@ function make_random_geometric(nNodes,dims)
     return adj
 end
 
+
 function make_ring_lattice_wei(nNodes)
     # Create weighted ring lattice
     
     if !iseven(nNodes)
-        v = ones(1,(nNodes-1)) ./ [transpose(collect(1:floor(nNodes/2))) transpose(reverse(collect(1:floor(nNodes/2))))]
+        v = ones(1,(nNodes-1))./ [transpose(collect(1:floor(nNodes/2))) transpose(reverse(collect(1:floor(nNodes/2))))]
         v = [0 v]
         adj = deepcopy(v)
         for n in 1:(nNodes-1)
             adj = [adj; zeros(1,n) transpose(v[1,1:(nNodes-n)])]
         end
+        adj = adj .+ (1/(nNodes^4))*rand(nNodes,nNodes)
+        adj = adj+transpose(adj)
+        adj[diagind(adj)].=0
+
+    else 
+        v = ones(1,(nNodes-1))./ [transpose(collect(1:(nNodes/2))) transpose(reverse(collect(1:(nNodes/2 -1))))]
+        v = [0 v]
+        adj = deepcopy(v)
+        for n in 1:(nNodes-1)
+            adj = [adj; zeros(1,n) transpose(v[1,1:(nNodes-n)])]
+        end
+        adj = adj .+ (1/(nNodes^4))*rand(nNodes,nNodes)
         adj = adj+transpose(adj)
         adj[diagind(adj)].=0
         
-    else
-        v = ones(1,(nNodes-1)) ./ [transpose(collect(1:(nNodes/2))) transpose(reverse(collect(1:(nNodes/2 - 1))))]
-        v = [0 v]
-        adj = deepcopy(v)
-        for n in 1:(nNodes-1)
-            adj = [adj; zeros(1,n) transpose(v[1,1:(nNodes-n)])]
-        end
-        adj = adj+transpose(adj)
-        adj[diagind(adj)].=0
         
     end
-    
+
     # Check for symmetry
     tf = is_symmetric(adj)
     
@@ -105,8 +113,7 @@ function make_dot_product(nNodes,dims)
 end
 
 
-
-
+ 
 function make_dev_DiscreteUniform_configuration_model(nNodes,a,b)
     
     # Create a configuration model using the discrete uniform distribution between a and b.
@@ -186,7 +193,7 @@ function make_dev_Geometric_configuration_model(nNodes,p,scale_factor)
 
         # If only one node is left, we did badly
         if length(nodes_left) == 1
-            println("One node left - try again")
+            println("One node left - draft")
             
             # Currently this is a draft so we will allow it.
             break
