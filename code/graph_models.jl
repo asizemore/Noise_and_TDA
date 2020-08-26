@@ -57,7 +57,7 @@ function make_ring_lattice_wei(nNodes)
         for n in 1:(nNodes-1)
             adj = [adj; zeros(1,n) transpose(v[1,1:(nNodes-n)])]
         end
-        adj = adj .+ (1/(nNodes^4))*rand(nNodes,nNodes)
+        # adj = adj .+ (1/(nNodes^4))*rand(nNodes,nNodes)
         adj = adj+transpose(adj)
         adj[diagind(adj)].=0
 
@@ -68,7 +68,7 @@ function make_ring_lattice_wei(nNodes)
         for n in 1:(nNodes-1)
             adj = [adj; zeros(1,n) transpose(v[1,1:(nNodes-n)])]
         end
-        adj = adj .+ (1/(nNodes^4))*rand(nNodes,nNodes)
+        # adj = adj .+ (1/(nNodes^4))*rand(nNodes,nNodes)
         adj = adj+transpose(adj)
         adj[diagind(adj)].=0
         
@@ -155,10 +155,10 @@ function make_dev_DiscreteUniform_configuration_model(nNodes,a,b)
     end
 
     # Now we only added edges to one side of the adjacency matrix.
-    adj = adj+adj'
+    # adj = adj+adj'
     
     # Add noise
-    adj = adj .+ (1/(nNodes^4))*rand(nNodes,nNodes)
+    # adj = adj .+ (1/(nNodes^4))*rand(nNodes,nNodes)
     adj = adj+transpose(adj)
     adj[diagind(adj)].=0
     
@@ -214,10 +214,10 @@ function make_dev_Geometric_configuration_model(nNodes,p,scale_factor)
     end
 
     # Now we only added edges to one side of the adjacency matrix.
-    adj = adj+adj'
+    # adj = adj+adj'
     
     # Add noise
-    adj = adj .+ (1/(nNodes^4))*rand(nNodes,nNodes)
+    # adj = adj .+ (1/(nNodes^4))*rand(nNodes,nNodes)
     adj = adj+transpose(adj)
     adj[diagind(adj)].=0
     

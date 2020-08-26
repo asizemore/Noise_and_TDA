@@ -3,7 +3,6 @@ FROM jupyter/datascience-notebook:7a0c7325e470
 RUN pip install iisignature
 RUN pip install kmapper
 RUN pip install sklearn
-RUN pip install bctpy
 
 RUN julia -e 'using Pkg; Pkg.add("HDF5")'
 RUN julia -e 'using Pkg; Pkg.add("JLD")'

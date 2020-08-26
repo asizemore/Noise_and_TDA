@@ -72,6 +72,7 @@ for graph_model_name in GRAPH_MODEL_NAMES
 
     # Prepare the arrays - need to save the final weighted array and all parameters
     weighted_graph_array = zeros(NNODES,NNODES,NREPS)
+    weighted_graph_array_draft = zeros(NNODES,NNODES,NREPS)
     betti_file_name = []
     parameters = []
 
@@ -192,8 +193,18 @@ for graph_model_name in GRAPH_MODEL_NAMES
 
         end # ends if-elses
 
+        # Check to ensure we have unique edge weights
+        if length(unique([G_i...])) < (NNODES+1)
+            println("Edge weights not unique")
+            G_ii = makeEdgeWeightsUnique(G_i)
+
+        else
+            G_ii = deepcopy(G_i)
+        end
+
         # Store created graph G_i
-        weighted_graph_array[:,:,rep] = G_i
+        weighted_graph_array[:,:,rep] = G_ii
+        weighted_graph_array_draft[:,:,rep] = G_i
 
     end # ends replicate runs
 
@@ -209,6 +220,7 @@ for graph_model_name in GRAPH_MODEL_NAMES
     # Save graphs
     save("./processed_data/graphs/$(NNODES)nodes/$(betti_file_name)_$(DATE_STRING)_graphs.jld",
         "weighted_graph_array", weighted_graph_array,
+        "weighted_graph_array_draft", weighted_graph_array_draft,
         "parameters", parameters)
 
     printstyled("Saved graphs to ./processed_data/graphs/$(NNODES)nodes/$(betti_file_name)_$(DATE_STRING)_graphs.jld \n \n", color=:cyan)

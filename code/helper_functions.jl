@@ -54,3 +54,34 @@ function betticurveFromBarcode(barcode,nSteps)
     
     return betti_curve
 end
+
+
+
+function makeEdgeWeightsUnique(G)
+    # If G does not have unique edge weights, add a small amount of noise to shift edge weights without changing relative ordering.
+    
+    nNodes = size(G)[1]
+    
+    # Get sorted, unique edge weights
+    edgeWeights = sort([G...])
+    edgeWeightsUnique = unique(edgeWeights)
+
+    # Find the smallest difference between two neighboring edge weights
+    edgeWeightDiffs = [edgeWeightsUnique[i] - edgeWeightsUnique[i-1] for i=2:length(edgeWeightsUnique)]
+    noiseScale = 0.1 * minimum(edgeWeightDiffs)
+    
+    # Create a noise array that is scaled by 1/10th of the minimum edge weight difference
+    noiseArray = noiseScale*rand(nNodes,nNodes)
+    
+    # Add to G and clean up graph
+    G_u = G.+noiseArray
+    G_u = (G_u .+ transpose(G_u))/2
+    G_u[diagind(G_u)] .= 0
+
+    # Check that we did not add too much noise
+    if !(maximum(G_u .- G) < minimum(edgeWeightDiffs))
+        printstyled("ERROR in making edge weights unique", color=:red)
+    end
+    
+    return G_u
+end
