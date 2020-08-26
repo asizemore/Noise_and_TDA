@@ -3,14 +3,11 @@
 script_start_time = time()
 println("\nimporting packages...")
 
-using Pkg
 using Statistics
 using LinearAlgebra
-using Eirene
 using StatsBase
 using Random
 using JLD
-using MAT
 
 
 println("packages imported")
