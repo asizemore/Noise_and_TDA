@@ -13,6 +13,7 @@ using StatsBase
 using Random
 using Distributions
 using JLD
+using Dates
 
 println("packages imported")
 
@@ -23,7 +24,7 @@ include("helper_functions.jl")
 
 println("packages and functions imported")
 printstyled("Elapsed time = $(time() - script_start_time) seconds \n \n", color = :yellow)
-
+printstyled("Starting script evaluation at $(Dates.Time(Dates.now())) \n \n", color = :yellow)
 
 ### Set parameters
 
@@ -31,10 +32,9 @@ printstyled("Elapsed time = $(time() - script_start_time) seconds \n \n", color 
 const NNODES = 70
 const SAVEDATA = 1    # Boolean to save data  
 const MAXDIM = 3    # Maximum persistent homology dimension
-const SAVETAIL = "eireneoutput_forward"
+const SAVETAIL = "eireneoutput_backward"
 read_dir = "./processed_data/graphs/$(NNODES)nodes"
 save_dir = "./processed_data/results/$(NNODES)nodes"
-
 
 ### Locate graphs to read
 graph_files = filter(x->occursin("_graphs.jld",x), readdir(read_dir))
@@ -48,7 +48,7 @@ end
 graph_models = [split(graph_file, "_")[1] for graph_file in graph_files]
 
 nEdges = binomial(NNODES, 2)
-# add dimension 0?
+
 
 printstyled("\nBeginning persistent homology loop\n\n", color = :pink)
 # Loop over graph files and run persistent homology. Store barcodes.
@@ -76,8 +76,15 @@ for (i,graph_file) in enumerate(graph_files)
         # Extract replicate
         G_i = weighted_graph_array[:,:,rep]
 
-        # G_i is a weighted graph. We need to order it
-        edge_list_ranks = denserank([G_i...], rev = true)   # so highest edge weight gets assigned 1
+        # To run backwards, we want to flip the relative order of the weighted edges
+        G_i_neg = (-G_i).+ 2*(maximum(G_i))
+        G_i_neg[diagind(G_i_neg)] .= 0
+        if rep == 1
+            printstyled("Add a check for edge ranks here", color=:blue)
+        end
+
+        # G_i_neg is a weighted graph where the smallest original edges are greatest. We need to order it for Eirene
+        edge_list_ranks = denserank([G_i_neg...], rev = true)   # so highest edge weight gets assigned 1
         G_i_ord = reshape(edge_list_ranks,(NNODES,NNODES))
         G_i_ord[diagind(G_i_ord)] .= 0
 
@@ -89,9 +96,9 @@ for (i,graph_file) in enumerate(graph_files)
             barcodeArray[rep, k] = barcode(C,dim=k)
         end
 
-        if rep%20 == 0
+        # if rep%20 == 0
             println("Run $(rep) completed.")
-        end
+        # end
 
         C = 0
     end
