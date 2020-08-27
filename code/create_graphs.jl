@@ -193,6 +193,8 @@ for graph_model_name in GRAPH_MODEL_NAMES
 
         end # ends if-elses
 
+        ## CHECK NUMBER OF 0 EDGES
+
         # Check to ensure we have unique edge weights
         if length(unique([G_i...])) < (NNODES+1)
             println("Edge weights not unique")
@@ -201,6 +203,7 @@ for graph_model_name in GRAPH_MODEL_NAMES
         else
             G_ii = deepcopy(G_i)
         end
+
 
         # Store created graph G_i
         weighted_graph_array[:,:,rep] = G_ii

@@ -20,7 +20,6 @@ function threshold_graph(G,rho,nNodes)
     # Count edges and edges we need to keep
     nEdges = binomial(nNodes,2)
     thresh_edge_number = ceil(Int,rho*nEdges)
-    println("Thresholding at edge number $(thresh_edge_number)")
     
     # Obtain value on which to threshold
     sorted_edges = sort(unique([G...]),rev = true)
@@ -34,7 +33,7 @@ function threshold_graph(G,rho,nNodes)
     rho_test = check_density(G_thresh)
     #println("Graph edge density is $rho_test")
     
-    return G_thresh
+    return G_thresh, thresh_edge_number
 end
 
 

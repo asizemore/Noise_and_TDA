@@ -27,10 +27,10 @@ printstyled("Elapsed time = $(time() - script_start_time) seconds \n \n", color 
 # Parameters for all graphs
 const NNODES = 70
 const MAXDIM = 3    # Maximum persistent homology dimension
+read_dir = "./processed_data/results/$(NNODES)nodes"
 
 
 ### Locate data
-read_dir = "./processed_data/results/$(NNODES)nodes"
 eirene_files = filter(x->occursin("eireneoutput",x), readdir(read_dir))
 println("Located the following graph files:")
 for eirene_file in eirene_files
