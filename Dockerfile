@@ -24,6 +24,7 @@ RUN julia -e 'using Pkg; Pkg.add("Distributions")'
 RUN julia -e 'using Pkg; Pkg.add("Random")'
 RUN julia -e 'using Pkg; Pkg.add("CSV")'
 RUN julia -e 'using Pkg; Pkg.add("ColorSchemes")'
+RUN julia -e 'using Pkg; Pkg.add("StatsPlots")'
 
 
 

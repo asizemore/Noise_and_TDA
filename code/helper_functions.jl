@@ -85,3 +85,61 @@ function makeEdgeWeightsUnique(G)
     
     return G_u
 end
+
+
+
+
+function bettiBarFromBarcode(barcode)
+    
+    bettiBar = 0
+    
+    for bar in eachrow(barcode)
+        
+        bar_birth = Int(bar[1])
+        bar_death = Int(bar[2])
+        
+        lifetime = bar_death - bar_birth
+        
+        bettiBar = bettiBar + lifetime
+    end
+    
+    return bettiBar
+end
+
+
+function muBarFromBarcode(barcode)
+    
+    muBar = 0
+    
+    for bar in eachrow(barcode)
+        
+        bar_birth = Int(bar[1])
+        bar_death = Int(bar[2])
+        
+        lifetime_scaled = bar_birth*(bar_death - bar_birth)
+        
+        muBar = muBar + lifetime_scaled
+    end
+    
+    return muBar
+end
+    
+
+function nuBarFromBarcode(barcode,nSteps)
+    
+    # Assuming nSteps is the end of the filtration.
+    
+    nuBar = 0
+    
+    for bar in eachrow(barcode)
+        
+        bar_birth = Int(bar[1])
+        bar_death = Int(bar[2])
+        
+        lifetime_scaled = (nSteps - bar_death)*(bar_death - bar_birth)
+        
+        nuBar = nuBar + lifetime_scaled
+    end
+    
+    return nuBar
+end
