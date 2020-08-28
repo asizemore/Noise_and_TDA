@@ -6,10 +6,8 @@ println("\nimporting packages...")
 
 using Pkg
 using Statistics
-using Plots
 using LinearAlgebra
 using Distances
-using Eirene
 using StatsBase
 using Random
 using Distributions
@@ -34,6 +32,8 @@ const NREPS = 50
 const NNODES = 70
 const SAVE_DATA = 1    # Boolean to save data  
 const DATE_STRING = "082520"
+const NAMETAG = "graphs"
+save_dir = "./processed_data/graphs/$(NNODES)nodes"
 
 # for geometricConf
 const P = 0.01
@@ -193,10 +193,9 @@ for graph_model_name in GRAPH_MODEL_NAMES
 
         end # ends if-elses
 
-        ## CHECK NUMBER OF 0 EDGES
 
         # Check to ensure we have unique edge weights
-        if length(unique([G_i...])) < (NNODES+1)
+        if length(unique([G_i...])) < (binomial(NNODES,2)+1)
             println("Edge weights not unique")
             G_ii = makeEdgeWeightsUnique(G_i)
 
@@ -204,8 +203,18 @@ for graph_model_name in GRAPH_MODEL_NAMES
             G_ii = deepcopy(G_i)
         end
 
+        # Check density
+        edge_density = check_density(G_i)
+        if edge_density < 0.8
+            printstyled("EDGE DENSITY $(edge_density)", color=:red)
+        end
 
         # Store created graph G_i
+
+        if length(unique([G_ii...])) < (binomial(NNODES,2)+1)
+            printstyled("Edge uniqueness did not work", color=:red)
+        end
+
         weighted_graph_array[:,:,rep] = G_ii
         weighted_graph_array_draft[:,:,rep] = G_i
 
@@ -217,16 +226,15 @@ for graph_model_name in GRAPH_MODEL_NAMES
     # Run checks on the created graphs
     println("make some graph checks! TODO")
 
-    ## if not all unique edge weights, add noise.
 
 
     # Save graphs
-    save("./processed_data/graphs/$(NNODES)nodes/$(betti_file_name)_$(DATE_STRING)_graphs.jld",
+    save("$(save_dir)/$(betti_file_name)_$(DATE_STRING)_$(NAMETAG).jld",
         "weighted_graph_array", weighted_graph_array,
         "weighted_graph_array_draft", weighted_graph_array_draft,
         "parameters", parameters)
 
-    printstyled("Saved graphs to ./processed_data/graphs/$(NNODES)nodes/$(betti_file_name)_$(DATE_STRING)_graphs.jld \n \n", color=:cyan)
+    printstyled("Saved graphs to $(save_dir)/$(betti_file_name)_$(DATE_STRING)_$(NAMETAG).jld \n \n", color=:cyan)
 
 
 

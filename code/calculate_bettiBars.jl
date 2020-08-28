@@ -56,7 +56,8 @@ for (i,eirene_file) in enumerate(eirene_files)
     muBarArray = zeros(nReps,MAXDIM)
     nuBarArray = zeros(nReps,MAXDIM)
 
-    # Compute Betti curves
+    # Compute Betti bar values
+
     for rep in 1:nReps
         for k in collect(1:MAXDIM)
 
@@ -76,10 +77,81 @@ for (i,eirene_file) in enumerate(eirene_files)
             "muBarArray", muBarArray,
             "nuBarArray", nuBarArray)
     
-    printstyled("Completed saving Betti bar values for $(saveName).\n", color = :green)
     println("Saved outputs to $(save_dir)/$(saveName)_$(NAMETAG).jld")
+            
+            
+            
+    # If the file is of threshold type, we want to compute values for the first half and second half as well
+    if occursin("threshold", eirene_file)
+
+        println("Splitting into prenoise and postnoise sections...")
+
+        bettiBarArray_prenoise = zeros(nReps,MAXDIM)
+        muBarArray_prenoise = zeros(nReps,MAXDIM)
+        nuBarArray_prenoise = zeros(nReps,MAXDIM)
+
+        bettiBarArray_postnoise = zeros(nReps,MAXDIM)
+        muBarArray_postnoise = zeros(nReps,MAXDIM)
+        nuBarArray_postnoise = zeros(nReps,MAXDIM)
+
+        # Find threshold edge number. Occurs between "edge" and "_"
+        thresh_string = split(split(eirene_file,"edge")[2],"_")[1]
+        threshold_edge = parse(Int, thresh_string)
+        println("processing threshold edge $(threshold_edge)")
+
+        for rep in 1:nReps
+            for k in collect(1:MAXDIM)
+
+                
+                # Compute prenoise betti bar values. Set all barcode values greater than the threshold edge to the threshold edge number
+                barcode_prenoise = barcodeArray[rep, k]
+                barcode_prenoise[barcode_prenoise.> threshold_edge].= threshold_edge
+
+                # Calculate values
+                bettiBarArray_prenoise[rep, k] = bettiBarFromBarcode(barcode_prenoise)
+                muBarArray_prenoise[rep, k] = muBarFromBarcode(barcode_prenoise)
+                nuBarArray_prenoise[rep, k] = nuBarFromBarcode(barcode_prenoise,nEdges)
+
+
+                # Compute postnoise betti bar values. Set all barcode values less than the threshold edge to the threshold edge number
+                barcode_postnoise = barcodeArray[rep, k]
+                barcode_postnoise[barcode_postnoise.<= threshold_edge].= threshold_edge+1
+
+                # Calculate values
+                bettiBarArray_postnoise[rep, k] = bettiBarFromBarcode(barcode_postnoise)
+                muBarArray_postnoise[rep, k] = muBarFromBarcode(barcode_postnoise)
+                nuBarArray_postnoise[rep, k] = nuBarFromBarcode(barcode_postnoise,nEdges)
+
+
+            end # ends dimensions loop
+        end # ends replicate loop
+
+
+
+        
+        
+        # Save bettisArray of pre and post noise sections
+        save("$(save_dir)/$(saveName)_$(NAMETAG)_prenoise.jld",
+        "bettiBarArray", bettiBarArray_prenoise,
+        "muBarArray", muBarArray_prenoise,
+        "nuBarArray", nuBarArray_prenoise)
+        println("Saved outputs to $(save_dir)/$(saveName)_$(NAMETAG)_prenoise.jld")
+        
+        save("$(save_dir)/$(saveName)_$(NAMETAG)_postnoise.jld",
+        "bettiBarArray", bettiBarArray_postnoise,
+        "muBarArray", muBarArray_postnoise,
+        "nuBarArray", nuBarArray_postnoise)
+        
+        println("Saved outputs to $(save_dir)/$(saveName)_$(NAMETAG)_postnoise.jld")
+        
+        
+        
+    end # ends if threshold 
+            
+            
+    printstyled("Completed saving Betti bar values for $(saveName).\n", color = :green)
     printstyled("Elapsed time = $(time() - script_start_time) seconds \n \n", color = :yellow)
 
 
-end
+end # ends eirene_files loop
 

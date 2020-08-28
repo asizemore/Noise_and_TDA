@@ -28,7 +28,7 @@ printstyled("Elapsed time = $(time() - script_start_time) \n \n", color = :yello
 
 # main parameters
 const NNODES = 70
-const THRESHVEC = [0.05 0.1 0.15 0.2]
+const THRESHVEC = [0.05 0.1 0.15 0.2 0.3 0.4 0.5 0.6]
 const NAMETAG = "rho"
 read_dir = "./processed_data/graphs/$(NNODES)nodes"
 save_dir = "./processed_data/graphs/$(NNODES)nodes"
@@ -62,25 +62,33 @@ for (i,graph_file) in enumerate(graph_files)
 
         for rep in 1:nReps
 
-            # Threshold the graph
             G_i = weighted_graph_array[:,:,rep]
+            
+            # Check edge density
+            edge_density = check_density(G_i)
+            if edge_density<0.9
+                printstyled("EDGE DENSITY $(edge_density)", color=:red)
+            end
+            
+            # Threshold the graph
             G_thresholded, threshold_edge_number = threshold_graph(G_i,threshold,NNODES)
+
 
             # Now all real values are positive, non-zero. Add 1 to distinguish real values from noise
             G_thresholded[G_thresholded.>0] .= G_thresholded[G_thresholded .>0 ] .+1
+
 
             # Since all the real values are >1, we can add noise in the range (0,1) to any edge still 0
             noisyGraph = make_iid_weighted_graph(NNODES)
             G_noise = deepcopy(G_thresholded)
             G_noise[G_noise .== 0] .= noisyGraph[G_noise .== 0]
 
-            ##### ADD CHECK HERE FOR DENSITY AND EDGE UNIQUENESS
-
             # Create the noise only graph by setting all real values (>1) to 0 so that only noise is left.
             G_noiseOnly = deepcopy(G_noise)
             G_noiseOnly[G_noiseOnly.>1] .= 0
 
             # Store
+
             weighted_graph_array_noise[:,:,rep] = G_noise
             noise_only_array[:,:,rep] = G_noiseOnly
 
