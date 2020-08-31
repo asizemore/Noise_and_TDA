@@ -142,3 +142,18 @@ function nuBarFromBarcode(barcode,nSteps)
     
     return nuBar
 end
+
+
+function read_config(config_file)
+    # read configuration file into dictionary
+    
+    # Code from https://gist.github.com/silgon/0ba43e00e0749cdf4f8d244e67cd9d6a
+
+    config = Dict()
+    open(config_file, "r") do f
+        config=JSON.parse(f)  # parse and transform data
+    end
+    
+    return config
+    
+end

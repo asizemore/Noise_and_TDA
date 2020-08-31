@@ -27,17 +27,21 @@ printstyled("Elapsed time = $(time() - script_start_time) seconds \n \n", color 
 
 ### Set parameters
 
+config = read_config("$(homedir())/configs/$(ARGS[1])")
+
 # Parameters for all graphs
-const NNODES = 70
-const SAVEDATA = 1    # Boolean to save data  
-const MAXDIM = 3    # Maximum persistent homology dimension
-const SAVETAIL = "eireneoutput_forward"
-read_dir = "./processed_data/graphs/$(NNODES)nodes"
-save_dir = "./processed_data/results/$(NNODES)nodes"
+const NNODES = config["NNODES"]
+const SAVEDATA = config["SAVEDATA"]    # Boolean to save data  
+const MAXDIM = config["MAXDIM"]    # Maximum persistent homology dimension
+const SAVETAIL = config["SAVETAIL_ph_forward"]
+const DATE_STRING = config["DATE_STRING"]
+read_dir = "$(homedir())/$(config["read_dir_graphs"])/$(NNODES)nodes"
+save_dir = "$(homedir())/$(config["save_dir_results"])/$(NNODES)nodes"
 
 
 ### Locate graphs to read
 graph_files = filter(x->occursin("_graphs.jld",x), readdir(read_dir))
+graph_files = filter(x -> occursin(DATE_STRING,x), graph_files)
 println("Located the following graph files:")
 for graph_file in graph_files
     println(graph_file)

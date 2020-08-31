@@ -13,6 +13,7 @@ using Random
 using Distributions
 using JLD
 using MAT
+using JSON
 
 println("packages imported")
 
@@ -25,26 +26,28 @@ println("packages and functions imported")
 printstyled("Elapsed time = $(time() - script_start_time) \n \n", color = :yellow)
 
 
-### Set parameters for all graphs - could be arguments for this script
+### Set parameters for all graphs
+
+config = read_config("$(homedir())/configs/$(ARGS[1])")
 
 # main parameters
-const NREPS = 50
-const NNODES = 70
-const SAVE_DATA = 1    # Boolean to save data  
-const DATE_STRING = "082520"
-const NAMETAG = "graphs"
-save_dir = "./processed_data/graphs/$(NNODES)nodes"
+const NREPS = config["NREPS"]
+const NNODES = config["NNODES"]
+const SAVE_DATA = config["SAVE_DATA"]   # Boolean to save data  
+const DATE_STRING = config["DATE_STRING"]
+const NAMETAG = config["NAMETAG_creategraphs"]
+save_dir = "$(homedir())/$(config["save_dir_graphs"])/$(NNODES)nodes"
 
 # for geometricConf
-const P = 0.01
-const SCALE_FACTOR = 100
+const P = config["P"]
+const SCALE_FACTOR = config["SCALE_FACTOR"]
 
 # for RG and cosineGeometric
-const DIMS = 3
+const DIMS = config["DIMS"]
 
 # for discreteUniformConf
-const A = 0
-const B = 1000
+const A = config["A"]
+const B = config["B"]
 
 # All the names of any graph model that will get run
 const GRAPH_MODEL_NAMES = ["geometricConf",

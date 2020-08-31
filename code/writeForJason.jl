@@ -18,17 +18,19 @@ printstyled("Elapsed time = $(time() - script_start_time) \n \n", color = :yello
 
 ### Set parameters
 
-const NREPS = 50
-const NNODES = 70
-const MAXDIM = 3
-const DATESTRING = "082520"
-read_dir = "./processed_data/results/$(NNODES)nodes"
-save_dir = "./processed_data/forJason/$(NNODES)nodes"
+const NNODES = config["NNODES"]
+const NREPS = config["NREPS"]
+const SAVEDATA = config["SAVEDATA"]    # Boolean to save data  
+const MAXDIM = config["MAXDIM"]    # Maximum persistent homology dimension
+const DATE_STRING = config["DATE_STRING"]
+read_dir = "$(homedir())/$(config["read_dir_graphs"])/$(NNODES)nodes"
+save_dir = "$(homedir())/$(config["save_dir_forJason"])/$(NNODES)nodes"
 
 
 
 ### Locate data
 betti_files = filter(x->occursin("_bettis.jld",x), readdir(read_dir))
+betti_files = filter(x -> occursin(DATE_STRING, x) betti_files)
 println("Located the following betti curve files:")
 for betti_file in betti_files
     println(betti_file)
@@ -37,6 +39,7 @@ end
 model_names_bettis = [split(betti_file,"_bettis")[1] for betti_file in betti_files]
 
 bettiBar_files = filter(x->occursin("_bettiBars",x), readdir(read_dir))
+bettiBar_files = filter(x -> occursin(DATE_STRING, x), bettiBar_files)
 println("\nLocated the following bettiBar files:")
 for bettiBar_file in bettiBar_files
     println(bettiBar_file)

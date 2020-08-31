@@ -24,18 +24,22 @@ println("packages and functions imported")
 printstyled("Elapsed time = $(time() - script_start_time) \n \n", color = :yellow)
 
 
-### Set parameters for all graphs - could be arguments for this script
+### Set parameters for all graphs
 
-# main parameters
-const NNODES = 70
-const THRESHVEC = [0.05 0.1 0.15 0.2 0.3 0.4 0.5 0.6]
-const NAMETAG = "rho"
-read_dir = "./processed_data/graphs/$(NNODES)nodes"
-save_dir = "./processed_data/graphs/$(NNODES)nodes"
+config = read_config("$(homedir())/configs/$(ARGS[1])")
+
+# Parameters for all graphs
+const NNODES = config["NNODES"]
+const THRESHVEC = config["THRESHVEC"]
+const SAVEDATA = config["SAVEDATA"]    # Boolean to save data  
+const SAVETAIL = config["SAVETAIL_threshold_graphs"]
+read_dir = "$(homedir())/$(config["read_dir_graphs"])/$(NNODES)nodes"
+save_dir = "$(homedir())/$(config["save_dir_graphs"])/$(NNODES)nodes"
 
 
 ### Locate data
 graph_files = filter(x->occursin("_graphs.jld",x), readdir(read_dir))
+graph_files = filter(x -> occursin(DATE_STRING,x), graph_files)
 println("Located the following graph files:")
 for graph_file in graph_files
     println(graph_file)

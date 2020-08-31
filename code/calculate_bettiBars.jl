@@ -24,16 +24,16 @@ printstyled("Elapsed time = $(time() - script_start_time) seconds \n \n", color 
 
 ### Set parameters
 
-# Parameters for all graphs
-const NNODES = 70
-const MAXDIM = 3    # Maximum persistent homology dimension
-const NAMETAG = "bettiBars"
-read_dir = "./processed_data/results/$(NNODES)nodes"
-save_dir = "./processed_data/results/$(NNODES)nodes"
-
+const NNODES = config["NNODES"]
+const MAXDIM = config["MAXDIM"]    # Maximum persistent homology dimension
+const SAVETAIL = config["SAVETAIL_bettiBars"]
+const DATE_STRING = config["DATE_STRING"]
+read_dir = "$(homedir())/$(config["read_dir_results"])/$(NNODES)nodes"
+save_dir = "$(homedir())/$(config["save_dir_results"])/$(NNODES)nodes"
 
 ### Locate data
 eirene_files = filter(x->occursin("eireneoutput",x), readdir(read_dir))
+eirene_files = filter(x -> occursin(DATE_STRING, x), eirene_files)
 println("Located the following barcode files:")
 for eirene_file in eirene_files
     println(eirene_file)
@@ -72,12 +72,12 @@ for (i,eirene_file) in enumerate(eirene_files)
     # Save bettisArray
     saveName = replace(eirene_file, ".jld"=> "")
     saveName = replace(saveName, "_eireneoutput" => "")
-    save("$(save_dir)/$(saveName)_$(NAMETAG).jld",
+    save("$(save_dir)/$(saveName)_$(SAVETAIL).jld",
             "bettiBarArray", bettiBarArray,
             "muBarArray", muBarArray,
             "nuBarArray", nuBarArray)
     
-    println("Saved outputs to $(save_dir)/$(saveName)_$(NAMETAG).jld")
+    println("Saved outputs to $(save_dir)/$(saveName)_$(SAVETAIL).jld")
             
             
             
@@ -131,18 +131,18 @@ for (i,eirene_file) in enumerate(eirene_files)
         
         
         # Save bettisArray of pre and post noise sections
-        save("$(save_dir)/$(saveName)_$(NAMETAG)_prenoise.jld",
+        save("$(save_dir)/$(saveName)_$(SAVETAIL)_prenoise.jld",
         "bettiBarArray", bettiBarArray_prenoise,
         "muBarArray", muBarArray_prenoise,
         "nuBarArray", nuBarArray_prenoise)
-        println("Saved outputs to $(save_dir)/$(saveName)_$(NAMETAG)_prenoise.jld")
+        println("Saved outputs to $(save_dir)/$(saveName)_$(SAVETAIL)_prenoise.jld")
         
-        save("$(save_dir)/$(saveName)_$(NAMETAG)_postnoise.jld",
+        save("$(save_dir)/$(saveName)_$(SAVETAIL)_postnoise.jld",
         "bettiBarArray", bettiBarArray_postnoise,
         "muBarArray", muBarArray_postnoise,
         "nuBarArray", nuBarArray_postnoise)
         
-        println("Saved outputs to $(save_dir)/$(saveName)_$(NAMETAG)_postnoise.jld")
+        println("Saved outputs to $(save_dir)/$(saveName)_$(SAVETAIL)_postnoise.jld")
         
         
         

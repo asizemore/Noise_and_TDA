@@ -24,11 +24,13 @@ printstyled("Elapsed time = $(time() - script_start_time) seconds \n \n", color 
 
 ### Set parameters
 
-# Parameters for all graphs
-const NNODES = 70
-const MAXDIM = 3    # Maximum persistent homology dimension
-read_dir = "./processed_data/results/$(NNODES)nodes"
 
+const NNODES = config["NNODES"]
+const MAXDIM = config["MAXDIM"]    # Maximum persistent homology dimension
+const SAVETAIL = config["SAVETAIL_bettis"]
+const DATE_STRING = config["DATE_STRING"]
+read_dir = "$(homedir())/$(config["read_dir_results"])/$(NNODES)nodes"
+save_dir = "$(homedir())/$(config["save_dir_results"])/$(NNODES)nodes"
 
 ### Locate data
 eirene_files = filter(x->occursin("eireneoutput",x), readdir(read_dir))
@@ -63,11 +65,11 @@ for (i,eirene_file) in enumerate(eirene_files)
     # Save bettisArray
     saveName = replace(eirene_file, ".jld"=> "")
     saveName = replace(saveName, "_eireneoutput" => "")
-    save("./processed_data/results/$(NNODES)nodes/$(saveName)_bettis.jld",
+    save("./processed_data/results/$(NNODES)nodes/$(saveName)_$(SAVETAIL).jld",
             "bettisArray", bettisArray)
     
     printstyled("Completed saving Betti curves for $(saveName).\n", color = :green)
-    println("Saved outputs to ./processed_data/results/$(NNODES)nodes/$(saveName)_bettis.jld")
+    println("Saved outputs to ./processed_data/results/$(NNODES)nodes/$(saveName)_$(SAVETAIL).jld")
     printstyled("Elapsed time = $(time() - script_start_time) seconds \n \n", color = :yellow)
 
 
