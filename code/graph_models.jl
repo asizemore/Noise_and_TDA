@@ -226,3 +226,17 @@ function make_dev_Geometric_configuration_model(nNodes,p,scale_factor)
     
     return adj
 end
+
+
+function load_matlab_model(nNodes,rep, graph_name, parameters)
+    # load in SWBMs we made in matlab
+    # ./data/disassortative_WSBM_70_10_10_2_2_09_05.mat
+
+    fullname = "$(homedir())/data/$(graph_name)_$(nNodes)_$(parameters)"
+
+    mat_dict = matread("$(fullname).mat")
+    G_i = mat_dict["adj_array"][:,:,rep]
+    G_i = G_i+transpose(G_i)
+
+    return G_i
+end

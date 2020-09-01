@@ -25,6 +25,7 @@ RUN julia -e 'using Pkg; Pkg.add("Random")'
 RUN julia -e 'using Pkg; Pkg.add("CSV")'
 RUN julia -e 'using Pkg; Pkg.add("ColorSchemes")'
 RUN julia -e 'using Pkg; Pkg.add("StatsPlots")'
+RUN julia -e 'using Pkg; Pkg.add("JSON")'
 
 
 
