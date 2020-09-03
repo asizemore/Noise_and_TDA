@@ -8,7 +8,7 @@ println("\nimporting packages...")
 using Pkg
 using Statistics
 using LinearAlgebra
-using Distances
+# using Distances
 using StatsBase
 using Random
 using Distributions
