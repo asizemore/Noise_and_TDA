@@ -9,6 +9,7 @@ using LinearAlgebra
 using Distances
 using StatsBase
 using JLD
+using JSON
 
 println("packages imported")
 
@@ -23,6 +24,7 @@ printstyled("Elapsed time = $(time() - script_start_time) seconds \n \n", color 
 
 
 ### Set parameters
+config = read_config("$(homedir())/configs/$(ARGS[1])")
 
 const NNODES = config["NNODES"]
 const MAXDIM = config["MAXDIM"]    # Maximum persistent homology dimension

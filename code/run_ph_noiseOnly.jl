@@ -1,3 +1,5 @@
+### Run thresholded graphs through persistent homology
+
 ### Run persistent homology
 
 
@@ -13,18 +15,18 @@ using StatsBase
 using Random
 using Distributions
 using JLD
+using Dates
 using JSON
 
 println("packages imported")
 
 println("importing functions...")
 
-include("graph_models.jl")
 include("helper_functions.jl")
 
 println("packages and functions imported")
 printstyled("Elapsed time = $(time() - script_start_time) seconds \n \n", color = :yellow)
-
+printstyled("Starting script evaluation at $(Dates.Time(Dates.now())) \n \n", color = :yellow)
 
 ### Set parameters
 
@@ -34,15 +36,18 @@ config = read_config("$(homedir())/configs/$(ARGS[1])")
 const NNODES = config["NNODES"]
 const SAVEDATA = config["SAVEDATA"]    # Boolean to save data  
 const MAXDIM = config["MAXDIM"]    # Maximum persistent homology dimension
-const SAVETAIL = config["SAVETAIL_ph_forward"]
+const SAVETAIL = config["SAVETAIL_ph_noiseOnly"]
 const DATE_STRING = config["DATE_STRING"]
+const NAMEID = config["NAMEID_ph_thresholds"]
 read_dir = "$(homedir())/$(config["read_dir_graphs"])/$(NNODES)nodes"
 save_dir = "$(homedir())/$(config["save_dir_results"])/$(NNODES)nodes"
 
 
 ### Locate graphs to read
-graph_files = filter(x->occursin("_graphs.jld",x), readdir(read_dir))
+graph_files = filter(x->occursin("_graphs_",x), readdir(read_dir))
 graph_files = filter(x -> occursin(DATE_STRING,x), graph_files)
+graph_files = filter(x -> occursin("$(NAMEID)",x), graph_files)
+
 println("Located the following graph files:")
 for graph_file in graph_files
     println(graph_file)
@@ -53,7 +58,7 @@ end
 graph_models = [split(graph_file, "_")[1] for graph_file in graph_files]
 
 nEdges = binomial(NNODES, 2)
-# add dimension 0?
+
 
 printstyled("\nBeginning persistent homology loop\n\n", color = :pink)
 # Loop over graph files and run persistent homology. Store barcodes.
@@ -61,9 +66,9 @@ for (i,graph_file) in enumerate(graph_files)
 
     println("Starting persistent homology for $(graph_models[i])\n")
 
-    # Load in weighted_graph_array
+    # Load in noise_only_array (call it weighted_graph_array for ease later)
     graph_dict = load("$(read_dir)/$(graph_file)")
-    weighted_graph_array = graph_dict["weighted_graph_array"]
+    weighted_graph_array = graph_dict["noise_only_array"]
 
     # Ensure array is not all 0s
     if sum(weighted_graph_array)==0
@@ -105,24 +110,15 @@ for (i,graph_file) in enumerate(graph_files)
     printstyled("Completed computations for $(graph_models[i]).\n", color = :green)
 
     # Save data
-    saveName = replace(graph_file, ".jld" => "")
-    saveName = replace(saveName, "_graphs" => "")
     if SAVEDATA == 1
+        saveName = replace(graph_file, ".jld" => "")
+        saveName = replace(saveName, "_graphs" => "")
         save("$(save_dir)/$(saveName)_$(SAVETAIL).jld",
             "barcodeArray", barcodeArray)
-    end
 
-    printstyled("Completed saving eirene outputs for $(graph_models[i]).\n", color = :green)
-    println("Saved outputs to $(save_dir)/$(saveName)_$(SAVETAIL).jld")
+        printstyled("Completed saving eirene outputs for $(graph_models[i]).\n", color = :green)
+        println("Saved outputs to $(save_dir)/$(saveName)_$(SAVETAIL).jld")
+    end
     printstyled("Elapsed time = $(time() - script_start_time) seconds \n \n", color = :yellow)
 
 end
-
-
-
-
-
-
-
-
-

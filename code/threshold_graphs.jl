@@ -11,6 +11,7 @@ using StatsBase
 using Random
 using Distributions
 using JLD
+using JSON
 
 
 println("packages imported")
@@ -31,6 +32,7 @@ config = read_config("$(homedir())/configs/$(ARGS[1])")
 # Parameters for all graphs
 const NNODES = config["NNODES"]
 const THRESHVEC = config["THRESHVEC"]
+const DATE_STRING = config["DATE_STRING"]
 const SAVEDATA = config["SAVEDATA"]    # Boolean to save data  
 const SAVETAIL = config["SAVETAIL_threshold_graphs"]
 read_dir = "$(homedir())/$(config["read_dir_graphs"])/$(NNODES)nodes"

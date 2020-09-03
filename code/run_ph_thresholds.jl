@@ -16,6 +16,7 @@ using Random
 using Distributions
 using JLD
 using Dates
+using JSON
 
 println("packages imported")
 
@@ -43,7 +44,7 @@ save_dir = "$(homedir())/$(config["save_dir_results"])/$(NNODES)nodes"
 
 
 ### Locate graphs to read
-graph_files = filter(x->occursin("_graphs.jld",x), readdir(read_dir))
+graph_files = filter(x->occursin("_graphs_",x), readdir(read_dir))
 graph_files = filter(x -> occursin(DATE_STRING,x), graph_files)
 graph_files = filter(x -> occursin("$(NAMEID)",x), graph_files)
 
@@ -109,7 +110,7 @@ for (i,graph_file) in enumerate(graph_files)
     printstyled("Completed computations for $(graph_models[i]).\n", color = :green)
 
     # Save data
-    if SAVEDATA
+    if SAVEDATA==1
         saveName = replace(graph_file, ".jld" => "")
         saveName = replace(saveName, "_graphs" => "")
         save("$(save_dir)/$(saveName)_$(SAVETAIL).jld",

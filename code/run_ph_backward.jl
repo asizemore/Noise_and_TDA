@@ -14,6 +14,7 @@ using Random
 using Distributions
 using JLD
 using Dates
+using JSON
 
 println("packages imported")
 
@@ -102,9 +103,9 @@ for (i,graph_file) in enumerate(graph_files)
             barcodeArray[rep, k] = barcode(C,dim=k)
         end
 
-        # if rep%20 == 0
+        if rep%20 == 0
             println("Run $(rep) completed.")
-        # end
+        end
 
         C = 0
     end
