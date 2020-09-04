@@ -9,13 +9,13 @@ using Pkg
 using Statistics
 using LinearAlgebra
 println("loaded LinearAlgebra")
-using Distances
-using StatsBase
+# using Distances
+# using StatsBase
 using Random
-using Distributions
-using JLD
-using MAT
-using JSON
+# using Distributions
+# using JLD
+# using MAT
+# using JSON
 
 println("packages imported")
 

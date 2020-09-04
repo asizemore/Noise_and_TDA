@@ -17,6 +17,7 @@ matlab/*
 .cache/
 .jlassetregistry.json
 .Rhistory
+.sif
 
 
 # <<< Python >>>
