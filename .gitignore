@@ -14,10 +14,12 @@ matlab/*
 .cufflinks/
 .local/
 .jupyter/
+.julia/
 .cache/
 .jlassetregistry.json
 .Rhistory
 .sif
+.bash_history
 
 
 # <<< Python >>>
