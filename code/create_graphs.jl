@@ -9,13 +9,13 @@ using Pkg
 using Statistics
 using LinearAlgebra
 println("loaded LinearAlgebra")
-# using Distances
-# using StatsBase
+using Distances
+using StatsBase
 using Random
-# using Distributions
-# using JLD
-# using MAT
-# using JSON
+using Distributions
+using JLD
+using MAT
+using JSON
 
 println("packages imported")
 
@@ -30,39 +30,18 @@ printstyled("Elapsed time = $(time() - script_start_time) \n \n", color = :yello
 
 ### Set parameters for all graphs
 
-config = read_config("$(homedir())/configs/$(ARGS[1])")
+config = read_config("$(pwd())/configs/$(ARGS[1])")
 
 # main parameters
 const NREPS = config["NREPS"]
 const NNODES = config["NNODES"]
-const SAVE_DATA = config["SAVE_DATA"]   # Boolean to save data  
 const DATE_STRING = config["DATE_STRING"]
 const NAMETAG = config["NAMETAG_creategraphs"]
 const GRAPH_MODELS = config["graph_models"]
-save_dir = "$(homedir())/$(config["save_dir_graphs"])/$(NNODES)nodes"
+const HOMEDIR = config["HOMEDIR"]
+save_dir = "$(HOMEDIR)/$(config["save_dir_graphs"])/$(NNODES)nodes"
 
-# for geometricConf
-# const P = config["P"]
-# const SCALE_FACTOR = config["SCALE_FACTOR"]
 
-# for RG and cosineGeometric
-# const DIMS = config["DIMS"]
-
-# for discreteUniformConf
-# const A = config["A"]
-# const B = config["B"]
-
-# All the names of any graph model that will get run
-# const GRAPH_MODEL_NAMES = ["geometricConf",
-#     "IID" ,
-#     "RG",
-#     "discreteUniformConf",
-#     "cosineGeometric",
-#     "RL",
-#     "assoc",
-#     "disassort",
-#     "coreperiph",
-#     "DP"]
 
 println("Preparing to create graphs for $(length(GRAPH_MODELS)) models.")
 

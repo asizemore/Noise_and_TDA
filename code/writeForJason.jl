@@ -15,6 +15,7 @@ println("packages and functions imported")
 printstyled("Elapsed time = $(time() - script_start_time) \n \n", color = :yellow)
 
 
+config = read_config("$(pwd())/configs/$(ARGS[1])")
 
 ### Set parameters
 
@@ -23,8 +24,9 @@ const NREPS = config["NREPS"]
 const SAVEDATA = config["SAVEDATA"]    # Boolean to save data  
 const MAXDIM = config["MAXDIM"]    # Maximum persistent homology dimension
 const DATE_STRING = config["DATE_STRING"]
-read_dir = "$(homedir())/$(config["read_dir_graphs"])/$(NNODES)nodes"
-save_dir = "$(homedir())/$(config["save_dir_forJason"])/$(NNODES)nodes"
+const HOMEDIR = config["HOMEDIR"]
+read_dir = "$(HOMEDIR)/$(config["read_dir_graphs"])/$(NNODES)nodes"
+save_dir = "$(HOMEDIR)/$(config["save_dir_forJason"])/$(NNODES)nodes"
 
 
 

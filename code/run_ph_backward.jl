@@ -29,7 +29,7 @@ printstyled("Starting script evaluation at $(Dates.Time(Dates.now())) \n \n", co
 
 ### Set parameters
 
-config = read_config("$(homedir())/configs/$(ARGS[1])")
+config = read_config("$(pwd())/configs/$(ARGS[1])")
 
 # Parameters for all graphs
 const NNODES = config["NNODES"]
@@ -37,8 +37,9 @@ const SAVEDATA = config["SAVEDATA"]    # Boolean to save data
 const MAXDIM = config["MAXDIM"]    # Maximum persistent homology dimension
 const SAVETAIL = config["SAVETAIL_ph_backward"]
 const DATE_STRING = config["DATE_STRING"]
-read_dir = "$(homedir())/$(config["read_dir_graphs"])/$(NNODES)nodes"
-save_dir = "$(homedir())/$(config["save_dir_results"])/$(NNODES)nodes"
+const HOMEDIR = config["HOMEDIR"]
+read_dir = "$(HOMEDIR)/$(config["read_dir_graphs"])/$(NNODES)nodes"
+save_dir = "$(HOMEDIR)/$(config["save_dir_results"])/$(NNODES)nodes"
 
 
 ### Locate graphs to read
