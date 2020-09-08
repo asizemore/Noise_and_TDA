@@ -3,7 +3,7 @@
     "DATE_STRING": "090320",
     "SAVEDATA" : 1,
     "NAMETAG_creategraphs": "graphs",
-    "HOMEDIR": "/cbica/home/sizemora/noiseProject/Noise_and_TDA",
+    "HOMEDIR": "/cbica/home/sizemora/git_repos/Noise_and_TDA",
     "save_dir_graphs": "processed_data/graphs",
     "MAXDIM": 3,
     "SAVETAIL_ph_forward": "eireneoutput_forward",
