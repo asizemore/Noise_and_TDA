@@ -1,11 +1,11 @@
 {   "NNODES": 70,
-    "NREPS": 5,
-    "DATE_STRING": "090320",
+    "NREPS": 20,
+    "DATE_STRING": "090820",
     "SAVEDATA" : 1,
     "NAMETAG_creategraphs": "graphs",
     "HOMEDIR": "/cbica/home/sizemora/git_repos/Noise_and_TDA",
     "save_dir_graphs": "processed_data/graphs",
-    "MAXDIM": 3,
+    "MAXDIM": 5,
     "SAVETAIL_ph_forward": "eireneoutput_forward",
     "read_dir_graphs": "processed_data/graphs",
     "save_dir_results": "processed_data/results",
@@ -23,6 +23,10 @@
     "graph_models": 
         {   "geometricConf": {"fn": "make_dev_Geometric_configuration_model", "parameters": [0.01, 100], "name": "geometricConf", "flag": "create"},
             "IID": {"fn": "make_iid_weighted_graph", "parameters": [], "name": "IID", "flag": "create"},
-            "RG": {"fn": "make_random_geometric", "parameters": [3], "name": "randomGeom", "flag": "create"}
+            "RG": {"fn": "make_random_geometric", "parameters": [3], "name": "randomGeom", "flag": "create"},
+            "discreteUniformConf": {"fn": "make_dev_DiscreteUniform_configuration_model", "parameters": [0, 1000], "name": "discreteUniformConf", "flag": "create"},
+            "cosineGeometric": {"fn": "make_cosine_geometric" , "parameters": [3] , "name": "cosineGeometric", "flag": "create"},
+            "RL": {"fn": "make_ring_lattice_wei", "parameters": [], "name": "ringLattice", "flag": "create"},
+            "DP": {"fn": "make_dot_product", "parameters": [3], "name": "dotProduct", "flag": "create"}
         }
     }
