@@ -102,7 +102,7 @@ do
 
 echo $graph
 
-    if ["$graph" = *"$mydate"*] ; then
+    if [ "$graph" = *"$mydate"* ] ; then
         # Run PH and save PH
         # echo $graph
         qsub code/run_ph_forward.sh $graph "$configfile"
