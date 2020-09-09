@@ -46,7 +46,7 @@ save_dir = "$(HOMEDIR)/$(config["save_dir_results"])/$(NNODES)nodes"
 
 
 ### Read in from looping shell script
-const graph_file =  ARGS[2]
+const graph_file =  split(ARGS[2],"/")[end]
 
 ### Locate graphs to read
 # graph_files = filter(x->occursin("_graphs.jld",x), readdir(read_dir))
@@ -72,7 +72,7 @@ if occursin(DATE_STRING,graph_file)
     println("Starting persistent homology for $(graph_model)\n")
 
     # Load in weighted_graph_array
-    graph_dict = load("$(graph_file)")
+    graph_dict = load("$(read_dir)/$(graph_file)")
     weighted_graph_array = graph_dict["weighted_graph_array"]
 
     # Ensure array is not all 0s
