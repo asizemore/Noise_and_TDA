@@ -95,11 +95,11 @@
 /bin/echo "----- STDERR from /usr/bin/singularity below this line -----" 1>&2
 
 
-for graph in /processed_data/graphs/70nodes/*
+for graph in processed_data/graphs/70nodes/*
 do
     # Run PH and save PH
     #/usr/bin/singularity exec noise-and-tda-munge.sif julia --color\=yes code/run_ph_forward_munge.jl config090820
-    echo graph
+    echo $graph
 
 done
 
