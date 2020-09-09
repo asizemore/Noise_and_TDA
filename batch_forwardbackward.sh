@@ -99,14 +99,14 @@ configfile="config${mydate}.json"
 
 for graph in processed_data/graphs/70nodes/*
 do
-
 echo $graph
 
-    if [ "$graph" = *"$mydate"* ] ; then
+
+    if [[] "$graph" == *"$mydate"* ]] ; then
         # Run PH and save PH
-        # echo $graph
-        qsub code/run_ph_forward.sh $graph "$configfile"
-        qsub code/run_ph_backward.sh $graph "$configfile"
+        echo "running ph"
+        qsub code/run_ph_forward.sh $graph $configfile
+        qsub code/run_ph_backward.sh $graph $configfile
     fi
 
 done
