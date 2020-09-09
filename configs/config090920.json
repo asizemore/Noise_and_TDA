@@ -5,6 +5,8 @@
     "NAMETAG_creategraphs": "graphs",
     "HOMEDIR": "/cbica/home/sizemora/git_repos/Noise_and_TDA",
     "save_dir_graphs": "processed_data/graphs",
+    "save_dir_thresh": "processed_data/thresholded_graphs",
+    "read_dir_thresh": "processed_data/thresholded_graphs",
     "MAXDIM": 3,
     "SAVETAIL_ph_forward": "eireneoutput_forward",
     "read_dir_graphs": "processed_data/graphs",

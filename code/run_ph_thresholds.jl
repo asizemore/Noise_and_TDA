@@ -32,6 +32,10 @@ printstyled("Starting script evaluation at $(Dates.Time(Dates.now())) \n \n", co
 
 config = read_config("$(pwd())/configs/$(ARGS[1])")
 
+
+### Read graph file from shell input
+const graph_file =  ARGS[2]
+
 # Parameters for all graphs
 const NNODES = config["NNODES"]
 const SAVEDATA = config["SAVEDATA"]    # Boolean to save data  

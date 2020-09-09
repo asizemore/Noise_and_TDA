@@ -97,7 +97,7 @@
 
 # for graph in processed_data/graphs/70nodes/*
 # do
-graph = $1
+graph=$1
 # Run PH and save PH
 echo $graph
 /usr/bin/singularity exec noise-and-tda-latest.sif julia --color\=yes code/run_ph_backward.jl config090920.json $graph
