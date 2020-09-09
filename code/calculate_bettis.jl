@@ -30,9 +30,11 @@ const NNODES = config["NNODES"]
 const MAXDIM = config["MAXDIM"]    # Maximum persistent homology dimension
 const SAVETAIL = config["SAVETAIL_bettis"]
 const DATE_STRING = config["DATE_STRING"]
-const HOMEDIR = config["HOMEDIR"]
-read_dir = "$(HOMEDIR)/$(config["read_dir_results"])/$(NNODES)nodes"
-save_dir = "$(HOMEDIR)/$(config["save_dir_results"])/$(NNODES)nodes"
+# const HOMEDIR = config["HOMEDIR"]
+read_dir = "$(homedir())/$(config["read_dir_results"])/$(NNODES)nodes"
+save_dir = "$(homedir())/$(config["save_dir_results"])/$(NNODES)nodes"
+
+println("read_dir")
 
 ### Locate data
 eirene_files = filter(x->occursin("eireneoutput",x), readdir(read_dir))
