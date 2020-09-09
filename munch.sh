@@ -98,8 +98,8 @@
 for graph in processed_data/graphs/70nodes/*
 do
     # Run PH and save PH
-    #/usr/bin/singularity exec noise-and-tda-munge.sif julia --color\=yes code/run_ph_forward_munge.jl config090820
     echo $graph
+    /usr/bin/singularity exec noise-and-tda-latest.sif julia --color\=yes code/run_ph_forward.jl config090920 $graph
 
 done
 
