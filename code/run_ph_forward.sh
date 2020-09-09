@@ -30,8 +30,8 @@
 #### My email address:
 #$ -M annsize@seas.upenn.edu
 #### send mail at the beginning of the job
-#$ -m b #### UNCOMMENT this line so that it begins with "#$" to enable SGE to send mail at the beginning of the job
-#$ -m e #### UNCOMMENT this line so that it begins with "#$" to enable SGE to send mail at the end of the job
+####$ -m b #### UNCOMMENT this line so that it begins with "#$" to enable SGE to send mail at the beginning of the job
+####$ -m e #### UNCOMMENT this line so that it begins with "#$" to enable SGE to send mail at the end of the job
 #$ -m a #### UNCOMMENT this line so that it begins with "#$" to enable SGE to send mail in case the job is aborted
 ##################################
 #### Optional SGE "qsub" parameters that could be used to customize
@@ -100,7 +100,7 @@
 graph = $1
 # Run PH and save PH
 echo $graph
-/usr/bin/singularity exec noise-and-tda-latest.sif julia --color\=yes code/run_ph_forward.jl config090920 $graph
+/usr/bin/singularity exec noise-and-tda-latest.sif julia --color\=yes code/run_ph_forward.jl config090920.json $graph
 
 
 # done
