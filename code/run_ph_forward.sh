@@ -95,13 +95,14 @@
 /bin/echo "----- STDERR from /usr/bin/singularity below this line -----" 1>&2
 
 
-for graph in processed_data/graphs/70nodes/*
-do
-    # Run PH and save PH
-    echo $graph
-    qsub code/run_ph_forward.sh $graph
-    qsub code/run_ph_backward.sh $graph
+# for graph in processed_data/graphs/70nodes/*
+# do
+graph = $1
+# Run PH and save PH
+echo $graph
+/usr/bin/singularity exec noise-and-tda-latest.sif julia --color\=yes code/run_ph_forward.jl config090920 $graph
 
-done
+
+# done
 
 # /usr/bin/singularity exec noise-and-tda-latest.sif julia --color\=yes code/run_ph_forward.jl config090820.json
