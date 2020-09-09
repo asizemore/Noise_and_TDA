@@ -100,10 +100,10 @@ configfile="config${mydate}.json"
 for graph in processed_data/graphs/70nodes/*
 do
     # Run PH and save PH
-    if ["$configfile" == *"$mydate"*] ; then
+    if ["$configfile" = *"$mydate"*] ; then
         echo $graph
-        qsub code/run_ph_thresholds.sh $graph $configfile
-        qsub code/run_ph_noiseOnly.sh $graph $configfile
+        qsub code/run_ph_thresholds.sh $graph "$configfile"
+        qsub code/run_ph_noiseOnly.sh $graph "$configfile"
     fi
 
 done
