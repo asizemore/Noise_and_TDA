@@ -1,6 +1,9 @@
 ### Run persistent homology
 
 
+println("Running run_ph_backward.jl")
+
+
 script_start_time = time()
 println("\nimporting packages...")
 
@@ -129,6 +132,9 @@ if occursin(DATE_STRING,graph_file)
     printstyled("Completed saving eirene outputs for $(graph_model).\n", color = :green)
     println("Saved outputs to $(save_dir)/$(saveName)_$(SAVETAIL).jld")
     printstyled("Elapsed time = $(time() - script_start_time) seconds \n \n", color = :yellow)
+
+else
+    println("Incorrect date - skipping file")
 
 end
 

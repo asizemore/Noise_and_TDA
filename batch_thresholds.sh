@@ -100,8 +100,8 @@ for graph in processed_data/graphs/70nodes/*
 do
     # Run PH and save PH
     echo $graph
-    qsub code/run_ph_forward.sh $graph $configfile
-    qsub code/run_ph_backward.sh $graph $configfile
+    qsub code/run_ph_thresholds.sh $graph $configfile
+    qsub code/run_ph_noiseOnly.sh $graph $configfile
 
 done
 

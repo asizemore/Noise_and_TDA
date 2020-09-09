@@ -1,6 +1,8 @@
 ### Run persistent homology
 
 
+println("Running run_ph_forward.jl")
+
 script_start_time = time()
 println("\nimporting packages...")
 

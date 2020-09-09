@@ -30,8 +30,8 @@
 #### My email address:
 #$ -M annsize@seas.upenn.edu
 #### send mail at the beginning of the job
-#$ -m b #### UNCOMMENT this line so that it begins with "#$" to enable SGE to send mail at the beginning of the job
-#$ -m e #### UNCOMMENT this line so that it begins with "#$" to enable SGE to send mail at the end of the job
+####$ -m b #### UNCOMMENT this line so that it begins with "#$" to enable SGE to send mail at the beginning of the job
+####$ -m e #### UNCOMMENT this line so that it begins with "#$" to enable SGE to send mail at the end of the job
 #$ -m a #### UNCOMMENT this line so that it begins with "#$" to enable SGE to send mail in case the job is aborted
 ##################################
 #### Optional SGE "qsub" parameters that could be used to customize
@@ -70,7 +70,7 @@
 #### that can run at once.
 ####
 ####
-#$ -l h_vmem=10G
+#$ -l h_vmem=32G
 ####
 ################################## END OF DEFAULT EMBEDDED SGE COMMANDS###################
 
@@ -94,15 +94,15 @@
 ( /bin/echo -e "Executing at: \c"; date ) 1>&2
 /bin/echo "----- STDERR from /usr/bin/singularity below this line -----" 1>&2
 
-configfile="config090920.json"
 
-for graph in processed_data/graphs/70nodes/*
-do
-    # Run PH and save PH
-    echo $graph
-    qsub code/run_ph_forward.sh $graph $configfile
-    qsub code/run_ph_backward.sh $graph $configfile
+# for graph in processed_data/graphs/70nodes/*
+# do
+graph=$1
+# Run PH and save PH
+echo $graph
+/usr/bin/singularity exec noise-and-tda-latest.sif julia --color\=yes code/run_ph_noiseOnly.jl config090920.json $graph
 
-done
+
+# done
 
 # /usr/bin/singularity exec noise-and-tda-latest.sif julia --color\=yes code/run_ph_forward.jl config090820.json

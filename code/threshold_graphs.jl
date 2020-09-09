@@ -1,5 +1,7 @@
 ### Slice graphs at threshold and add noise
 
+println("Running threshold_graphs.jl")
+
 
 script_start_time = time()
 println("\nimporting packages...")
