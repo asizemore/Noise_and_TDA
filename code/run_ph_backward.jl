@@ -42,27 +42,31 @@ read_dir = "$(HOMEDIR)/$(config["read_dir_graphs"])/$(NNODES)nodes"
 save_dir = "$(HOMEDIR)/$(config["save_dir_results"])/$(NNODES)nodes"
 
 
-### Locate graphs to read
-graph_files = filter(x->occursin("_graphs.jld",x), readdir(read_dir))
-graph_files = filter(x -> occursin(DATE_STRING,x), graph_files)
+### Read in from looping shell script
+const graph_file =  ARGS[2]
 
-println("Located the following graph files:")
-for graph_file in graph_files
+### Locate graphs to read
+# graph_files = filter(x->occursin("_graphs.jld",x), readdir(read_dir))
+# graph_files = filter(x -> occursin(DATE_STRING,x), graph_files)
+
+println("Located the following graph file:")
+# for graph_file in graph_files
     println(graph_file)
-end
+# end
 
 
 ### Read in files and run PH
-graph_models = [split(graph_file, "_")[1] for graph_file in graph_files]
+graph_model = split(graph_file, "_")[1]
 
 nEdges = binomial(NNODES, 2)
 
 
-printstyled("\nBeginning persistent homology loop\n\n", color = :pink)
+# printstyled("\nBeginning persistent homology loop\n\n", color = :pink)
 # Loop over graph files and run persistent homology. Store barcodes.
-for (i,graph_file) in enumerate(graph_files)
+# for (i,graph_file) in enumerate(graph_files)
+if occursin(DATE_STRING,graph_file)
 
-    println("Starting persistent homology for $(graph_models[i])\n")
+    println("Starting persistent homology for $(graph_model)\n")
 
     # Load in weighted_graph_array
     graph_dict = load("$(read_dir)/$(graph_file)")
@@ -104,7 +108,7 @@ for (i,graph_file) in enumerate(graph_files)
             barcodeArray[rep, k] = barcode(C,dim=k)
         end
 
-        if rep%20 == 0
+        if rep%10 == 0
             println("Run $(rep) completed.")
         end
 
@@ -112,7 +116,7 @@ for (i,graph_file) in enumerate(graph_files)
     end
 
 
-    printstyled("Completed computations for $(graph_models[i]).\n", color = :green)
+    printstyled("Completed computations for $(graph_model).\n", color = :green)
 
     # Save data
     saveName = replace(graph_file, ".jld" => "")
@@ -122,7 +126,7 @@ for (i,graph_file) in enumerate(graph_files)
             "barcodeArray", barcodeArray)
     end
 
-    printstyled("Completed saving eirene outputs for $(graph_models[i]).\n", color = :green)
+    printstyled("Completed saving eirene outputs for $(graph_model).\n", color = :green)
     println("Saved outputs to $(save_dir)/$(saveName)_$(SAVETAIL).jld")
     printstyled("Elapsed time = $(time() - script_start_time) seconds \n \n", color = :yellow)
 

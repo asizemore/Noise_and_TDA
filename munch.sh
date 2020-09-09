@@ -100,6 +100,7 @@ do
     # Run PH and save PH
     echo $graph
     /usr/bin/singularity exec noise-and-tda-latest.sif julia --color\=yes code/run_ph_forward.jl config090920 $graph
+    /usr/bin/singularity exec noise-and-tda-latest.sif julia --color\=yes code/run_ph_backward.jl config090920 $graph
 
 done
 

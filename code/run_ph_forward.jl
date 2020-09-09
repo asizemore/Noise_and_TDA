@@ -60,9 +60,10 @@ println("Identified the graph model: $(graph_model)")
 nEdges = binomial(NNODES, 2)
 # add dimension 0?
 
-printstyled("\nBeginning persistent homology\n\n", color = :pink)
+# printstyled("\nBeginning persistent homology\n\n", color = :pink)
 # Loop over graph files and run persistent homology. Store barcodes.
 # for (i,graph_file) in enumerate(graph_files)
+if occursin(DATE_STRING,graph_file)
 
     println("Starting persistent homology for $(graph_model)\n")
 
@@ -99,9 +100,9 @@ printstyled("\nBeginning persistent homology\n\n", color = :pink)
             barcodeArray[rep, k] = barcode(C,dim=k)
         end
 
-        # if rep%5 == 0
+        if rep%10 == 0
             println("Run $(rep) completed.")
-        # end
+        end
 
         C = 0
     end
@@ -120,6 +121,10 @@ printstyled("\nBeginning persistent homology\n\n", color = :pink)
     printstyled("Completed saving eirene outputs for $(graph_model).\n", color = :green)
     println("Saved outputs to $(save_dir)/$(saveName)_$(SAVETAIL).jld")
     printstyled("Elapsed time = $(time() - script_start_time) seconds \n \n", color = :yellow)
+
+else
+    println("Incorrect date - skipping file")
+end
 
 # end
 
