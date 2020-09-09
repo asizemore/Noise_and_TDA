@@ -36,7 +36,7 @@ config = read_config("$(pwd())/configs/$(ARGS[1])")
 
 
 ### Read graph file from shell input
-const graph_file =  ARGS[2]
+const graph_file =  split(ARGS[2],"/")[end]
 
 # Parameters for all graphs
 const NNODES = config["NNODES"]
