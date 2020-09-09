@@ -9,7 +9,7 @@
     "read_dir_thresh": "processed_data/thresholded_graphs",
     "MAXDIM": 3,
     "SAVETAIL_ph_forward": "eireneoutput_forward",
-    "read_dir_graphs": "processed_data/graphs",
+    "read_dir_graphs": "",
     "save_dir_results": "processed_data/results",
     "SAVETAIL_ph_backward": "eireneoutput_backward",
     "SAVETAIL_ph_thresholds": "eireneoutput_threshold",

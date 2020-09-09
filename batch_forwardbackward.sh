@@ -94,14 +94,17 @@
 ( /bin/echo -e "Executing at: \c"; date ) 1>&2
 /bin/echo "----- STDERR from /usr/bin/singularity below this line -----" 1>&2
 
-configfile="config090920.json"
+mydate="090920"
+configfile="config${mydate}.json"
 
 for graph in processed_data/graphs/70nodes/*
 do
-    # Run PH and save PH
-    echo $graph
-    qsub code/run_ph_forward.sh $graph $configfile
-    qsub code/run_ph_backward.sh $graph $configfile
+    if ["$configfile" = *"$mydate"*] ; then
+        # Run PH and save PH
+        echo $graph
+        qsub code/run_ph_forward.sh $graph $configfile
+        qsub code/run_ph_backward.sh $graph $configfile
+    fi
 
 done
 
