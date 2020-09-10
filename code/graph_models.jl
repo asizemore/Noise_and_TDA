@@ -289,30 +289,12 @@ end
 
 
 
-function make_assortative4(nNodes, mu_1, mu_2)
-    ### Generate an assortative wsbm with four communities, the same standard deviation, and even group sizes.
+function make_assortative4(nNodes,  mu_1, s_1, mu_2, s_2)
+    ### Generate an assortative wsbm with four communities and even group sizes.
 
-    R = [1 2 2 2; 2 1 2 1; 2 2 2 1; 2 1 1 2]
+    R = [1 2 2 2; 2 1 2 2; 2 2 1 2; 2 2 2 1]
 
-    s2 = 2
-    theta_w = [mu_1 s2; mu_2 s2]
-
-    # Assign even group sizes
-    groupSizes = Int.([ceil(nNodes/4) ceil(nNodes/4) ceil(nNodes/4) nNodes-3*ceil(nNodes/4)])
-
-    adj = make_wsbm(nNodes, R, theta_w, groupSizes)
-
-    return adj
-end
-
-
-function make_disassortative4(nNodes, mu_1, mu_2)
-    ### Generate an assortative wsbm with four communities, the same standard deviation, and even group sizes.
-
-    R = [2 1 2 2; 1 2 2 2; 2 2 2 1; 2 2 1 2];
-
-    s2 = 2
-    theta_w = [mu_1 s2; mu_2 s2]
+    theta_w = [mu_1 s_1; mu_2 s_2]
 
     # Assign even group sizes
     groupSizes = Int.([ceil(nNodes/4) ceil(nNodes/4) ceil(nNodes/4) nNodes-3*ceil(nNodes/4)])
@@ -323,13 +305,28 @@ function make_disassortative4(nNodes, mu_1, mu_2)
 end
 
 
-function make_coreperiph4(nNodes, mu_1, mu_2)
-    ### Generate an assortative wsbm with four communities, the same standard deviation, and even group sizes.
+function make_disassortative4(nNodes, mu_1, s_1, mu_2, s_2)
+    ### Generate an assortative wsbm with four communities and even group sizes.
+
+    R = [2 1 1 1; 1 2 1 1; 1 1 2 1; 1 1 1 2];
+
+    theta_w = [mu_1 s_1; mu_2 s_2]
+
+    # Assign even group sizes
+    groupSizes = Int.([ceil(nNodes/4) ceil(nNodes/4) ceil(nNodes/4) nNodes-3*ceil(nNodes/4)])
+
+    adj = make_wsbm(nNodes, R, theta_w, groupSizes)
+
+    return adj
+end
+
+
+function make_coreperiph4(nNodes,  mu_1, s_1, mu_2, s_2)
+    ### Generate an assortative wsbm with four communities and even group sizes.
 
     R = [1 1 1 1; 1 2 2 2; 1 2 2 2; 1 2 2 2];
 
-    s2 = 2
-    theta_w = [mu_1 s2; mu_2 s2]
+    theta_w = [mu_1 s_1; mu_2 s_2]
 
     # Assign even group sizes
     groupSizes = Int.([ceil(nNodes/4) ceil(nNodes/4) ceil(nNodes/4) nNodes-3*ceil(nNodes/4)])
