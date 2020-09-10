@@ -240,3 +240,101 @@ function load_matlab_model(nNodes,rep, graph_name, parameters)
 
     return G_i
 end
+
+
+function make_wsbm(nNodes, R, theta_w, groupSizes)
+    ### Based on the Weighted Stochastic Block Model defined in:
+    ### Aicher, Christopher Vinyu, "The Weighted Stochastic Block Model" (2014). Applied Mathematics Graduate Theses & Dissertations. 50.
+    ### https://scholar.colorado.edu/appm_gradetds/50
+    ###
+    ### This code is adapted from the original matlab code functions generateEdges and Edge2Adj within the matlab package
+    ### found here: http://tuvalu.santafe.edu/~aaronc/wsbm/
+    ### Unlike the original code, the below assumes the edge weights come from a Normal distribution and that all
+    ### edges will exist in the final graph (no sparsity control). Additionally, this code will force the output adjacency
+    ### matrix to be symmetric, so ensure that R is symmetric for proper output.
+
+    # Ensure R is symmetric
+    tf = is_symmetric(R)
+
+    adj = zeros((nNodes,0))
+
+    # Build adj block by block
+    for (j,col) in enumerate(eachcol(R))
+
+        # Prepare for new column of blocks
+        newcol = zeros((0,groupSizes[j]))
+
+        for (i,row) in enumerate(eachrow(R))
+
+            block = rand(Normal(theta_w[R[i,j],1],theta_w[R[i,j],2]),(groupSizes[i],groupSizes[j]))
+            newcol = [newcol; block]
+
+        end
+
+        adj = [adj newcol]
+
+    end
+
+    # Make symmetric
+    adj = adj+adj'
+
+    # Set diagonal to 0
+    adj[diagind(adj)].=0
+
+    # Set any weight <0 to 0
+    adj[adj.<0].=0
+    
+    return adj
+end
+
+
+
+function make_assortative4(nNodes, mu_1, mu_2)
+    ### Generate an assortative wsbm with four communities, the same standard deviation, and even group sizes.
+
+    R = [1 2 2 2; 2 1 2 1; 2 2 2 1; 2 1 1 2]
+
+    s2 = 2
+    theta_w = [mu_1 s2; mu_2, s2]
+
+    # Assign even group sizes
+    groupSizes = Int.([ceil(nNodes/4) ceil(nNodes/4) ceil(nNodes/4) nNodes-3*ceil(nNodes/4)])
+
+    adj = make_wsbm(nNodes, R, theta_w, groupSizes)
+
+    return adj
+end
+
+
+function make_disassortative4(nNodes, mu_1, mu_2)
+    ### Generate an assortative wsbm with four communities, the same standard deviation, and even group sizes.
+
+    R = [2 1 2 2; 1 2 2 2; 2 2 2 1; 2 2 1 2];
+
+    s2 = 2
+    theta_w = [mu_1 s2; mu_2, s2]
+
+    # Assign even group sizes
+    groupSizes = Int.([ceil(nNodes/4) ceil(nNodes/4) ceil(nNodes/4) nNodes-3*ceil(nNodes/4)])
+
+    adj = make_wsbm(nNodes, R, theta_w, groupSizes)
+
+    return adj
+end
+
+
+function make_coreperiph4(nNodes, mu_1, mu_2)
+    ### Generate an assortative wsbm with four communities, the same standard deviation, and even group sizes.
+
+    R = [1 1 1 1; 1 2 2 2; 1 2 2 2; 1 2 2 2];
+
+    s2 = 2
+    theta_w = [mu_1 s2; mu_2, s2]
+
+    # Assign even group sizes
+    groupSizes = Int.([ceil(nNodes/4) ceil(nNodes/4) ceil(nNodes/4) nNodes-3*ceil(nNodes/4)])
+
+    adj = make_wsbm(nNodes, R, theta_w, groupSizes)
+
+    return adj
+end
