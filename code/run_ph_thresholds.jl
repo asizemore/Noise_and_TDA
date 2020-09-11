@@ -99,6 +99,10 @@ if occursin(DATE_STRING,graph_file)
         G_i_ord = reshape(edge_list_ranks,(NNODES,NNODES))
         G_i_ord[diagind(G_i_ord)] .= 0
 
+        # size of mat check
+        printstyled("Input matrix size is $(size(G_i_ord))\n", color=:orange)
+
+
         # Run Eirene
         C = Eirene.eirene(G_i_ord,model = "vr", maxdim = MAXDIM, record = "none")
     
