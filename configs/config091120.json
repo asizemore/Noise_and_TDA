@@ -7,7 +7,7 @@
     "save_dir_graphs": "processed_data/graphs",
     "save_dir_thresh": "processed_data/thresholded_graphs",
     "read_dir_thresh": "processed_data/thresholded_graphs",
-    "MAXDIM": 6,
+    "MAXDIM": 5,
     "SAVETAIL_ph_forward": "eireneoutput_forward",
     "read_dir_graphs": "processed_data/graphs",
     "save_dir_results": "processed_data/results",
