@@ -50,8 +50,9 @@ function fillBarcodeArray!(barcodeArray,weighted_graph_array,MAXDIM)
 
         # Precompile
         if rep == 1
-            @time Eirene.eirene(G_i_ord,model = "vr", maxdim = MAXDIM, record = "none")
-            @time Eirene.eirene(G_i_ord,model = "vr", maxdim = MAXDIM, record = "none")
+            G_precomp = make_cosine_geometric(NNODES,3)
+            @time Eirene.eirene(G_precomp,model = "vr", maxdim = MAXDIM, record = "none")
+            @time Eirene.eirene(G_precomp,model = "vr", maxdim = MAXDIM, record = "none")
         end
 
 

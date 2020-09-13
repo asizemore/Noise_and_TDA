@@ -101,6 +101,7 @@ graph=$1
 configfile=$2
 # Run PH and save PH
 echo $graph
+echo $configfile
 /usr/bin/singularity exec noise-and-tda-latest.sif julia --color\=yes --track-allocation\=user code/run_ph_forward.jl "$configfile" $graph
 
 
