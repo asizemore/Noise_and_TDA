@@ -70,7 +70,7 @@
 #### that can run at once.
 ####
 ####
-#$ -l h_vmem=120G
+#$ -l h_vmem=80G
 ####
 ################################## END OF DEFAULT EMBEDDED SGE COMMANDS###################
 

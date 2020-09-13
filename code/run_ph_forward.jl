@@ -48,6 +48,13 @@ function fillBarcodeArray!(barcodeArray,weighted_graph_array,MAXDIM)
         # size of mat check
         printstyled("Input matrix size is $(size(G_i_ord))\n", color=:orange)
 
+        # Precompile
+        if rep == 1
+            @time Eirene.eirene(G_i_ord,model = "vr", maxdim = MAXDIM, record = "none")
+            @time Eirene.eirene(G_i_ord,model = "vr", maxdim = MAXDIM, record = "none")
+        end
+
+
 
         # Run Eirene
         C = Eirene.eirene(G_i_ord,model = "vr", maxdim = MAXDIM, record = "none")
