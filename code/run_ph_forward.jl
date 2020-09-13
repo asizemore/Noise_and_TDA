@@ -48,13 +48,6 @@ function fillBarcodeArray!(barcodeArray,weighted_graph_array,MAXDIM)
         # size of mat check
         printstyled("Input matrix size is $(size(G_i_ord))\n", color=:orange)
 
-        # Precompile
-        if rep == 1
-            G_precomp = make_cosine_geometric(NNODES,3)
-            @time Eirene.eirene(G_precomp,model = "vr", maxdim = MAXDIM, record = "none")
-            @time Eirene.eirene(G_precomp,model = "vr", maxdim = MAXDIM, record = "none")
-        end
-
 
 
         # Run Eirene
@@ -132,7 +125,7 @@ const nEdges = binomial(NNODES, 2)
 # for (i,graph_file) in enumerate(graph_files)
 if occursin(DATE_STRING,graph_file)
 
-    println("Starting persistent homology for $(graph_model)\n")
+
 
     # Load in weighted_graph_array
     const graph_dict = load("$(read_dir)/$(graph_file)")
@@ -145,6 +138,14 @@ if occursin(DATE_STRING,graph_file)
 
     # Find number of reps
     const nReps = size(weighted_graph_array)[3]
+
+    # Precompile eirene? 
+    println("precompiling eirene...")
+    G_precomp = make_coreperiph4(NNODES,  15, 5, 10, 5)
+    @time Eirene.eirene(G_precomp,model = "vr", maxdim = MAXDIM, record = "none")
+    @time Eirene.eirene(G_precomp,model = "vr", maxdim = MAXDIM, record = "none")
+
+    println("Starting persistent homology for $(graph_model)\n")
 
     barcodeArray = createAndFillBarcodeArray(nReps,MAXDIM, weighted_graph_array)
 
