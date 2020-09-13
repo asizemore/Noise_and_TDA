@@ -41,8 +41,8 @@ const MAXDIM = config["MAXDIM"]    # Maximum persistent homology dimension
 const SAVETAIL = config["SAVETAIL_ph_backward"]
 const DATE_STRING = config["DATE_STRING"]
 const HOMEDIR = config["HOMEDIR"]
-read_dir = "$(HOMEDIR)/$(config["read_dir_graphs"])/$(NNODES)nodes"
-save_dir = "$(HOMEDIR)/$(config["save_dir_results"])/$(NNODES)nodes"
+const read_dir = "$(HOMEDIR)/$(config["read_dir_graphs"])/$(NNODES)nodes"
+const save_dir = "$(HOMEDIR)/$(config["save_dir_results"])/$(NNODES)nodes"
 
 
 ### Read in from looping shell script
@@ -59,9 +59,9 @@ println("Located the following graph file:")
 
 
 ### Read in files and run PH
-graph_model = split(graph_file, "_")[1]
+const graph_model = split(graph_file, "_")[1]
 
-nEdges = binomial(NNODES, 2)
+const nEdges = binomial(NNODES, 2)
 
 
 # printstyled("\nBeginning persistent homology loop\n\n", color = :pink)
@@ -72,8 +72,8 @@ if occursin(DATE_STRING,graph_file)
     println("Starting persistent homology for $(graph_model)\n")
 
     # Load in weighted_graph_array
-    graph_dict = load("$(read_dir)/$(graph_file)")
-    weighted_graph_array = graph_dict["weighted_graph_array"]
+    const graph_dict = load("$(read_dir)/$(graph_file)")
+    const weighted_graph_array = graph_dict["weighted_graph_array"]
 
     # Ensure array is not all 0s
     if sum(weighted_graph_array)==0
@@ -81,7 +81,7 @@ if occursin(DATE_STRING,graph_file)
     end
 
     # Find number of reps
-    nReps = size(weighted_graph_array)[3]
+    const nReps = size(weighted_graph_array)[3]
 
     # Prepare arrays
     barcodeArray = Array{Array{Float64}}(undef,nReps,MAXDIM)
@@ -125,8 +125,8 @@ if occursin(DATE_STRING,graph_file)
     printstyled("Completed computations for $(graph_model).\n", color = :green)
 
     # Save data
-    saveName = replace(graph_file, ".jld" => "")
-    saveName = replace(saveName, "_graphs" => "")
+    const saveName = replace(graph_file, ".jld" => "")
+    const saveName = replace(saveName, "_graphs" => "")
     if SAVEDATA == 1
         save("$(save_dir)/$(saveName)_$(SAVETAIL).jld",
             "barcodeArray", barcodeArray)
