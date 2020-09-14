@@ -71,6 +71,13 @@ for (i,eirene_file) in enumerate(eirene_files)
         end
     end
 
+
+    # Check
+    println(sum([bettiBarArray...]))
+    println(sum([muBarArray...]))
+    println(sum([nuBarArray...]))
+
+
     # Save bettisArray
     saveName = replace(eirene_file, ".jld"=> "")
     saveName = replace(saveName, "_eireneoutput" => "")

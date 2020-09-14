@@ -80,6 +80,7 @@ for nametag in nametags
     bettiBar_files_nametag = filter(x -> occursin("$(nametag)",x), bettiBar_files)
     model_names = [split(betti_file_nametag,"_")[1] for betti_file_nametag in betti_files_nametag]
 
+
     nModels = length(betti_files_nametag)
     nEdges = binomial(NNODES, 2)
     betti_curve_array_all = zeros(NREPS,nEdges,MAXDIM,nModels)
@@ -130,7 +131,7 @@ for nametag in nametags
         end
 
         ### Checks
-        println(sum([bettiBar_all...]))
+        println(sum([bettiBar_all[1,:,3]]))
         println(sum([bettiBar_all_prenoise...]))
         println(sum([bettiBar_all_postnoise...]))
 
@@ -160,16 +161,28 @@ for nametag in nametags
         for (i, betti_file_nametag) in enumerate(betti_files_nametag)
 
             # Read in Betti curve data and store
+            println(betti_file_nametag)
             betti_dict = load("$(read_dir)/$(betti_file_nametag)")
-            betti_curve_array_all[:,:,:, i] = betti_dict["bettisArray"]
+            betti_curve_array_all[:,:,:, i] = deepcopy(betti_dict["bettisArray"])
 
-            bettiBar_dict = load("$(read_dir)/$(bettiBar_files[i])")
+
+            # Set betti bar file base
+            bettiBar_file_base = split(betti_files_nametag[i], "_bettis")[1]
+
+
+            println(bettiBar_file_base)
+            bettiBar_dict = load("$(read_dir)/$(bettiBar_file_base)_bettiBars.jld")
             bettiBar_all[:,:, i] = bettiBar_dict["bettiBarArray"]
             muBar_all[:,:, i] = bettiBar_dict["muBarArray"]
             nuBar_all[:,:, i] = bettiBar_dict["nuBarArray"]
 
 
         end
+
+         ### Checks
+         println(sum([bettiBar_all...]))
+         println(sum([muBar_all...]))
+         println(sum([nuBar_all...]))
 
 
         ### Save .mat file for jason
