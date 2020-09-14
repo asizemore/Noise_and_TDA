@@ -70,7 +70,7 @@
 #### that can run at once.
 ####
 ####
-#$ -l h_vmem=10
+#REMOVE_THIS_STRING_TO_ENABLE_OPTION$ -l h_vmem=10
 ####
 ################################## END OF DEFAULT EMBEDDED SGE COMMANDS###################
 
