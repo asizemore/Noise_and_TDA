@@ -72,8 +72,8 @@ if occursin(DATE_STRING,graph_file)
     println("Starting persistent homology for $(graph_model)\n")
 
     # Load in weighted_graph_array
-    const graph_dict = load("$(read_dir)/$(graph_file)")
-    const weighted_graph_array = graph_dict["weighted_graph_array"]
+
+    const weighted_graph_array = load("$(read_dir)/$(graph_file)", "weighted_graph_array")
 
     # Ensure array is not all 0s
     if sum(weighted_graph_array)==0

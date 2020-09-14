@@ -192,7 +192,7 @@ function fillBarcodeArray!(barcodeArray,weighted_graph_array,MAXDIM)
             println("Run $(rep) completed.")
         end
 
-        C = 0
+        # C = 0
         
 
     end
