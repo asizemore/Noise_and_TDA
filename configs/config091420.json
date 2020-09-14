@@ -1,6 +1,6 @@
 {   "NNODES": 70,
     "NREPS": 50,
-    "DATE_STRING": "091120",
+    "DATE_STRING": "091420",
     "SAVEDATA" : 1,
     "NAMETAG_creategraphs": "graphs",
     "HOMEDIR": "/cbica/home/sizemora/git_repos/Noise_and_TDA",
