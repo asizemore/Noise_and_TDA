@@ -8,7 +8,9 @@ using Pkg
 using LinearAlgebra
 using StatsBase
 using JLD
+using JSON
 using MAT
+include("helper_functions.jl")
 
 
 println("packages and functions imported")
@@ -16,21 +18,23 @@ printstyled("Elapsed time = $(time() - script_start_time) \n \n", color = :yello
 
 
 
+
 ### Set parameters
+config = read_config("$(homedir())/configs/$(ARGS[1])")
 
 const NNODES = config["NNODES"]
 const NREPS = config["NREPS"]
 const SAVEDATA = config["SAVEDATA"]    # Boolean to save data  
 const MAXDIM = config["MAXDIM"]    # Maximum persistent homology dimension
 const DATE_STRING = config["DATE_STRING"]
-read_dir = "$(homedir())/$(config["read_dir_graphs"])/$(NNODES)nodes"
+read_dir = "$(homedir())/$(config["read_dir_results"])/$(NNODES)nodes"
 save_dir = "$(homedir())/$(config["save_dir_forJason"])/$(NNODES)nodes"
 
 
 
 ### Locate data
 betti_files = filter(x->occursin("_bettis.jld",x), readdir(read_dir))
-betti_files = filter(x -> occursin(DATE_STRING, x) betti_files)
+betti_files = filter(x -> occursin(DATE_STRING, x), betti_files)
 println("Located the following betti curve files:")
 for betti_file in betti_files
     println(betti_file)
@@ -60,7 +64,7 @@ test = []
 
 for betti_file in betti_files
     println(betti_file)
-    tag = split(split(betti_file, "$(DATESTRING)_")[2], "_bettis")[1]
+    tag = split(split(betti_file, "$(DATE_STRING)_")[2], "_bettis")[1]
     append!(nametags,[tag])
 end
 
@@ -125,7 +129,10 @@ for nametag in nametags
 
         end
 
-
+        ### Checks
+        println(sum([bettiBar_all...]))
+        println(sum([bettiBar_all_prenoise...]))
+        println(sum([bettiBar_all_postnoise...]))
 
         ### Save .mat file for jason
 

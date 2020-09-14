@@ -106,7 +106,7 @@ for (i,eirene_file) in enumerate(eirene_files)
 
                 
                 # Compute prenoise betti bar values. Set all barcode values greater than the threshold edge to the threshold edge number
-                barcode_prenoise = barcodeArray[rep, k]
+                barcode_prenoise = deepcopy(barcodeArray[rep, k])
                 barcode_prenoise[barcode_prenoise.> threshold_edge].= threshold_edge
 
                 # Calculate values
@@ -116,7 +116,7 @@ for (i,eirene_file) in enumerate(eirene_files)
 
 
                 # Compute postnoise betti bar values. Set all barcode values less than the threshold edge to the threshold edge number
-                barcode_postnoise = barcodeArray[rep, k]
+                barcode_postnoise = deepcopy(barcodeArray[rep, k])
                 barcode_postnoise[barcode_postnoise.<= threshold_edge].= threshold_edge+1
 
                 # Calculate values
