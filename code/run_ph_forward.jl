@@ -87,10 +87,10 @@ if occursin(DATE_STRING,graph_file)
     const nReps = size(weighted_graph_array)[3]
 
     # Precompile eirene? 
-    println("precompiling eirene...")
-    G_precomp = make_coreperiph4(NNODES,  15, 5, 10, 5)
-    @time Eirene.eirene(G_precomp,model = "vr", maxdim = MAXDIM, record = "none")
-    @time Eirene.eirene(G_precomp,model = "vr", maxdim = MAXDIM, record = "none")
+    # println("precompiling eirene...")
+    # G_precomp = make_coreperiph4(NNODES,  15, 5, 10, 5)
+    # @time Eirene.eirene(G_precomp,model = "vr", maxdim = MAXDIM, record = "none")
+    # @time Eirene.eirene(G_precomp,model = "vr", maxdim = MAXDIM, record = "none")
 
     println("Starting persistent homology for $(graph_model)\n")
 
