@@ -157,3 +157,58 @@ function read_config(config_file)
     return config
     
 end
+
+
+function fillBarcodeArray!(barcodeArray,weighted_graph_array,MAXDIM)
+
+    nReps = size(weighted_graph_array, 3)
+    nNodes = size(weighted_graph_array, 1)
+
+    for rep in 1:nReps
+
+        # Extract replicate
+        # G_i = weighted_graph_array[:,:,rep]
+
+        # G_i is a weighted graph. We need to order it
+        edge_list_ranks::Array{Int64,1} = denserank([weighted_graph_array[:,:,rep]...], rev = true)   # so highest edge weight gets assigned 1
+
+        G_i_ord::Array{Int64,2} = reshape(edge_list_ranks,(nNodes,nNodes))
+        G_i_ord[diagind(G_i_ord)] .= 0
+
+        # size of mat check
+        printstyled("Input matrix size is $(size(G_i_ord))\n", color=:orange)
+
+
+
+        # Run Eirene
+        C = Eirene.eirene(G_i_ord,model = "vr", maxdim = MAXDIM, record = "none")
+    
+        # Store in barcodeArray
+        for k in collect(1:MAXDIM)
+            barcodeArray[rep, k] = barcode(C,dim=k)
+        end
+
+        if rep%10 == 0
+            println("Run $(rep) completed.")
+        end
+
+        # C = 0
+        
+
+    end
+
+    return barcodeArray
+
+end
+
+function createAndFillBarcodeArray(nReps::Int,MAXDIM::Int, weighted_graph_array::Array{Float64,3})
+
+     # Prepare arrays
+     barcodeArray = Array{Array{Float64}}(undef,nReps,MAXDIM)
+
+
+     fillBarcodeArray!(barcodeArray,weighted_graph_array,MAXDIM)
+
+     return barcodeArray
+end
+

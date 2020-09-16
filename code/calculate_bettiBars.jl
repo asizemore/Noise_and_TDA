@@ -163,4 +163,3 @@ for (i,eirene_file) in enumerate(eirene_files)
 
 
 end # ends eirene_files loop
-
