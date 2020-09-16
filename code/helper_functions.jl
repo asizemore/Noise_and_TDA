@@ -170,9 +170,9 @@ function fillBarcodeArray!(barcodeArray,weighted_graph_array,MAXDIM)
         # G_i = weighted_graph_array[:,:,rep]
 
         # G_i is a weighted graph. We need to order it
-        edge_list_ranks = denserank([weighted_graph_array[:,:,rep]...], rev = true)   # so highest edge weight gets assigned 1
+        edge_list_ranks::Array{Int64,1} = denserank([weighted_graph_array[:,:,rep]...], rev = true)   # so highest edge weight gets assigned 1
 
-        G_i_ord = reshape(edge_list_ranks,(nNodes,nNodes))
+        G_i_ord::Array{Int64,2} = reshape(edge_list_ranks,(nNodes,nNodes))
         G_i_ord[diagind(G_i_ord)] .= 0
 
         # size of mat check
@@ -201,7 +201,7 @@ function fillBarcodeArray!(barcodeArray,weighted_graph_array,MAXDIM)
 
 end
 
-function createAndFillBarcodeArray(nReps,MAXDIM, weighted_graph_array)
+function createAndFillBarcodeArray(nReps::Int,MAXDIM::Int, weighted_graph_array::Array{Float64,3})
 
      # Prepare arrays
      barcodeArray = Array{Array{Float64}}(undef,nReps,MAXDIM)
