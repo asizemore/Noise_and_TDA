@@ -24,13 +24,12 @@ printstyled("Elapsed time = $(time() - script_start_time) seconds \n \n", color 
 
 
 ### Set parameters
-config = read_config("$(pwd())/configs/$(ARGS[1])")
+config = read_config("$(homedir())/configs/$(ARGS[1])")
 
 const NNODES = config["NNODES"]
 const MAXDIM = config["MAXDIM"]    # Maximum persistent homology dimension
 const SAVETAIL = config["SAVETAIL_bettiBars"]
 const DATE_STRING = config["DATE_STRING"]
-# const HOMEDIR = config["HOMEDIR"]
 read_dir = "$(homedir())/$(config["read_dir_results"])/$(NNODES)nodes"
 save_dir = "$(homedir())/$(config["save_dir_results"])/$(NNODES)nodes"
 
@@ -72,6 +71,13 @@ for (i,eirene_file) in enumerate(eirene_files)
         end
     end
 
+
+    # Check
+    println(sum([bettiBarArray...]))
+    println(sum([muBarArray...]))
+    println(sum([nuBarArray...]))
+
+
     # Save bettisArray
     saveName = replace(eirene_file, ".jld"=> "")
     saveName = replace(saveName, "_eireneoutput" => "")
@@ -107,7 +113,7 @@ for (i,eirene_file) in enumerate(eirene_files)
 
                 
                 # Compute prenoise betti bar values. Set all barcode values greater than the threshold edge to the threshold edge number
-                barcode_prenoise = copy(barcodeArray[rep, k])
+                barcode_prenoise = deepcopy(barcodeArray[rep, k])
                 barcode_prenoise[barcode_prenoise.> threshold_edge].= threshold_edge
 
                 # Calculate values
@@ -117,7 +123,7 @@ for (i,eirene_file) in enumerate(eirene_files)
 
 
                 # Compute postnoise betti bar values. Set all barcode values less than the threshold edge to the threshold edge number
-                barcode_postnoise = copy(barcodeArray[rep, k])
+                barcode_postnoise = deepcopy(barcodeArray[rep, k])
                 barcode_postnoise[barcode_postnoise.<= threshold_edge].= threshold_edge+1
 
                 # Calculate values
@@ -157,4 +163,3 @@ for (i,eirene_file) in enumerate(eirene_files)
 
 
 end # ends eirene_files loop
-
