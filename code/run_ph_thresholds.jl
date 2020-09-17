@@ -31,21 +31,23 @@ printstyled("Elapsed time = $(time() - script_start_time) seconds \n \n", color 
 printstyled("Starting script evaluation at $(Dates.Time(Dates.now())) \n \n", color = :yellow)
 
 ### Set parameters
+localARGS = @isdefined(loopARGS) ? loopARGS : ARGS
+println(localARGS)
 
-config = read_config("$(pwd())/configs/$(ARGS[1])")
+config = read_config("$(pwd())/configs/$(localARGS[1])")
 
 
 ### Read graph file from shell input
-const graph_file =  split(ARGS[2],"/")[end]
+const graph_file =  split(localARGS[2],"/")[end]
 
 # Parameters for all graphs
-const NNODES = config["NNODES"]
+NNODES = config["NNODES"]
 const SAVEDATA = config["SAVEDATA"]    # Boolean to save data  
 const MAXDIM = config["MAXDIM"]    # Maximum persistent homology dimension
 const SAVETAIL = config["SAVETAIL_ph_thresholds"]
-const DATE_STRING = config["DATE_STRING"]
+DATE_STRING = config["DATE_STRING"]
 const NAMEID = config["NAMEID_ph_thresholds"]
-const HOMEDIR = config["HOMEDIR"]
+HOMEDIR = config["HOMEDIR"]
 read_dir = "$(HOMEDIR)/$(config["read_dir_thresh"])/$(NNODES)nodes"
 save_dir = "$(HOMEDIR)/$(config["save_dir_results"])/$(NNODES)nodes"
 

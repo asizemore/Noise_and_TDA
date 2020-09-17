@@ -138,7 +138,7 @@ for nametag in nametags
         end
 
         ### Checks
-        println(sum([bettiBar_all[1,:,3]]))
+        println(sum([bettiBar_all...]))
         println(sum([bettiBar_all_prenoise...]))
         println(sum([bettiBar_all_postnoise...]))
 

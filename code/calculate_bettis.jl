@@ -38,6 +38,8 @@ println("read_dir")
 
 ### Locate data
 eirene_files = filter(x->occursin("eireneoutput",x), readdir(read_dir))
+println(size(eirene_files))
+eirene_files = filter(x->occursin(DATE_STRING,x), eirene_files)
 println("Located the following graph files:")
 for eirene_file in eirene_files
     println(eirene_file)

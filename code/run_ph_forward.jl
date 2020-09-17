@@ -34,21 +34,23 @@ printstyled("Elapsed time = $(time() - script_start_time) seconds \n \n", color 
 
 
 ### Set parameters
+localARGS = @isdefined(loopARGS) ? loopARGS : ARGS
+println(localARGS)
 
-config = read_config("$(pwd())/configs/$(ARGS[1])")
+config = read_config("$(pwd())/configs/$(localARGS[1])")
 
 # Parameters for all graphs
-const NNODES = config["NNODES"]
+NNODES = config["NNODES"]
 const SAVEDATA = config["SAVEDATA"]    # Boolean to save data  
 const MAXDIM = config["MAXDIM"]    # Maximum persistent homology dimension
 const SAVETAIL = config["SAVETAIL_ph_forward"]
-const DATE_STRING = config["DATE_STRING"]
-const HOMEDIR = config["HOMEDIR"]
-const read_dir = "$(HOMEDIR)/$(config["read_dir_graphs"])/$(NNODES)nodes"
-const save_dir = "$(HOMEDIR)/$(config["save_dir_results"])/$(NNODES)nodes"
+DATE_STRING = config["DATE_STRING"]
+HOMEDIR = config["HOMEDIR"]
+read_dir = "$(HOMEDIR)/$(config["read_dir_graphs"])/$(NNODES)nodes"
+save_dir = "$(HOMEDIR)/$(config["save_dir_results"])/$(NNODES)nodes"
 
 ### Read in from looping shell script
-const graph_file =  split(ARGS[2],"/")[end]
+const graph_file =  split(localARGS[2],"/")[end]
 
 
 ### Locate graphs to read
