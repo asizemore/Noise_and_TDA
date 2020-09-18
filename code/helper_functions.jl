@@ -212,3 +212,15 @@ function createAndFillBarcodeArray(nReps::Int,MAXDIM::Int, weighted_graph_array:
      return barcodeArray
 end
 
+
+function triu_elements(a,k)
+    
+    # Assume a is square!
+    if size(a)[1] !== size(a)[2]
+        println("Input a square matrix")
+    else 
+        vec = [a[i, j] for j in collect(1:size(a)[1]) for i in 1:(j-k)]
+        return vec
+    end
+end
+        

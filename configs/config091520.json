@@ -22,6 +22,7 @@
     "SAVETAIL_bettiBars": "bettiBars",
     "SAVETAIL_bettis": "bettis",
     "SAVETAIL_graphInfo": "graphInfo",
+    "SAVETAIL_netStats": "netStats",
     "graph_models": 
         {   "geometricConf": {"fn": "make_dev_Geometric_configuration_model", "parameters": [0.01, 100], "name": "geometricConf", "flag": "create"},
             "IID": {"fn": "make_iid_weighted_graph", "parameters": [], "name": "IID", "flag": "create"},
