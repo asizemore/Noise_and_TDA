@@ -89,6 +89,42 @@ function make_cosine_geometric(nNodes,dims)
     
     # Compute pairwise distances between nodes (points in [0,1)^dims)
     adj = pairwise(CosineDist(), randomCoordinates, dims = 2)
+    adj = 1 ./adj
+    adj[diagind(adj)] .= 0
+    
+    # Check for symmetry
+    tf = is_symmetric(adj)
+    
+    return adj
+end
+
+
+function make_squared_euclidean(nNodes,dims)
+    
+    # Generate random coordinates in [0,1)^dims
+    randomCoordinates = rand(dims,nNodes)
+    
+    # Compute pairwise distances between nodes (points in [0,1)^dims)
+    adj = pairwise(sqeuclidean(), randomCoordinates, dims = 2)
+    adj = 1 ./adj
+    adj[diagind(adj)] .= 0
+    
+    # Check for symmetry
+    tf = is_symmetric(adj)
+    
+    return adj
+end
+
+
+function make_RMSDeviation(nNodes,dims)
+    
+    # Generate random coordinates in [0,1)^dims
+    randomCoordinates = rand(dims,nNodes)
+    
+    # Compute pairwise distances between nodes (points in [0,1)^dims)
+    adj = pairwise(rmsd(), randomCoordinates, dims = 2)
+    adj = 1 ./adj
+    adj[diagind(adj)] .= 0
     
     # Check for symmetry
     tf = is_symmetric(adj)
@@ -349,52 +385,53 @@ function make_probtriangle(nNodes, p)
     edges_left = copy(nEdges)
 
     while edges_left > 0
-        
-        # Are any triangles possible?
-        adj_2 = adj^2
-        
-        
-        possible_ot = Tuple.(findall(adj_2 .> 0))
-        current_edges = Tuple.(findall(adj .> 0))
+                    
+        # Flip a coin
+        r = rand(1)[1]
 
-        # Remove n,n open triangles
-        possible_ot = filter(x -> (x[1] != x[2]), possible_ot)
+        if r < p  # See if there's a triangle and if there is, add it. If not, add edge randomly
 
-        # Check for non-closed open triangles
-        ots = []
-        for pots in possible_ot
-            if pots in current_edges
-                x = 1
+            # Are any triangles possible?
+            adj_2 = adj^2
+            adj_2[diagind(adj_2)] .= 0
+            
+            possible_ot = Tuple.(findall(adj_2 .> 0))
+            current_edges = Tuple.(findall(adj .> 0))
+
+            # Remove n,n open triangles
+            possible_ot = filter(x -> (x[1] != x[2]), possible_ot)
+
+            # Check for non-closed open triangles
+            open_triangles = []
+            for pots in possible_ot
+                if !(pots in current_edges)
+                    open_triangles = [open_triangles; pots]
+                end
+            end
+
+            if length(open_triangles) > 0
+
+                # Then we can add a random edge that completes a triangle
+                new_edge = sample(open_triangles)
             else
-                ots = [ots; pots]
+
+                # Then we add a new edge randomly.
+                println("no open triangles")
+                open_edges = Tuple.(findall(adj .== 0))
+                open_edges = filter(x -> (x[1] != x[2]), open_edges)
+                new_edge = sample(open_edges)
             end
+
+            
+        else  # add an edge randomly
+            
+            open_edges = Tuple.(findall(adj .== 0))
+            open_edges = filter(x -> (x[1] != x[2]), open_edges)
+            new_edge = sample(open_edges)
+            
+
         end
-        
-        
-        
-        if length(ots) > 0
-            
-            # Flip a coin
-            r = rand(1)[1]
 
-            if r < p  # add a triangle
-                
-                new_edge = sample(ots)
-                
-            else  # add an edge randomly
-                
-                new_edge = sample(Tuple.(findall(adj .== 0)))
-                
-
-            end
-            
-        else # then there are no open triangles
-            
-            ## Choose an edge at random and add
-            new_edge = sample(Tuple.(findall(adj .== 0)))
-
-            
-        end
         
         adj[new_edge[1], new_edge[2]] = edges_left
         adj[new_edge[2], new_edge[1]] = edges_left
