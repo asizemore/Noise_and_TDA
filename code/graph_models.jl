@@ -416,7 +416,7 @@ function make_probtriangle(nNodes, p)
             else
 
                 # Then we add a new edge randomly.
-                println("no open triangles")
+                # println("no open triangles")
                 open_edges = Tuple.(findall(adj .== 0))
                 open_edges = filter(x -> (x[1] != x[2]), open_edges)
                 new_edge = sample(open_edges)
