@@ -103,6 +103,14 @@ for (i,eirene_file) in enumerate(eirene_files)
         muBarArray_postnoise = zeros(nReps,MAXDIM)
         nuBarArray_postnoise = zeros(nReps,MAXDIM)
 
+        bettiBarArray_crossover = zeros(nReps,MAXDIM)
+        muBarArray_crossover = zeros(nReps,MAXDIM)
+        nuBarArray_crossover = zeros(nReps,MAXDIM)
+
+        bettiBarArray_blues = zeros(nReps,MAXDIM)
+        muBarArray_blues = zeros(nReps,MAXDIM)
+        nuBarArray_blues = zeros(nReps,MAXDIM)
+
         # Find threshold edge number. Occurs between "edge" and "_"
         thresh_string = split(split(eirene_file,"edge")[2],"_")[1]
         threshold_edge = parse(Int, thresh_string)
@@ -132,6 +140,29 @@ for (i,eirene_file) in enumerate(eirene_files)
                 nuBarArray_postnoise[rep, k] = nuBarFromBarcode(barcode_postnoise,nEdges)
 
 
+                # Compute crossover betti bar values. Set all barcode values less than the threshold edge to the threshold edge number
+                barcode_crossover = deepcopy(barcodeArray[rep, k])
+                barcode_crossover = barcode_crossover[(barcode_crossover[:,1] .<= threshold_edge) .& (barcode_crossover[:,2] .> threshold_edge),:]
+
+                # For consistency, set every barcode value less than the threshold edge equal to the thresold edge number
+                barcode_crossover[barcode_crossover.<= threshold_edge].= threshold_edge+1
+
+                # Calculate values
+                bettiBarArray_crossover[rep, k] = bettiBarFromBarcode(barcode_crossover)
+                muBarArray_crossover[rep, k] = muBarFromBarcode(barcode_crossover)
+                nuBarArray_crossover[rep, k] = nuBarFromBarcode(barcode_crossover,nEdges)
+
+
+                # Compute crossover betti bar values. Set all barcode values less than the threshold edge to the threshold edge number
+                barcode_blues = deepcopy(barcodeArray[rep, k])
+                barcode_blues = barcode_blues[(barcode_blues[:,1] .> threshold_edge) .& (barcode_blues[:,2] .> threshold_edge),:]
+
+                # Calculate values
+                bettiBarArray_blues[rep, k] = bettiBarFromBarcode(barcode_blues)
+                muBarArray_blues[rep, k] = muBarFromBarcode(barcode_blues)
+                nuBarArray_blues[rep, k] = nuBarFromBarcode(barcode_blues,nEdges)
+
+
             end # ends dimensions loop
         end # ends replicate loop
 
@@ -150,6 +181,16 @@ for (i,eirene_file) in enumerate(eirene_files)
         "bettiBarArray", bettiBarArray_postnoise,
         "muBarArray", muBarArray_postnoise,
         "nuBarArray", nuBarArray_postnoise)
+
+        save("$(save_dir)/$(saveName)_$(SAVETAIL)_crossover.jld",
+        "bettiBarArray", bettiBarArray_crossover,
+        "muBarArray", muBarArray_crossover,
+        "nuBarArray", nuBarArray_crossover)
+
+        save("$(save_dir)/$(saveName)_$(SAVETAIL)_blues.jld",
+        "bettiBarArray", bettiBarArray_blues,
+        "muBarArray", muBarArray_blues,
+        "nuBarArray", nuBarArray_blues)
         
         println("Saved outputs to $(save_dir)/$(saveName)_$(SAVETAIL)_postnoise.jld")
         
