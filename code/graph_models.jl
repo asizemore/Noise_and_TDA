@@ -105,7 +105,7 @@ function make_squared_euclidean(nNodes,dims)
     randomCoordinates = rand(dims,nNodes)
     
     # Compute pairwise distances between nodes (points in [0,1)^dims)
-    adj = pairwise(sqeuclidean(), randomCoordinates, dims = 2)
+    adj = pairwise(SqEuclidean(), randomCoordinates, dims = 2)
     adj = 1 ./adj
     adj[diagind(adj)] .= 0
     
@@ -122,7 +122,7 @@ function make_RMSDeviation(nNodes,dims)
     randomCoordinates = rand(dims,nNodes)
     
     # Compute pairwise distances between nodes (points in [0,1)^dims)
-    adj = pairwise(rmsd(), randomCoordinates, dims = 2)
+    adj = pairwise(RMSDeviation(), randomCoordinates, dims = 2)
     adj = 1 ./adj
     adj[diagind(adj)] .= 0
     
