@@ -25,6 +25,17 @@
     "SAVETAIL_netStats": "netStats",
     "graph_models": 
         {
+            "probTriangle": {"fn": "make_probtriangle", "parameters": [1], "name": "probTriangle", "flag": "create"},
+            "probTriangle9": {"fn": "make_probtriangle", "parameters": [0.9], "name": "probTriangle9", "flag": "create"},
+            "probTriangle8": {"fn": "make_probtriangle", "parameters": [0.8], "name": "probTriangle8", "flag": "create"},
+            "probTriangle7": {"fn": "make_probtriangle", "parameters": [0.7], "name": "probTriangle7", "flag": "create"},
+            "probTriangle6": {"fn": "make_probtriangle", "parameters": [0.6], "name": "probTriangle6", "flag": "create"},
+            "probTriangle5": {"fn": "make_probtriangle", "parameters": [0.5], "name": "probTriangle5", "flag": "create"},
+            "probTriangle4": {"fn": "make_probtriangle", "parameters": [0.4], "name": "probTriangle4", "flag": "create"},
+            "probTriangle3": {"fn": "make_probtriangle", "parameters": [0.3], "name": "probTriangle3", "flag": "create"},
+            "probTriangle2": {"fn": "make_probtriangle", "parameters": [0.2], "name": "probTriangle2", "flag": "create"},
+            "probTriangle1": {"fn": "make_probtriangle", "parameters": [0.1], "name": "probTriangle1", "flag": "create"},
+            "probTriangle0": {"fn": "make_probtriangle", "parameters": [0], "name": "probTriangle0", "flag": "create"},
             "geometricConf": {"fn": "make_dev_Geometric_configuration_model", "parameters": [0.01, 100], "name": "geometricConf", "flag": "create"},
             "IID": {"fn": "make_iid_weighted_graph", "parameters": [], "name": "IID", "flag": "create"},
             "RG": {"fn": "make_random_geometric", "parameters": [3], "name": "randomGeom", "flag": "create"},
