@@ -32,8 +32,8 @@
             "cosineGeometric": {"fn": "make_cosine_geometric" , "parameters": [3] , "name": "cosineGeometric", "flag": "create"},
             "RL": {"fn": "make_ring_lattice_wei", "parameters": [], "name": "ringLattice", "flag": "create"},
             "DP": {"fn": "make_dot_product", "parameters": [3], "name": "dotProduct", "flag": "create"},
-            "assortative": {"fn": "make_assortative4", "parameters": [15, 5, 10, 5], "name": "assortative", "flag": "create"},
-            "disassortative": {"fn": "make_disassortative4", "parameters": [15, 5, 10, 5], "name": "disassortative", "flag": "create"},
+            "assortative": {"fn": "make_assortative4", "parameters": [20, 5, 10, 5], "name": "assortative", "flag": "create"},
+            "disassortative": {"fn": "make_disassortative4", "parameters": [20, 5, 10, 5], "name": "disassortative", "flag": "create"},
             "coreperiph": {"fn": "make_coreperiph4", "parameters": [15, 5, 10, 5], "name": "coreperiphery", "flag": "create"}
         }
     }
