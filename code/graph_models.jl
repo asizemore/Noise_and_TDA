@@ -335,3 +335,76 @@ function make_coreperiph4(nNodes,  mu_1, s_1, mu_2, s_2)
 
     return adj
 end
+
+
+
+function make_probtriangle(nNodes, p)
+    ### Control how much we force triangles to from
+
+    ## triangle graph model
+
+    nEdges = binomial(nNodes,2)
+    adj = zeros(nNodes,nNodes)
+
+    edges_left = copy(nEdges)
+
+    while edges_left > 0
+        
+        # Are any triangles possible?
+        adj_2 = adj^2
+        
+        
+        possible_ot = Tuple.(findall(adj_2 .> 0))
+        current_edges = Tuple.(findall(adj .> 0))
+
+        # Remove n,n open triangles
+        possible_ot = filter(x -> (x[1] != x[2]), possible_ot)
+
+        # Check for non-closed open triangles
+        ots = []
+        for pots in possible_ot
+            if pots in current_edges
+                x = 1
+            else
+                ots = [ots; pots]
+            end
+        end
+        
+        
+        
+        if length(ots) > 0
+            
+            # Flip a coin
+            r = rand(1)[1]
+
+            if r < p  # add a triangle
+                
+                new_edge = sample(ots)
+                
+            else  # add an edge randomly
+                
+                new_edge = sample(Tuple.(findall(adj .== 0)))
+                
+
+            end
+            
+        else # then there are no open triangles
+            
+            ## Choose an edge at random and add
+            new_edge = sample(Tuple.(findall(adj .== 0)))
+
+            
+        end
+        
+        adj[new_edge[1], new_edge[2]] = edges_left
+        adj[new_edge[2], new_edge[1]] = edges_left
+            
+        
+
+            edges_left = edges_left-1
+        
+    end
+
+    return adj
+
+end
