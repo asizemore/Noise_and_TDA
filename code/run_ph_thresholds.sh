@@ -31,7 +31,7 @@
 #$ -M annsize@seas.upenn.edu
 #### send mail at the beginning of the job
 ####$ -m b #### UNCOMMENT this line so that it begins with "#$" to enable SGE to send mail at the beginning of the job
-####$ -m e #### UNCOMMENT this line so that it begins with "#$" to enable SGE to send mail at the end of the job
+#$ -m e #### UNCOMMENT this line so that it begins with "#$" to enable SGE to send mail at the end of the job
 #$ -m a #### UNCOMMENT this line so that it begins with "#$" to enable SGE to send mail in case the job is aborted
 ##################################
 #### Optional SGE "qsub" parameters that could be used to customize
@@ -70,7 +70,7 @@
 #### that can run at once.
 ####
 ####
-#$ -l h_vmem=100G
+#$ -l h_vmem=32G,s_vmem=32G
 ####
 ################################## END OF DEFAULT EMBEDDED SGE COMMANDS###################
 
@@ -101,6 +101,7 @@ graph=$1
 configfile=$2
 # Run PH and save PH
 echo $graph
+echo $configfile
 /usr/bin/singularity exec noise-and-tda-latest.sif julia --color\=yes code/run_ph_thresholds.jl $configfile $graph
 
 
