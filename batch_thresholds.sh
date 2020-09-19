@@ -70,7 +70,7 @@
 #### that can run at once.
 ####
 ####
-#$ -l h_vmem=10G
+####$ -l h_vmem=10G
 ####
 ################################## END OF DEFAULT EMBEDDED SGE COMMANDS###################
 
@@ -94,7 +94,7 @@
 ( /bin/echo -e "Executing at: \c"; date ) 1>&2
 /bin/echo "----- STDERR from /usr/bin/singularity below this line -----" 1>&2
 
-mydate="091220"
+mydate="091720"
 configfile="config${mydate}.json"
 
 for graph in processed_data/thresholded_graphs/70nodes/*
