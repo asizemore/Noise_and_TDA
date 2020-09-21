@@ -23,6 +23,7 @@
     "SAVETAIL_bettis": "bettis",
     "SAVETAIL_graphInfo": "graphInfo",
     "SAVETAIL_netStats": "netStats",
+    "SAVETAIL_ph_conecheck": "conelevel",
     "graph_models": 
         {
             "probTriangle99": {"fn": "make_probtriangle", "parameters": [0.99], "name": "probTriangle99", "flag": "create"},
