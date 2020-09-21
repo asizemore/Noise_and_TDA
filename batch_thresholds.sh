@@ -99,12 +99,12 @@ configfile="config${mydate}.json"
 
 for graph in processed_data/thresholded_graphs/70nodes/*
 do
-echo $graph
-
 
     if [[ "$graph" == *"$mydate"* ]] ; then
 
         if [[ "$graph" == *"probTriangle9"* ]] ; then
+
+            echo $graph
             # Run PH and save PH
             echo "running ph"
             qsub code/run_ph_thresholds.sh $graph $configfile
