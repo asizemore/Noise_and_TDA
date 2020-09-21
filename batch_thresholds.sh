@@ -103,10 +103,13 @@ echo $graph
 
 
     if [[ "$graph" == *"$mydate"* ]] ; then
-        # Run PH and save PH
-        echo "running ph"
-        qsub code/run_ph_thresholds.sh $graph $configfile
-        qsub code/run_ph_noiseOnly.sh $graph $configfile
+
+        if [[ "$graph" == *"probTriangle9"* ]] ; then
+            # Run PH and save PH
+            echo "running ph"
+            qsub code/run_ph_thresholds.sh $graph $configfile
+            qsub code/run_ph_noiseOnly.sh $graph $configfile
+        fi
     fi
 
 done
