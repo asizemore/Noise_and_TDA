@@ -445,3 +445,82 @@ function make_probtriangle(nNodes, p)
     return adj
 
 end
+
+
+
+
+
+
+
+function make_probtriangle_weighted(nNodes, p)
+    ### Control how much we force triangles to from
+
+    ## triangle graph model
+
+    nEdges = binomial(nNodes,2)
+    adj = zeros(nNodes,nNodes)
+
+    edges_left = copy(nEdges)
+
+    while edges_left > 0
+                    
+        # Flip a coin
+        r = rand(1)[1]
+
+        if r < p  # See if there's a triangle and if there is, add it. If not, add edge randomly
+
+            # Are any triangles possible?
+            adj_2 = adj^2
+            adj_2[diagind(adj_2)] .= 0
+            
+            possible_ot = Tuple.(findall(adj_2 .> 0))
+            current_edges = Tuple.(findall(adj .> 0))
+
+            # Remove n,n open triangles
+            possible_ot = filter(x -> (x[1] != x[2]), possible_ot)
+
+            # Check for non-closed open triangles
+            open_triangles = []
+            for pots in possible_ot
+                if !(pots in current_edges)
+                    open_triangles = [open_triangles; pots]
+                end
+            end
+
+            if length(open_triangles) > 0
+
+                # Then we can add an edge that completes a triangle, weighted by time of appearance.
+                ot_weights = [adj_2[ot[1], ot[2]] for ot in open_triangles]
+                new_edge = sample(open_triangles, Weights(ot_weights))
+            else
+
+                # Then we add a new edge randomly.
+                # println("no open triangles")
+                open_edges = Tuple.(findall(adj .== 0))
+                open_edges = filter(x -> (x[1] != x[2]), open_edges)
+                new_edge = sample(open_edges)
+            end
+
+            
+        else  # add an edge randomly
+            
+            open_edges = Tuple.(findall(adj .== 0))
+            open_edges = filter(x -> (x[1] != x[2]), open_edges)
+            new_edge = sample(open_edges)
+            
+
+        end
+
+        
+        adj[new_edge[1], new_edge[2]] = edges_left
+        adj[new_edge[2], new_edge[1]] = edges_left
+            
+        
+
+            edges_left = edges_left-1
+        
+    end
+
+    return adj
+
+end

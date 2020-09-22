@@ -26,14 +26,17 @@
     "SAVETAIL_ph_conecheck": "eireneoutput_conelevel",
     "graph_models": 
         {
-            "probTriangle99": {"fn": "make_probtriangle", "parameters": [0.99], "name": "probTriangle99", "flag": "create"},
-            "probTriangle98": {"fn": "make_probtriangle", "parameters": [0.98], "name": "probTriangle98", "flag": "create"},
-            "probTriangle97": {"fn": "make_probtriangle", "parameters": [0.97], "name": "probTriangle97", "flag": "create"},
-            "probTriangle96": {"fn": "make_probtriangle", "parameters": [0.96], "name": "probTriangle96", "flag": "create"},
-            "probTriangle95": {"fn": "make_probtriangle", "parameters": [0.95], "name": "probTriangle95", "flag": "create"},
-            "probTriangle94": {"fn": "make_probtriangle", "parameters": [0.94], "name": "probTriangle94", "flag": "create"},
-            "probTriangle93": {"fn": "make_probtriangle", "parameters": [0.93], "name": "probTriangle93", "flag": "create"},
-            "probTriangle92": {"fn": "make_probtriangle", "parameters": [0.92], "name": "probTriangle92", "flag": "create"},
-            "probTriangle91": {"fn": "make_probtriangle", "parameters": [0.91], "name": "probTriangle91", "flag": "create"}
+            "wprobTriangle": {"fn": "make_probtriangle_weighted", "parameters": [1], "name": "wprobTriangle", "flag": "create"},
+            "wprobTriangle9": {"fn": "make_probtriangle_weighted", "parameters": [0.9], "name": "wprobTriangle9", "flag": "create"},
+            "wprobTriangle8": {"fn": "make_probtriangle_weighted", "parameters": [0.8], "name": "wprobTriangle8", "flag": "create"},
+            "wprobTriangle7": {"fn": "make_probtriangle_weighted", "parameters": [0.7], "name": "wprobTriangle7", "flag": "create"},
+            "wprobTriangle6": {"fn": "make_probtriangle_weighted", "parameters": [0.6], "name": "wprobTriangle6", "flag": "create"},
+            "wprobTriangle5": {"fn": "make_probtriangle_weighted", "parameters": [0.5], "name": "wprobTriangle5", "flag": "create"},
+            "wprobTriangle4": {"fn": "make_probtriangle_weighted", "parameters": [0.4], "name": "wprobTriangle4", "flag": "create"},
+            "wprobTriangle3": {"fn": "make_probtriangle_weighted", "parameters": [0.3], "name": "wprobTriangle3", "flag": "create"},
+            "wprobTriangle2": {"fn": "make_probtriangle_weighted", "parameters": [0.2], "name": "wprobTriangle2", "flag": "create"},
+            "wprobTriangle1": {"fn": "make_probtriangle_weighted", "parameters": [0.1], "name": "wprobTriangle1", "flag": "create"},
+            "wprobTriangle0": {"fn": "make_probtriangle_weighted", "parameters": [0], "name": "wprobTriangle0", "flag": "create"}
+        
         }
     }
