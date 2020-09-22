@@ -97,7 +97,7 @@
 mydate="091720"
 configfile="config${mydate}.json"
 
-for graph in processed_data/thresholded_graphs/70nodes/*
+for graph in processed_data/graphs/70nodes/*
 do
 
     if [[ "$graph" == *"$mydate"* ]] ; then
