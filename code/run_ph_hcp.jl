@@ -46,8 +46,8 @@ const MAXDIM = 3   # Maximum persistent homology dimension
 const SAVETAIL = config["SAVETAIL_ph_forward"]
 DATE_STRING = config["DATE_STRING"]
 HOMEDIR = config["HOMEDIR"]
-read_dir = "$(homedir())/$(config["read_dir_graphs"])/70nodes"
-save_dir = "$(homedir())/$(config["save_dir_results"])/70nodes"
+read_dir = "$(HOMEDIR)/$(config["read_dir_graphs"])/70nodes"
+save_dir = "$(HOMEDIR)/$(config["save_dir_results"])/70nodes"
 
 ### Read in from looping shell script
 const graph_file =  "dsi_matrices_$(DATE_STRING)_graphs.jld"
