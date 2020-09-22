@@ -46,8 +46,8 @@ const MAXDIM = config["MAXDIM"]    # Maximum persistent homology dimension
 const SAVETAIL = config["SAVETAIL_ph_conecheck"]
 DATE_STRING = config["DATE_STRING"]
 HOMEDIR = config["HOMEDIR"]
-read_dir = "$(homedir())/$(config["read_dir_graphs"])/$(NNODES)nodes"
-save_dir = "$(homedir())/$(config["save_dir_results"])/$(NNODES)nodes"
+read_dir = "$(HOMEDIR)/$(config["read_dir_graphs"])/$(NNODES)nodes"
+save_dir = "$(HOMEDIR)/$(config["save_dir_results"])/$(NNODES)nodes"
 
 ### Read in from looping shell script
 const graph_file =  split(localARGS[2],"/")[end]

@@ -37,7 +37,7 @@ save_dir = "$(homedir())/$(config["save_dir_results"])/$(NNODES)nodes"
 println("read_dir")
 
 ### Locate data
-eirene_files = filter(x->occursin("eireneoutput",x), readdir(read_dir))
+eirene_files = filter(x->(occursin("eireneoutput",x) || occursin("conelevel",x)), readdir(read_dir))
 println(size(eirene_files))
 eirene_files = filter(x->occursin(DATE_STRING,x), eirene_files)
 println("Located the following graph files:")
