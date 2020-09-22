@@ -46,8 +46,8 @@ const MAXDIM = config["MAXDIM"]    # Maximum persistent homology dimension
 const SAVETAIL = config["SAVETAIL_ph_conecheck"]
 DATE_STRING = config["DATE_STRING"]
 HOMEDIR = config["HOMEDIR"]
-read_dir = "$(HOMEDIR)/$(config["read_dir_graphs"])/$(NNODES)nodes"
-save_dir = "$(HOMEDIR)/$(config["save_dir_results"])/$(NNODES)nodes"
+read_dir = "$(homedir())/$(config["read_dir_graphs"])/$(NNODES)nodes"
+save_dir = "$(homedir())/$(config["save_dir_results"])/$(NNODES)nodes"
 
 ### Read in from looping shell script
 const graph_file =  split(localARGS[2],"/")[end]
@@ -95,7 +95,7 @@ if occursin(DATE_STRING,graph_file)
         ## Remove the n nodes with the highest strength
         weighted_graph_array_smaller = zeros(NNODES-n, NNODES-n, nReps)
         for r = collect(1:nReps)
-            G_n = copy(weighted_graph_array_smaller[:,:,r])
+            G_n = copy(weighted_graph_array[:,:,r])
 
             for j = collect(1:n)
 
