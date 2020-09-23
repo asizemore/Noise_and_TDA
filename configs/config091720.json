@@ -26,7 +26,10 @@
     "SAVETAIL_ph_conecheck": "eireneoutput_conelevel",
     "graph_models": 
         {
-            "clique": {"fn": "make_clique", "parameters": [], "name": "clique", "flag": "create"}
-
+            "clique2": {"fn": "make_kclique", "parameters": [2], "name": "clique2", "flag": "create"},
+            "clique4": {"fn": "make_kclique", "parameters": [4], "name": "clique4", "flag": "create"},
+            "clique6": {"fn": "make_kclique", "parameters": [6], "name": "clique6", "flag": "create"},
+            "clique8": {"fn": "make_kclique", "parameters": [8], "name": "clique8", "flag": "create"},
+            "clique10": {"fn": "make_kclique", "parameters": [10], "name": "clique10", "flag": "create"}
         }
     }

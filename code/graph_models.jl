@@ -548,3 +548,24 @@ function make_clique(nNodes)
     return adj
 
 end
+
+
+function make_kclique(nNodes, k)
+    
+    
+    adj = zeros(nNodes,nNodes)
+
+    zero_edges_left = sum(triu_elements(adj,1).==0)
+
+    while zero_edges_left >20
+        
+        # Pick random k clique and add
+        clique_nodes = sample(collect(1:nNodes),k,replace=false)
+        adj[clique_nodes,clique_nodes] .= adj[clique_nodes,clique_nodes] .+ 1
+        
+        zero_edges_left = sum(triu_elements(adj,1).==0)
+
+    end
+
+    return adj
+end
