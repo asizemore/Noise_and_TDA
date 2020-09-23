@@ -27,7 +27,7 @@ printstyled("Elapsed time = $(time() - script_start_time) seconds \n \n", color 
 config = read_config("$(pwd())/configs/$(ARGS[1])")
 
 const NNODES = config["NNODES"]
-const MAXDIM = config["MAXDIM"]    # Maximum persistent homology dimension
+# const MAXDIM = config["MAXDIM"]    # Maximum persistent homology dimension
 const SAVETAIL = config["SAVETAIL_bettis"]
 const DATE_STRING = config["DATE_STRING"]
 # const HOMEDIR = config["HOMEDIR"]
@@ -47,21 +47,26 @@ end
 
 
 ### Run through graphs and compute Betti curves 
-nEdges = binomial(NNODES, 2)
+
 for (i,eirene_file) in enumerate(eirene_files)
 
     println("Beginning $(eirene_file)")
+
+    localARGS = @isdefined(loopARGS) ? loopARGS : ARGS
+    nNodes = occursin("dsi",eirene_file) ? 234 : config["NNODES"]
+    nEdges = binomial(nNodes,2)
 
     # Load in eirene output
     eirene_dict = load("$(read_dir)/$(eirene_file)")
 
     barcodeArray = eirene_dict["barcodeArray"]
     nReps = size(barcodeArray)[1]
-    bettisArray = zeros(nReps,nEdges,MAXDIM)
+    maxdim = size(barcodeArray)[2]
+    bettisArray = zeros(nReps,nEdges,maxdim)
 
     # Compute Betti curves
     for rep in 1:nReps
-        for k in collect(1:MAXDIM)
+        for k in collect(1:maxdim)
 
             barcode_i = barcodeArray[rep, k]
             bettisArray[rep, :, k] = betticurveFromBarcode(barcode_i, nEdges)

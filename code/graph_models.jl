@@ -524,3 +524,26 @@ function make_probtriangle_weighted(nNodes, p)
     return adj
 
 end
+
+
+
+function make_clique(nNodes)
+
+    edges_total = binomial(nNodes,2)
+
+    edges_left = edges_total
+    for i in 2:nNodes
+        for j in 1:(i-1)
+            adj[i,j] = edges_left
+            edges_left = edges_left -1
+        end
+    end
+
+    adj = adj+transpose(adj)
+
+    # Check for symmetry
+    tf = is_symmetric(adj)
+
+    return adj
+    
+end

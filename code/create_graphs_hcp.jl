@@ -47,6 +47,7 @@ fullname = "$(homedir())/data/HCP/$(graph_name)"
 mat_dict = matread("$(fullname).mat")
 dsi_counts = mat_dict["ls234_count"]
 nReps = size(dsi_counts)[3]
+nNodes = size(dsi_counts)[1]
 
 ## Record number of nonzero edges
 nnz_edges = []
@@ -61,16 +62,22 @@ end
 # Get the minimum
 min_weight = unique(sort([dsi_counts...]))[2]
 
-# So all edges need to be below min_weight (=308.0). We'll just have them be between (0,1).
-# Add noise to the edges with edge wieght 0
-noise_mat = rand(size(dsi_counts))
-dsi_noisy = dsi_counts.+noise_mat
+nNoises = 15
+
+dsi_noisy = zeros(nNodes,nNodes,nReps*nNoises)
 
 # Now all noise will be those edges with weight <1
 for rep in collect(1:nReps)
-    G_i = dsi_noisy[:,:,rep]
-    G_i[diagind(G_i)] .=0
-    dsi_noisy[:,:, rep] .= G_i
+
+
+    G_i = dsi_counts[:,:,rep]
+
+    for noise in collect(1:nNoises)
+        G_i_noisy = G_i .+ rand(Float64, (nNodes,nNodes))
+        G_i_noisy[diagind(G_i_noisy)] .=0
+        G_i_noisy = (G_i_noisy + transpose(G_i_noisy))./2
+        dsi_noisy[:,:, (rep-1)*nNoises + noise] .= G_i_noisy
+    end
 end
 
 ## Save graphs

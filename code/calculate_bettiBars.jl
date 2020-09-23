@@ -27,7 +27,7 @@ printstyled("Elapsed time = $(time() - script_start_time) seconds \n \n", color 
 config = read_config("$(homedir())/configs/$(ARGS[1])")
 
 const NNODES = config["NNODES"]
-const MAXDIM = config["MAXDIM"]    # Maximum persistent homology dimension
+# const MAXDIM = config["MAXDIM"]    # Maximum persistent homology dimension
 const SAVETAIL = config["SAVETAIL_bettiBars"]
 const DATE_STRING = config["DATE_STRING"]
 read_dir = "$(homedir())/$(config["read_dir_results"])/$(NNODES)nodes"
@@ -54,14 +54,15 @@ for (i,eirene_file) in enumerate(eirene_files)
 
     barcodeArray = eirene_dict["barcodeArray"]
     nReps = size(barcodeArray)[1]
-    bettiBarArray = zeros(nReps,MAXDIM)
-    muBarArray = zeros(nReps,MAXDIM)
-    nuBarArray = zeros(nReps,MAXDIM)
+    maxdim = size(barcodeArray)[2]
+    bettiBarArray = zeros(nReps,maxdim)
+    muBarArray = zeros(nReps,maxdim)
+    nuBarArray = zeros(nReps,maxdim)
 
     # Compute Betti bar values
 
     for rep in 1:nReps
-        for k in collect(1:MAXDIM)
+        for k in collect(1:maxdim)
 
             barcode_i = barcodeArray[rep, k]
 
@@ -95,21 +96,21 @@ for (i,eirene_file) in enumerate(eirene_files)
 
         println("Splitting into prenoise and postnoise sections...")
 
-        bettiBarArray_prenoise = zeros(nReps,MAXDIM)
-        muBarArray_prenoise = zeros(nReps,MAXDIM)
-        nuBarArray_prenoise = zeros(nReps,MAXDIM)
+        bettiBarArray_prenoise = zeros(nReps,maxdim)
+        muBarArray_prenoise = zeros(nReps,maxdim)
+        nuBarArray_prenoise = zeros(nReps,maxdim)
 
-        bettiBarArray_postnoise = zeros(nReps,MAXDIM)
-        muBarArray_postnoise = zeros(nReps,MAXDIM)
-        nuBarArray_postnoise = zeros(nReps,MAXDIM)
+        bettiBarArray_postnoise = zeros(nReps,maxdim)
+        muBarArray_postnoise = zeros(nReps,maxdim)
+        nuBarArray_postnoise = zeros(nReps,maxdim)
 
-        bettiBarArray_crossover = zeros(nReps,MAXDIM)
-        muBarArray_crossover = zeros(nReps,MAXDIM)
-        nuBarArray_crossover = zeros(nReps,MAXDIM)
+        bettiBarArray_crossover = zeros(nReps,maxdim)
+        muBarArray_crossover = zeros(nReps,maxdim)
+        nuBarArray_crossover = zeros(nReps,maxdim)
 
-        bettiBarArray_blues = zeros(nReps,MAXDIM)
-        muBarArray_blues = zeros(nReps,MAXDIM)
-        nuBarArray_blues = zeros(nReps,MAXDIM)
+        bettiBarArray_blues = zeros(nReps,maxdim)
+        muBarArray_blues = zeros(nReps,maxdim)
+        nuBarArray_blues = zeros(nReps,maxdim)
 
         # Find threshold edge number. Occurs between "edge" and "_"
         thresh_string = split(split(eirene_file,"edge")[2],"_")[1]
@@ -117,7 +118,7 @@ for (i,eirene_file) in enumerate(eirene_files)
         println("processing threshold edge $(threshold_edge)")
 
         for rep in 1:nReps
-            for k in collect(1:MAXDIM)
+            for k in collect(1:maxdim)
 
                 
                 # Compute prenoise betti bar values. Set all barcode values greater than the threshold edge to the threshold edge number
@@ -197,6 +198,115 @@ for (i,eirene_file) in enumerate(eirene_files)
         
         
     end # ends if threshold 
+
+
+    if occursin("dsi",eirene_file)
+
+        # We do special stuff for the dsi
+        # We need to load in the threshold edge for each graph
+        dsi_thresh_array = load("$(homedir())/processed_data/graphs/70nodes/dsi_matrices_091720_graphs.jld", "nnz_edges")
+
+
+        println("Splitting into prenoise and postnoise sections...")
+
+        bettiBarArray_prenoise = zeros(nReps,maxdim)
+        muBarArray_prenoise = zeros(nReps,maxdim)
+        nuBarArray_prenoise = zeros(nReps,maxdim)
+
+        bettiBarArray_postnoise = zeros(nReps,maxdim)
+        muBarArray_postnoise = zeros(nReps,maxdim)
+        nuBarArray_postnoise = zeros(nReps,maxdim)
+
+        bettiBarArray_crossover = zeros(nReps,maxdim)
+        muBarArray_crossover = zeros(nReps,maxdim)
+        nuBarArray_crossover = zeros(nReps,maxdim)
+
+        bettiBarArray_blues = zeros(nReps,maxdim)
+        muBarArray_blues = zeros(nReps,maxdim)
+        nuBarArray_blues = zeros(nReps,maxdim)
+
+        for rep in collect(1:nReps)
+
+            threshold_edge = dsi_thresh_array[rep]
+
+            for k in collect(1:maxdim)
+
+                
+                # Compute prenoise betti bar values. Set all barcode values greater than the threshold edge to the threshold edge number
+                barcode_prenoise = deepcopy(barcodeArray[rep, k])
+                barcode_prenoise[barcode_prenoise.> threshold_edge].= threshold_edge
+
+                # Calculate values
+                bettiBarArray_prenoise[rep, k] = bettiBarFromBarcode(barcode_prenoise)
+                muBarArray_prenoise[rep, k] = muBarFromBarcode(barcode_prenoise)
+                nuBarArray_prenoise[rep, k] = nuBarFromBarcode(barcode_prenoise,nEdges)
+
+
+                # Compute postnoise betti bar values. Set all barcode values less than the threshold edge to the threshold edge number
+                barcode_postnoise = deepcopy(barcodeArray[rep, k])
+                barcode_postnoise[barcode_postnoise.<= threshold_edge].= threshold_edge+1
+
+                # Calculate values
+                bettiBarArray_postnoise[rep, k] = bettiBarFromBarcode(barcode_postnoise)
+                muBarArray_postnoise[rep, k] = muBarFromBarcode(barcode_postnoise)
+                nuBarArray_postnoise[rep, k] = nuBarFromBarcode(barcode_postnoise,nEdges)
+
+
+                # Compute crossover betti bar values. Set all barcode values less than the threshold edge to the threshold edge number
+                barcode_crossover = deepcopy(barcodeArray[rep, k])
+                barcode_crossover = barcode_crossover[(barcode_crossover[:,1] .<= threshold_edge) .& (barcode_crossover[:,2] .> threshold_edge),:]
+
+                # For consistency, set every barcode value less than the threshold edge equal to the thresold edge number
+                barcode_crossover[barcode_crossover.<= threshold_edge].= threshold_edge+1
+
+                # Calculate values
+                bettiBarArray_crossover[rep, k] = bettiBarFromBarcode(barcode_crossover)
+                muBarArray_crossover[rep, k] = muBarFromBarcode(barcode_crossover)
+                nuBarArray_crossover[rep, k] = nuBarFromBarcode(barcode_crossover,nEdges)
+
+
+                # Compute crossover betti bar values. Set all barcode values less than the threshold edge to the threshold edge number
+                barcode_blues = deepcopy(barcodeArray[rep, k])
+                barcode_blues = barcode_blues[(barcode_blues[:,1] .> threshold_edge) .& (barcode_blues[:,2] .> threshold_edge),:]
+
+                # Calculate values
+                bettiBarArray_blues[rep, k] = bettiBarFromBarcode(barcode_blues)
+                muBarArray_blues[rep, k] = muBarFromBarcode(barcode_blues)
+                nuBarArray_blues[rep, k] = nuBarFromBarcode(barcode_blues,nEdges)
+
+
+            end # ends dimensions loop
+
+        end # ends replicates loop
+
+
+        # Save bettisArray of pre and post noise sections
+        save("$(save_dir)/$(saveName)_$(SAVETAIL)_prenoise.jld",
+        "bettiBarArray", bettiBarArray_prenoise,
+        "muBarArray", muBarArray_prenoise,
+        "nuBarArray", nuBarArray_prenoise)
+        println("Saved outputs to $(save_dir)/$(saveName)_$(SAVETAIL)_prenoise.jld")
+        
+        save("$(save_dir)/$(saveName)_$(SAVETAIL)_postnoise.jld",
+        "bettiBarArray", bettiBarArray_postnoise,
+        "muBarArray", muBarArray_postnoise,
+        "nuBarArray", nuBarArray_postnoise)
+
+        save("$(save_dir)/$(saveName)_$(SAVETAIL)_crossover.jld",
+        "bettiBarArray", bettiBarArray_crossover,
+        "muBarArray", muBarArray_crossover,
+        "nuBarArray", nuBarArray_crossover)
+
+        save("$(save_dir)/$(saveName)_$(SAVETAIL)_blues.jld",
+        "bettiBarArray", bettiBarArray_blues,
+        "muBarArray", muBarArray_blues,
+        "nuBarArray", nuBarArray_blues)
+        
+        println("Saved outputs to $(save_dir)/$(saveName)_$(SAVETAIL)_postnoise.jld")
+
+
+
+    end # ends if dsi 
             
             
     printstyled("Completed saving Betti bar values for $(saveName).\n", color = :green)
