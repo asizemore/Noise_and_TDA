@@ -557,7 +557,7 @@ function make_kclique(nNodes, k)
 
     zero_edges_left = sum(triu_elements(adj,1).==0)
 
-    while zero_edges_left >20
+    while zero_edges_left >200
         
         # Pick random k clique and add
         clique_nodes = sample(collect(1:nNodes),k,replace=false)
