@@ -530,6 +530,7 @@ end
 function make_clique(nNodes)
 
     edges_total = binomial(nNodes,2)
+    adj = zeros(nNodes,nNodes)
 
     edges_left = edges_total
     for i in 2:nNodes
@@ -545,5 +546,5 @@ function make_clique(nNodes)
     tf = is_symmetric(adj)
 
     return adj
-    
+
 end
