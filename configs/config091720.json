@@ -30,6 +30,11 @@
             "clique4": {"fn": "make_kclique", "parameters": [4], "name": "clique4", "flag": "create"},
             "clique6": {"fn": "make_kclique", "parameters": [6], "name": "clique6", "flag": "create"},
             "clique8": {"fn": "make_kclique", "parameters": [8], "name": "clique8", "flag": "create"},
-            "clique10": {"fn": "make_kclique", "parameters": [10], "name": "clique10", "flag": "create"}
+            "clique10": {"fn": "make_kclique", "parameters": [10], "name": "clique10", "flag": "create"},
+            "clique12": {"fn": "make_kclique", "parameters": [12], "name": "clique12", "flag": "create"},
+            "clique14": {"fn": "make_kclique", "parameters": [14], "name": "clique14", "flag": "create"},
+            "clique16": {"fn": "make_kclique", "parameters": [16], "name": "clique16", "flag": "create"},
+            "clique18": {"fn": "make_kclique", "parameters": [18], "name": "clique18", "flag": "create"},
+            "clique20": {"fn": "make_kclique", "parameters": [20], "name": "clique20", "flag": "create"}
         }
     }
