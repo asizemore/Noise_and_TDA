@@ -50,201 +50,87 @@ println("Preparing to create graphs for $(length(GRAPH_MODELS)) models.")
 
 # Run for each graph model
 for (graph_model, model_info) in GRAPH_MODELS
+
+    if model_info["createFlag"] == "create"
     
-    println("Constructing $(graph_model)...")
+        println("Constructing $(graph_model)...")
 
-    # Prepare the arrays - need to save the final weighted array and all parameters
-    weighted_graph_array = zeros(NNODES,NNODES,NREPS)
-    weighted_graph_array_draft = zeros(NNODES,NNODES,NREPS)
-    model_name = model_info["name"]
-    model_fn = getfield(Main, Symbol(model_info["fn"]))
-    model_parameters = model_info["parameters"]
-    betti_file_name = []
+        # Prepare the arrays - need to save the final weighted array and all parameters
+        weighted_graph_array = zeros(NNODES,NNODES,NREPS)
+        weighted_graph_array_draft = zeros(NNODES,NNODES,NREPS)
+        model_name = model_info["name"]
+        model_fn = getfield(Main, Symbol(model_info["fn"]))
+        model_parameters = model_info["parameters"]
+        betti_file_name = []
 
-    # Create NREPS replicates
-    for rep in 1:NREPS
+        # Create NREPS replicates
+        for rep in 1:NREPS
 
-        if model_info["createFlag"] == "create"
-
-            G_i = model_fn(NNODES, model_parameters...)
-
-            # We require edge density > 0.9
-            edge_density = check_density(G_i)
-            while edge_density < 0.9
                 G_i = model_fn(NNODES, model_parameters...)
+
+                # We require edge density > 0.9
                 edge_density = check_density(G_i)
+                while edge_density < 0.9
+                    G_i = model_fn(NNODES, model_parameters...)
+                    edge_density = check_density(G_i)
+                end
+
+                betti_file_name = "$(model_name)_$(NNODES)nodes_$(NREPS)reps"
+                for parameter in model_parameters
+                    betti_file_name = "$(betti_file_name)_$(replace(string(parameter),"." => ""))"
+                end
+
+
+            # Check to ensure we have unique edge weights
+            if length(unique([G_i...])) < (binomial(NNODES,2)+1)
+                println("Edge weights not unique")
+                G_ii = makeEdgeWeightsUnique(G_i)
+
+            else
+                G_ii = deepcopy(G_i)
             end
 
-            betti_file_name = "$(model_name)_$(NNODES)nodes_$(NREPS)reps"
-            for parameter in model_parameters
-                betti_file_name = "$(betti_file_name)_$(replace(string(parameter),"." => ""))"
+            # Check density
+            edge_density = check_density(G_i)
+            if edge_density < 0.8
+                printstyled("EDGE DENSITY $(edge_density)", color=:red)
             end
 
-        elseif model_info["createFlag"] == "hold"
+            # Store created graph G_i
+
+            if length(unique([G_ii...])) < (binomial(NNODES,2)+1)
+                printstyled("Edge uniqueness did not work", color=:red)
+            end
+
+            weighted_graph_array[:,:,rep] = G_ii
+            weighted_graph_array_draft[:,:,rep] = G_i
+
+        end # ends replicate runs
+
+        println("Finished creating $(NREPS) $(model_name) graphs with parameters $(model_parameters)")
+
+
+        # Run checks on the created graphs
+        println("make some graph checks! TODO")
+
+
+
+        # Save graphs
+        save("$(save_dir)/$(betti_file_name)_$(DATE_STRING)_$(NAMETAG).jld",
+            "weighted_graph_array", weighted_graph_array,
+            "weighted_graph_array_draft", weighted_graph_array_draft,
+            "parameters", model_parameters)
+
+        printstyled("Saved graphs to $(save_dir)/$(betti_file_name)_$(DATE_STRING)_$(NAMETAG).jld \n \n", color=:cyan)
+
+
+
+
+    elseif model_info["createFlag"] == "hold"
 
             println("Waiting to create $(model_name).")
             
-        end
-        
-
-
-        # if graph_model_name == "geometricConf"
-        #     G_i = make_dev_Geometric_configuration_model(NNODES,P,SCALE_FACTOR)
-        #     parameters = [NREPS, NNODES, P, SCALE_FACTOR]
-        #     betti_file_name = "$(graph_model_name)"
-
-        #     for parameter in parameters
-        #         betti_file_name = "$(betti_file_name)_$(replace(string(parameter),"." => ""))"
-        #     end
-
-
-        # elseif graph_model_name == "IID"
-        #     G_i = make_iid_weighted_graph(NNODES)
-        #     parameters = [NREPS, NNODES]
-        #     betti_file_name = "$(graph_model_name)"
-
-        #     for parameter in parameters
-        #         betti_file_name = "$(betti_file_name)_$(replace(string(parameter),"." => ""))"
-        #     end
-
-
-        # elseif graph_model_name == "RG"
-        #     G_i = make_random_geometric(NNODES,DIMS)
-        #     parameters = [NREPS, NNODES, DIMS]
-        #     betti_file_name = "$(graph_model_name)"
-
-        #     for parameter in parameters
-        #         betti_file_name = "$(betti_file_name)_$(replace(string(parameter),"." => ""))"
-        #     end
-
-
-        # elseif graph_model_name == "discreteUniformConf"
-        #     G_i = make_dev_DiscreteUniform_configuration_model(NNODES,A,B)
-        #     parameters = [NREPS, NNODES, A, B]
-        #     betti_file_name = "$(graph_model_name)"
-
-        #     for parameter in parameters
-        #         betti_file_name = "$(betti_file_name)_$(replace(string(parameter),"." => ""))"
-        #     end
-
-
-        # elseif graph_model_name == "cosineGeometric"
-        #     G_i = make_cosine_geometric(NNODES,DIMS)
-        #     parameters = [NREPS, NNODES, DIMS]
-        #     betti_file_name = "$(graph_model_name)"
-
-        #     for parameter in parameters
-        #         betti_file_name = "$(betti_file_name)_$(replace(string(parameter),"." => ""))"
-        #     end
-
-
-        # elseif graph_model_name == "RL"
-        #     G_i = make_ring_lattice_wei(NNODES)
-        #     parameters = [NREPS, NNODES]
-        #     betti_file_name = "$(graph_model_name)"
-
-        #     for parameter in parameters
-        #         betti_file_name = "$(betti_file_name)_$(replace(string(parameter),"." => ""))"
-        #     end
-
-
-        # elseif graph_model_name == "assoc"
-
-        #     mat_dict = matread("./data/associative_WSBM_70_10_10_2_2_09_05.mat")
-        #     parameters = mat_dict["param_array"]
-        #     G_i = mat_dict["adj_array"][:,:,rep]
-        #     G_i = G_i+transpose(G_i)
-
-        #     betti_file_name = "$(graph_model_name)"
-
-        #     for parameter in parameters
-        #         betti_file_name = "$(betti_file_name)_$(replace(string(parameter),"." => ""))"
-        #     end
-
-        # elseif graph_model_name == "coreperiph"
-
-        #     mat_dict = matread("./data/coreperiph_WSBM_70_10_10_2_2_09_05.mat")
-        #     parameters = mat_dict["param_array"]
-        #     G_i = mat_dict["adj_array"][:,:,rep]
-        #     G_i = G_i+transpose(G_i)
-
-        #     betti_file_name = "$(graph_model_name)"
-
-        #     for parameter in parameters
-        #         betti_file_name = "$(betti_file_name)_$(replace(string(parameter),"." => ""))"
-        #     end
-
-
-        # elseif graph_model_name == "disassort"
-        #     # These wsbm come out asymmetric. We don't need to worry about averaging the weights, just add the transpose.
-        #     mat_dict = matread("./data/disassortative_WSBM_70_10_10_2_2_09_05.mat")
-        #     parameters = mat_dict["param_array"]
-        #     G_i = mat_dict["adj_array"][:,:,rep]
-        #     G_i = G_i+transpose(G_i)
-
-        #     betti_file_name = "$(graph_model_name)"
-
-        #     for parameter in parameters
-        #         betti_file_name = "$(betti_file_name)_$(replace(string(parameter),"." => ""))"
-        #     end
-
-
-        # elseif graph_model_name == "DP"
-        #     G_i = make_dot_product(NNODES,DIMS)
-        #     parameters = [NREPS, NNODES, DIMS]
-        #     betti_file_name = "$(graph_model_name)"
-
-        #     for parameter in parameters
-        #         betti_file_name = "$(betti_file_name)_$(replace(string(parameter),"." => ""))"
-        #     end
-
-        # end # ends if-elses
-
-
-        # Check to ensure we have unique edge weights
-        if length(unique([G_i...])) < (binomial(NNODES,2)+1)
-            println("Edge weights not unique")
-            G_ii = makeEdgeWeightsUnique(G_i)
-
-        else
-            G_ii = deepcopy(G_i)
-        end
-
-        # Check density
-        edge_density = check_density(G_i)
-        if edge_density < 0.8
-            printstyled("EDGE DENSITY $(edge_density)", color=:red)
-        end
-
-        # Store created graph G_i
-
-        if length(unique([G_ii...])) < (binomial(NNODES,2)+1)
-            printstyled("Edge uniqueness did not work", color=:red)
-        end
-
-        weighted_graph_array[:,:,rep] = G_ii
-        weighted_graph_array_draft[:,:,rep] = G_i
-
-    end # ends replicate runs
-
-    println("Finished creating $(NREPS) $(model_name) graphs with parameters $(model_parameters)")
-
-
-    # Run checks on the created graphs
-    println("make some graph checks! TODO")
-
-
-
-    # Save graphs
-    save("$(save_dir)/$(betti_file_name)_$(DATE_STRING)_$(NAMETAG).jld",
-        "weighted_graph_array", weighted_graph_array,
-        "weighted_graph_array_draft", weighted_graph_array_draft,
-        "parameters", model_parameters)
-
-    printstyled("Saved graphs to $(save_dir)/$(betti_file_name)_$(DATE_STRING)_$(NAMETAG).jld \n \n", color=:cyan)
-
-
-
+    end
 
 end # ends graph model run
 
