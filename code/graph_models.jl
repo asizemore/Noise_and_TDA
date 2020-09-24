@@ -610,5 +610,21 @@ function make_star(nNodes)
 end
 
 
+function make_stick_lattice(nNodes)
+
+    adj = zeros(nNodes,nNodes)
+
+    for i=1:nNodes
+        for j = (i+1):nNodes
+            adj[i,j] = 1 ./abs(i-j)
+            adj[j,i] = 1 ./abs(i-j)
+        end
+    end
+
+    return adj
+        
+end
+
+
 
 

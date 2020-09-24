@@ -32,6 +32,7 @@
             "10star": {"fn": "make_kstar", "parameters": [10], "name": "10star", "flag": "create"},
             "15star": {"fn": "make_kstar", "parameters": [15], "name": "15star", "flag": "create"},
             "20star": {"fn": "make_kstar", "parameters": [20], "name": "20star", "flag": "create"},
-            "star": {"fn": "make_star", "parameters": [], "name": "star", "flag": "create"}
+            "star": {"fn": "make_star", "parameters": [], "name": "star", "flag": "create"},
+            "stickLattice": {"fn": "make_stick_lattice", "parameters": [], "name": "stickLattice", "flag":"create"}
         }
     }
