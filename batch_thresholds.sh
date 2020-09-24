@@ -102,7 +102,7 @@ do
 
     if [[ "$graph" == *"$mydate"* ]] ; then
 
-        if [[ "$graph" == *"clique"* ]] ; then
+        if [[ "$graph" == *"star"* ]] ; then
 
             echo $graph
             # Run PH and save PH
