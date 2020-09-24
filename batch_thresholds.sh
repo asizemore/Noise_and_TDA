@@ -94,7 +94,7 @@
 ( /bin/echo -e "Executing at: \c"; date ) 1>&2
 /bin/echo "----- STDERR from /usr/bin/singularity below this line -----" 1>&2
 
-mydate="091720"
+mydate="092420"
 configfile="config${mydate}.json"
 
 for graph in processed_data/thresholded_graphs/70nodes/*
@@ -102,7 +102,7 @@ do
 
     if [[ "$graph" == *"$mydate"* ]] ; then
 
-        if [[ "$graph" == *"star"* ]] ; then
+        if [[ "$graph" == *"thresh"* ]] ; then
 
             echo $graph
             # Run PH and save PH
