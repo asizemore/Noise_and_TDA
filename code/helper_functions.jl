@@ -223,4 +223,18 @@ function triu_elements(a,k)
         return vec
     end
 end
+
+
+function randomize_edge_weights(adj)
+
+    # For any non-zero edges, give them random weights. Since we only care about the ordering, this will have the same effect
+    # as randomly permuting the original edge weights.
+    
+    adj_rand = copy(adj)
+    adj_rand[adj_rand.>0] .=1
+    noiseyG = make_iid_weighted_graph(20)
+    adj_rand[adj_rand .==1] .= noiseyG[adj_rand.==1]
+    
+    return adj_rand
+end
         

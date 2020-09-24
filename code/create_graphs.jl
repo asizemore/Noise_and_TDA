@@ -67,6 +67,14 @@ for (graph_model, model_info) in GRAPH_MODELS
         if model_info["createFlag"] == "create"
 
             G_i = model_fn(NNODES, model_parameters...)
+
+            # We require edge density > 0.9
+            edge_density = check_density(G_i)
+            while edge_density < 0.9
+                G_i = model_fn(NNODES, model_parameters...)
+                edge_density = check_density(G_i)
+            end
+
             betti_file_name = "$(model_name)_$(NNODES)nodes_$(NREPS)reps"
             for parameter in model_parameters
                 betti_file_name = "$(betti_file_name)_$(replace(string(parameter),"." => ""))"

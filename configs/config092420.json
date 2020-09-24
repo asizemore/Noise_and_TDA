@@ -1,5 +1,5 @@
 {   "NNODES": 70,
-    "NREPS": 100,
+    "NREPS": 200,
     "DATE_STRING": "091720",
     "SAVEDATA" : 1,
     "NAMETAG_creategraphs": "graphs",
