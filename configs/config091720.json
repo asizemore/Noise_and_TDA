@@ -26,15 +26,12 @@
     "SAVETAIL_ph_conecheck": "eireneoutput_conelevel",
     "graph_models": 
         {
-            "clique2": {"fn": "make_kclique", "parameters": [2], "name": "clique2", "flag": "create"},
-            "clique4": {"fn": "make_kclique", "parameters": [4], "name": "clique4", "flag": "create"},
-            "clique6": {"fn": "make_kclique", "parameters": [6], "name": "clique6", "flag": "create"},
-            "clique8": {"fn": "make_kclique", "parameters": [8], "name": "clique8", "flag": "create"},
-            "clique10": {"fn": "make_kclique", "parameters": [10], "name": "clique10", "flag": "create"},
-            "clique12": {"fn": "make_kclique", "parameters": [12], "name": "clique12", "flag": "create"},
-            "clique14": {"fn": "make_kclique", "parameters": [14], "name": "clique14", "flag": "create"},
-            "clique16": {"fn": "make_kclique", "parameters": [16], "name": "clique16", "flag": "create"},
-            "clique18": {"fn": "make_kclique", "parameters": [18], "name": "clique18", "flag": "create"},
-            "clique20": {"fn": "make_kclique", "parameters": [20], "name": "clique20", "flag": "create"}
+            "1star": {"fn": "make_kstar", "parameters": [1], "name": "1star", "flag": "create"},
+            "3star": {"fn": "make_kstar", "parameters": [3], "name": "3star", "flag": "create"},
+            "5star": {"fn": "make_kstar", "parameters": [5], "name": "5star", "flag": "create"},
+            "10star": {"fn": "make_kstar", "parameters": [10], "name": "10star", "flag": "create"},
+            "15star": {"fn": "make_kstar", "parameters": [15], "name": "15star", "flag": "create"},
+            "20star": {"fn": "make_kstar", "parameters": [20], "name": "20star", "flag": "create"},
+            "star": {"fn": "make_star", "parameters": [], "name": "star", "flag": "create"}
         }
     }

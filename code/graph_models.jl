@@ -569,3 +569,46 @@ function make_kclique(nNodes, k)
 
     return adj
 end
+
+
+function make_kstar(nNodes, k)
+
+    adj = zeros(nNodes,nNodes)
+
+    zero_edges_left = sum(triu_elements(adj,1).==0)
+
+    while zero_edges_left >200
+        
+        # Pick random k star and add
+        star_center = sample(collect(1:nNodes),1,replace=false)
+        star_nodes = sample(deleteat!(collect(1:nNodes),star_center),k,replace=false)
+        adj[star_center,star_nodes] .= adj[star_center,star_nodes] .+ 1
+        adj[star_nodes,star_center] .= adj[star_nodes,star_center] .+ 1
+        
+        zero_edges_left = sum(triu_elements(adj,1).==0)
+
+    end
+
+    return adj
+end
+
+function make_star(nNodes)
+
+    nEdges = binomial(nNodes,2)
+    adj = zeros(nNodes,nNodes)
+
+    for i=1:nNodes
+        for j = (i+1):nNodes
+            adj[i,j] = nEdges
+            adj[j,i] = nEdges
+            nEdges = nEdges-1
+        end
+    end
+
+    return adj
+
+end
+
+
+
+
