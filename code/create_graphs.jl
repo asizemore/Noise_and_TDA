@@ -64,7 +64,7 @@ for (graph_model, model_info) in GRAPH_MODELS
     # Create NREPS replicates
     for rep in 1:NREPS
 
-        if model_info["flag"] == "create"
+        if model_info["createFlag"] == "create"
 
             G_i = model_fn(NNODES, model_parameters...)
             betti_file_name = "$(model_name)_$(NNODES)nodes_$(NREPS)reps"
@@ -72,10 +72,9 @@ for (graph_model, model_info) in GRAPH_MODELS
                 betti_file_name = "$(betti_file_name)_$(replace(string(parameter),"." => ""))"
             end
 
-        elseif model_info["flag"] == "load"
+        elseif model_info["createFlag"] == "hold"
 
-            G_i = model_fn(NNODES, rep, model_parameters...)
-            betti_file_name = "$(model_name)_$(NNODES)nodes_$(NREPS)reps_$(model_parameters[2])"
+            println("Waiting to create $(model_name).")
             
         end
         
