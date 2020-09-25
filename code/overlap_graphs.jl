@@ -86,11 +86,11 @@ for (i,graph_file) in enumerate(graph_files)
             end
 
             # Prepare G_overlap
-            G_overlap = zeros(nNodes,nNodes)
+            G_overlap = zeros(NNODES,NNODES)
 
             # Order by ranks -- Note now we will NOT perform this step in the run_ph_overlaps code.
             edge_list_ranks = denserank([adj...], rev = true)   # so highest edge weight gets assigned 1
-            G_i_ord = reshape(edge_list_ranks,(nNodes,nNodes))
+            G_i_ord = reshape(edge_list_ranks,(NNODES,NNODES))
             G_i_ord[diagind(G_i_ord)] .= 0
 
             # Begin overlapping noise procedure
