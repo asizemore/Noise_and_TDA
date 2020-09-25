@@ -47,7 +47,7 @@ graph_files = filter(x -> occursin(DATE_STRING,x), graph_files)
 
 
 #### OPTIONAL filtering
-# graph_files = filter(x -> occursin("star",x), graph_files)
+graph_files = filter(x -> occursin("dot",x), graph_files)
 ##########
 
 println("Located the following graph files:")
@@ -78,6 +78,8 @@ for (i,graph_file) in enumerate(graph_files)
         for rep in 1:nReps
 
             G_i = weighted_graph_array[:,:,rep]
+
+            G_i[diagind(G_i)] .= 0
             
             # Check edge density
             edge_density = check_density(G_i)

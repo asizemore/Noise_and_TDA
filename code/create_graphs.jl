@@ -70,6 +70,9 @@ for (graph_model, model_info) in GRAPH_MODELS
 
                 G_i = model_fn(NNODES, model_parameters...)
 
+                # Ensure diagonal is 0
+                G_i[diagind(G_i)] .= 0
+
                 # We require edge density > 0.9
                 edge_density = check_density(G_i)
                 while edge_density < 0.9
