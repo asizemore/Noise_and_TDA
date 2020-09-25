@@ -51,6 +51,8 @@ println("Preparing to create graphs for $(length(GRAPH_MODELS)) models.")
 # Run for each graph model
 for (graph_model, model_info) in GRAPH_MODELS
 
+    model_name = model_info["name"]
+
     if model_info["createFlag"] == "create"
     
         println("Constructing $(graph_model)...")
@@ -58,7 +60,7 @@ for (graph_model, model_info) in GRAPH_MODELS
         # Prepare the arrays - need to save the final weighted array and all parameters
         weighted_graph_array = zeros(NNODES,NNODES,NREPS)
         weighted_graph_array_draft = zeros(NNODES,NNODES,NREPS)
-        model_name = model_info["name"]
+
         model_fn = getfield(Main, Symbol(model_info["fn"]))
         model_parameters = model_info["parameters"]
         betti_file_name = []
