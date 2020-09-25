@@ -238,3 +238,14 @@ function randomize_edge_weights(adj)
     return adj_rand
 end
         
+
+function compute_probability(density, a, b)
+    
+    # Interval is [a, b]
+    # p(density) = 1/(b-a) * (density - a)
+    
+    m = 1 ./ (b-a)
+    
+    return m*(density - a)
+end
+
