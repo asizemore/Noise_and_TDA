@@ -89,10 +89,15 @@ if occursin(DATE_STRING,graph_file)
         # Extract replicate
         G_i = weighted_graph_array[:,:,rep]
 
-        # G_i is is already ordered appropriately.
 
         # Matrix size check
         printstyled("Input matrix size is $(size(G_i))\n", color=:orange)
+
+        # Edge weights check
+        tf_ew = unique([G_i...]) == collect(0:nEdges)
+        if !tf_ew
+            printstyled("Edge weights are misnumbered", color=:red)
+        end
 
         # Run Eirene
         C = Eirene.eirene(G_i,model = "vr", maxdim = MAXDIM, record = "none")

@@ -104,6 +104,13 @@ if occursin(DATE_STRING,graph_file)
         # size of mat check
         printstyled("Input matrix size is $(size(G_i_ord))\n", color=:orange)
 
+        # Edge weights check
+        tf_ew = unique([G_i...]) == collect(0:nEdges)
+        if !tf_ew
+            printstyled("Edge weights are misnumbered", color=:red)
+        end
+  
+
 
         # Run Eirene
         C = Eirene.eirene(G_i_ord,model = "vr", maxdim = MAXDIM, record = "none")

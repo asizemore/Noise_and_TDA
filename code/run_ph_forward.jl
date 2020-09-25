@@ -98,40 +98,7 @@ if occursin(DATE_STRING,graph_file)
 
     barcodeArray = createAndFillBarcodeArray(nReps,MAXDIM, weighted_graph_array)
 
-    # # Prepare arrays
-    # barcodeArray = Array{Array{Float64}}(undef,nReps,MAXDIM)
-
-
-    # fillBarcodeArray!(barcodeArray,weighted_graph_array)
-
-    # for rep in 1:nReps
-
-    #     # Extract replicate
-    #     G_i = weighted_graph_array[:,:,rep]
-
-    #     # G_i is a weighted graph. We need to order it
-    #     edge_list_ranks = denserank([G_i...], rev = true)   # so highest edge weight gets assigned 1
-    #     G_i_ord = reshape(edge_list_ranks,(NNODES,NNODES))
-    #     G_i_ord[diagind(G_i_ord)] .= 0
-
-    #     # size of mat check
-    #     printstyled("Input matrix size is $(size(G_i_ord))\n", color=:orange)
-
-
-    #     # Run Eirene
-    #     C = Eirene.eirene(G_i_ord,model = "vr", maxdim = MAXDIM, record = "none")
-    
-    #     # Store in barcodeArray
-    #     for k in collect(1:MAXDIM)
-    #         barcodeArray[rep, k] = barcode(C,dim=k)
-    #     end
-
-    #     if rep%10 == 0
-    #         println("Run $(rep) completed.")
-    #     end
-
-    #     C = 0
-    # end
+   
 
 
     printstyled("Completed computations for $(graph_model).\n", color = :green)

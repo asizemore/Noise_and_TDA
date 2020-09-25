@@ -75,7 +75,7 @@ for (i,graph_file) in enumerate(graph_files)
 
         weighted_graph_array_overlap = zeros(NNODES, NNODES, nReps)   # For storing final thresholded with noise matrices
 
-        for rep in 1:nReps
+        for rep in 1:2
 
             G_i = weighted_graph_array[:,:,rep]
 
@@ -90,15 +90,10 @@ for (i,graph_file) in enumerate(graph_files)
             # Prepare G_overlap
             G_overlap = zeros(NNODES,NNODES)
 
-            # Order by ranks -- Note now we will NOT perform this step in the run_ph_overlaps code.
-            edge_list_ranks = denserank([G_i...], rev = true)   # so highest edge weight gets assigned 1
-            G_i_ord = reshape(edge_list_ranks,(NNODES,NNODES))
-            G_i_ord[diagind(G_i_ord)] .= 0
-
             # Begin overlapping noise procedure
             edge_number = 1
             while edge_number <= nEdges
-                
+
                 # Calculate current edge density
                 density = edge_number/nEdges
                 
@@ -120,8 +115,13 @@ for (i,graph_file) in enumerate(graph_files)
                     
                 else
                     
-                    # Add edge from real graph
-                    real_edges = findall(G_i_ord .== edge_number)[1]
+                     # Add edge from real graph. Take the maximum edge that could exist, because the random noise could
+                    # have aded the intended edge already.
+                    
+                    identified_edge_weight = maximum([G_i[G_overlap.==0]...])
+                    # println(identified_edge_weight)
+                    
+                    real_edges = findall(G_i .== identified_edge_weight)[1]
                     
                     G_overlap[real_edges[1], real_edges[2]] = edge_number
                     G_overlap[real_edges[2], real_edges[1]] = edge_number
@@ -135,7 +135,17 @@ for (i,graph_file) in enumerate(graph_files)
 
             end   # end while edge_number < nEdges
             
-            
+            # Edge weights check
+            tf_ew = sort(unique([Int.(G_overlap)...])) == collect(0:nEdges)
+            if !tf_ew
+                printstyled("Edge weights are misnumbered", color=:red)
+                println(length(unique([G_overlap...])))
+                println(size(unique([Int.(G_overlap)...])))
+                println(size(collect(0:nEdges)))
+            end
+
+
+
             # Store
 
             weighted_graph_array_overlap[:,:,rep] = G_overlap
