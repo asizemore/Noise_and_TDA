@@ -51,14 +51,15 @@ run_ph_file =  localARGS[2]
 
 ### Locate data
 graph_files = filter(x->occursin("graphs",x), readdir(read_dir))
-graph_files = filter(x->occursin("thresh",x), readdir(read_dir))
+graph_files = filter(x->occursin("randomized",x), readdir(read_dir))
 
 
 graph_files = filter(x -> occursin(DATE_STRING,x), graph_files)
 
 
 #### OPTIONAL filtering
-graph_files = filter(x -> occursin("Triangle",x), graph_files)
+graph_files = filter(x -> occursin("disass",x), graph_files)
+graph_files = filter(x -> occursin("1449",x), graph_files)
 ##########
 
 

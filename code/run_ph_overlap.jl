@@ -92,10 +92,10 @@ if occursin(DATE_STRING,graph_file)
         # G_i is is already ordered appropriately.
 
         # Matrix size check
-        printstyled("Input matrix size is $(size(G_i_ord))\n", color=:orange)
+        printstyled("Input matrix size is $(size(G_i))\n", color=:orange)
 
         # Run Eirene
-        C = Eirene.eirene(G_i_ord,model = "vr", maxdim = MAXDIM, record = "none")
+        C = Eirene.eirene(G_i,model = "vr", maxdim = MAXDIM, record = "none")
     
         # Store in barcodeArray
         for k in collect(1:MAXDIM)
