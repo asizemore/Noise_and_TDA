@@ -38,8 +38,8 @@ const DATE_STRING = config["DATE_STRING"]
 const SAVEDATA = config["SAVEDATA"]    # Boolean to save data  
 const SAVETAIL = config["SAVETAIL_threshold_graphs"]
 const HOMEDIR = config["HOMEDIR"]
-read_dir = "$(homedir())/$(config["read_dir_graphs"])/$(NNODES)nodes"
-save_dir = "$(homedir())/$(config["save_dir_thresh"])/$(NNODES)nodes"
+read_dir = "$(HOMEDIR)/$(config["read_dir_graphs"])/$(NNODES)nodes"
+save_dir = "$(HOMEDIR)/$(config["save_dir_thresh"])/$(NNODES)nodes"
 
 
 ### Locate data

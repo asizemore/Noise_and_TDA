@@ -102,16 +102,20 @@ do
 
     if [[ "$graph" == *"$mydate"* ]] ; then
 
-        if [[ "$graph" == *"thresh"* ]] ; then
+        if [[ "$graph" == *"disass"* ]] ; then
 
-            echo $graph
-            # Run PH and save PH
-            echo "running ph"
-            qsub code/run_ph_thresholds.sh $graph $configfile
-            qsub code/run_ph_noiseOnly.sh $graph $configfile
+            if [[ "$graph" == *"randomized"* ]] ; then
+
+                echo $graph
+                # Run PH and save PH
+                echo "running ph"
+                qsub code/run_ph_thresholds.sh $graph $configfile
+                
+            fi
         fi
     fi
 
 done
 
+# qsub code/run_ph_noiseOnly.sh $graph $configfile
 # /usr/bin/singularity exec noise-and-tda-latest.sif julia --color\=yes code/run_ph_forward.jl config090820.json
