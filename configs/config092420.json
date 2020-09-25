@@ -7,6 +7,7 @@
     "save_dir_graphs": "processed_data/graphs",
     "save_dir_thresh": "processed_data/thresholded_graphs",
     "read_dir_thresh": "processed_data/thresholded_graphs",
+    "read_dir_overlap": "processed_data/overlap_graphs",
     "MAXDIM": 4,
     "SAVETAIL_ph_forward": "eireneoutput_forward",
     "read_dir_graphs": "processed_data/graphs",
@@ -25,6 +26,7 @@
     "SAVETAIL_netStats": "netStats",
     "SAVETAIL_ph_conecheck": "eireneoutput_conelevel",
     "save_dir_overlap": "processed_data/overlap_graphs",
+    "SAVETAIL_ph_overlap": "eireneoutput_overlap",
     "AVEC": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8],
     "BVEC": [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9],
     "graph_models": 

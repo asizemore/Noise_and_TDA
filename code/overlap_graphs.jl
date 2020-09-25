@@ -145,7 +145,7 @@ for (i,graph_file) in enumerate(graph_files)
         save_name = replace(graph_file, ".jld" => "")
         save("$(save_dir)/$(save_name)_overlap_a$(replace(string(a), "." => ""))_b$(replace(string(b), "." => "")).jld",
             "weighted_graph_array", weighted_graph_array,
-            "noise_only_array", weighted_graph_array_overlap)
+            "weighted_graph_array_overlap", weighted_graph_array_overlap)
 
 
         println("Interval [$(a), $(b)] complete.")
