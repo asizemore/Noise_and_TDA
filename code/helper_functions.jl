@@ -229,10 +229,10 @@ function randomize_edge_weights(adj)
 
     # For any non-zero edges, give them random weights. Since we only care about the ordering, this will have the same effect
     # as randomly permuting the original edge weights.
-    
+    nNodes = size(adj)[1]
     adj_rand = copy(adj)
     adj_rand[adj_rand.>0] .=1
-    noiseyG = make_iid_weighted_graph(20)
+    noiseyG = make_iid_weighted_graph(nNodes)
     adj_rand[adj_rand .==1] .= noiseyG[adj_rand.==1]
     
     return adj_rand
