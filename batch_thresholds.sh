@@ -104,7 +104,7 @@ do
 
         if [[ "$graph" == *"disass"* ]] ; then
 
-            if [[ "$graph" == *"randomized"* ]] ; then
+            if [[ "$graph" != *"randomized"* ]] ; then
 
                 echo $graph
                 # Run PH and save PH
