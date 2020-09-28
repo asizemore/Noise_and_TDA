@@ -27,8 +27,8 @@
     "SAVETAIL_ph_conecheck": "eireneoutput_conelevel",
     "save_dir_overlap": "processed_data/overlap_graphs",
     "SAVETAIL_ph_overlap": "eireneoutput_overlap",
-    "AVEC": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8],
-    "BVEC": [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9],
+    "AVEC": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7],
+    "BVEC": [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9],
     "graph_models": 
         {
             "wprobTriangle": {"fn": "make_probtriangle_weighted", "parameters": [1], "name": "wprobTriangle", "createFlag": "hold", "runFlag": "hold"},
