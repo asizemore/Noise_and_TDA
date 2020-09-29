@@ -75,7 +75,7 @@ for (i,graph_file) in enumerate(graph_files)
 
         weighted_graph_array_overlap = zeros(NNODES, NNODES, nReps)   # For storing final thresholded with noise matrices
 
-        for rep in 1:2
+        for rep in 1:nReps
 
             G_i = weighted_graph_array[:,:,rep]
 
