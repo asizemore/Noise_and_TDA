@@ -48,7 +48,7 @@ graph_files = filter(x -> occursin(DATE_STRING,x), graph_files)
 
 
 #### OPTIONAL filtering
-# graph_files = filter(x -> occursin("star",x), graph_files)
+graph_files = filter(x -> occursin("Triangle",x), graph_files)
 ##########
 
 println("Located the following graph files:")

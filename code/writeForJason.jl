@@ -51,8 +51,8 @@ model_names_bettis = [split(betti_file,"_bettis")[1] for betti_file in betti_fil
 bettiBar_files = filter(x->occursin("_bettiBars",x), readdir(read_dir))
 bettiBar_files = filter(x -> occursin(DATE_STRING, x), bettiBar_files)
 
-## Exclude any?
-bettiBar_files = filter(x -> !occursin("backward", x), bettiBar_files)
+
+
 
 sort!(bettiBar_files)
 println("\nLocated the following bettiBar files:")
@@ -62,23 +62,6 @@ end
 
 model_names_bettiBars = [split(bettiBar_file,"_bettiBar")[1] for bettiBar_file in bettiBar_files]
 
-
-
-
-# netStats_files = filter(x-> occursin("netStats", x), readdir(read_dir))
-# netStats_files = filter(x-> occursin(DATE_STRING, x), netStats_files)
-
-## Exclude any?
-# netStats_files = filter(x -> !occursin("backward", x), netStats_files)
-
-
-# sort(netStats_files)
-# println("\nLocated the following netStat files:")
-# for netStats_file in netStats_files
-#     println(netStats_file)
-# end
-
-# model_names_netStats = [split(netStats_file,"_netStats")[1] for netStats_file in netStats_files]
 
 
 # Need to check that all models have BOTH bettiBar files and betti files
@@ -121,10 +104,6 @@ for nametag in nametags
     muBar_all = zeros(NREPS,MAXDIM,nModels)
     nuBar_all = zeros(NREPS,MAXDIM,nModels)
 
-    clustering_all = zeros(NREPS,nModels)
-    modularity_all = zeros(NREPS, nModels)
-    avg_strength_all = zeros(NREPS, nModels)
-    avg_shortest_path_all = zeros(NREPS, nModels)
 
 
     # Handle the threshold and non threshold types separately
@@ -147,10 +126,6 @@ for nametag in nametags
         muBar_all_blues = zeros(NREPS,MAXDIM,nModels)
         nuBar_all_blues = zeros(NREPS,MAXDIM,nModels)
 
-        # clustering_all_prenoise = zeros(NREPS,nModels)
-        # modularity_all_prenoise = zeros(NREPS, nModels)
-        # avg_strength_all_prenoise = zeros(NREPS, nModels)
-        # avg_shortest_path_all_prenoise = zeros(NREPS, nModels)
 
 
         names_ordered = []
@@ -194,20 +169,6 @@ for nametag in nametags
             muBar_all_blues[:,:, i] = bettiBar_dict["muBarArray"]
             nuBar_all_blues[:,:, i] = bettiBar_dict["nuBarArray"]
 
-            # Read in network statistics
-            # netstat_base = split(bettiBar_file_base,"_threshold")[1]
-            # netStat_dict = load("$(read_dir)/$(netstat_base)_netStats.jld")
-            # clustering_all[:, i] = netStat_dict["clustering"]
-            # modularity_all[:, i] = netStat_dict["modularity"]
-            # avg_strength_all[:, i] = netStat_dict["avg_strength"]
-            # avg_shortest_path_all[:, i] = netStat_dict["avg_shortest_path"]
-
-            # Read in network statistics - prenoise
-            # netStat_dict = load("$(read_dir)/$(netstat_base)_netStats_prenoise.jld")
-            # clustering_all_prenoise[:, i] = netStat_dict["clustering_prenoise"]
-            # modularity_all_prenoise[:, i] = netStat_dict["modularity_prenoise"]
-            # avg_strength_all_prenoise[:, i] = netStat_dict["avg_strength_prenoise"]
-            # avg_shortest_path_all_prenoise[:, i] = netStat_dict["avg_shortest_path_prenoise"]
 
             append!(names_ordered, [bettiBar_file_base])
 
@@ -217,8 +178,6 @@ for nametag in nametags
         println(sum([bettiBar_all...]))
         println(sum([bettiBar_all_crossover...]))
         println(sum([bettiBar_all_blues...]))
-        println(sum([clustering_all...]))
-        println(sum([avg_strength_all...]))
 
 
 
@@ -242,14 +201,6 @@ for nametag in nametags
                 "nuBar_all_blues" => nuBar_all_blues,
                 "names_ordered" => names_ordered))
 
-        # matwrite("$(save_dir)/all_netStats_data_$(nametag)_$(DATE_STRING).mat", Dict("clustering_all" => clustering_all,
-        #         "modularity_all" => modularity_all,
-        #         "avg_strength_all" => avg_strength_all,
-        #         "avg_shortest_path_all" => avg_shortest_path_all,
-        #         "clustering_all_prenoise" => clustering_all_prenoise,
-        #         "modularity_all_prenoise" => modularity_all_prenoise,
-        #         "avg_strength_all_prenoise" => avg_strength_all_prenoise,
-        #         "avg_shortest_path_all_prenoise" => avg_shortest_path_all_prenoise))
 
         printstyled("\nFinished saving file to $(save_dir)/all_betti_data_$(nametag)_$(DATE_STRING).mat\n", color=:green)
 
@@ -257,7 +208,7 @@ for nametag in nametags
 
 
 
-    elseif occursin("noiseOnly", nametag) ################### ANN EDIT
+    elseif occursin("noiseOnly", nametag) 
 
         ## Read in all the data and create 4 mega arrays for betti curves, bettiBar, muBar, and nuBar values
         names_ordered = []
@@ -281,13 +232,6 @@ for nametag in nametags
             nuBar_all[:,:, i] = bettiBar_dict["nuBarArray"]
 
 
-            # # Read in network statistics
-            # netStat_dict = load("$(read_dir)/$(bettiBar_file_base)_netStats.jld")
-            # clustering_all[:, i] = netStat_dict["clustering_noiseOnly"]
-            # modularity_all[:, i] = netStat_dict["modularity_noiseOnly"]
-            # avg_strength_all[:, i] = netStat_dict["avg_strength_noiseOnly"]
-            # avg_shortest_path_all[:, i] = netStat_dict["avg_shortest_path_noiseOnly"]
-
 
             append!(names_ordered, [bettiBar_file_base])
 
@@ -298,8 +242,6 @@ for nametag in nametags
          println(sum([bettiBar_all...]))
          println(sum([muBar_all...]))
          println(sum([nuBar_all...]))
-         println(sum([clustering_all...]))
-            println(sum([avg_strength_all...]))
 
 
         ### Save .mat file for jason
@@ -310,10 +252,6 @@ for nametag in nametags
                 "nuBar_all" => nuBar_all,
                 "names_ordered" => names_ordered))
 
-        # matwrite("$(save_dir)/all_netStats_data_$(nametag)_$(DATE_STRING).mat", Dict("clustering_all" => clustering_all,
-        #         "modularity_all" => modularity_all,
-        #         "avg_strength_all" => avg_strength_all,
-        #         "avg_shortest_path_all" => avg_shortest_path_all))
 
         printstyled("\nFinished saving file to $(save_dir)/all_betti_data_$(nametag)_$(DATE_STRING).mat\n", color=:green)
 
@@ -339,15 +277,6 @@ for nametag in nametags
             bettiBar_all[:,:, i] = bettiBar_dict["bettiBarArray"]
             muBar_all[:,:, i] = bettiBar_dict["muBarArray"]
             nuBar_all[:,:, i] = bettiBar_dict["nuBarArray"]
-
-
-            # Read in network statistics
-            # netStat_dict = load("$(read_dir)/$(bettiBar_file_base)_netStats.jld")
-            # clustering_all[:, i] = netStat_dict["clustering"]
-            # modularity_all[:, i] = netStat_dict["modularity"]
-            # avg_strength_all[:, i] = netStat_dict["avg_strength"]
-            # avg_shortest_path_all[:, i] = netStat_dict["avg_shortest_path"]
-
 
             append!(names_ordered, [bettiBar_file_base])
 
