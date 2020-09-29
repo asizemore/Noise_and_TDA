@@ -92,6 +92,7 @@ if occursin(DATE_STRING,graph_file)
 
         # Matrix size check
         printstyled("Input matrix size is $(size(G_i))\n", color=:orange)
+        printstyled("Max edge weight is $(maximum(G_i))", color=:orange)
 
         # Edge weights check
         tf_ew = unique([G_i...]) == collect(0:nEdges)

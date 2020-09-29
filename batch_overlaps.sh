@@ -102,10 +102,14 @@ do
 
     if [[ "$graph" == *"$mydate"* ]] ; then
 
+        if [[ "$graph" == *"disass"* ]] ; then
+
         echo $graph
         # Run PH and save PH
         echo "running ph"
         qsub code/run_ph_overlap.sh $graph $configfile
+
+        fi
 
     fi
 
