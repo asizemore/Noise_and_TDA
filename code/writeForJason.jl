@@ -287,8 +287,8 @@ for nametag in nametags
          println(sum([bettiBar_all...]))
          println(sum([muBar_all...]))
          println(sum([nuBar_all...]))
-         println(sum([clustering_all...]))
-         println(sum([avg_strength_all...]))
+
+
 
 
         ### Save .mat file for jason
@@ -299,10 +299,6 @@ for nametag in nametags
                 "nuBar_all" => nuBar_all,
                 "names_ordered" => names_ordered))
 
-        # matwrite("$(save_dir)/all_netStats_data_$(nametag)_$(DATE_STRING).mat", Dict("clustering_all" => clustering_all,
-        #         "modularity_all" => modularity_all,
-        #         "avg_strength_all" => avg_strength_all,
-        #         "avg_shortest_path_all" => avg_shortest_path_all))
 
         printstyled("\nFinished saving file to $(save_dir)/all_betti_data_$(nametag)_$(DATE_STRING).mat\n", color=:green)
 
