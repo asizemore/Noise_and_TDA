@@ -6,7 +6,7 @@
     h1 {
         font-family: "Helvetica Neue", Helvetica, sans-serif;
         font-weight: lighter;
-        color: blue;
+        color: gray;
         font-size: 45px;
     }
 
@@ -19,7 +19,7 @@
 
 <body style="background-color:rgb(250, 248, 239)">
     <div id="title-div">
-        <h1> Thresholded graphs </h1>
+        <h1> All main thresholded graphs (Supplement) </h1>
     </div>
 
     <div id="svg-div">
@@ -41,7 +41,7 @@
 
         // Inspired by https://bl.ocks.org/gordlea/27370d1eea8464b04538e6d8ced39e89
         // and https://www.d3-graph-gallery.com/graph/line_change_data.html
-
+        // and https://bl.ocks.org/jadiehm/0d341b74bef30889c893a3b14cbeb974
 
         svg = d3.select("svg")
 
@@ -53,11 +53,11 @@
 
 
 
-        d3.json("foo2.json", function(error, dict) {
+        d3.json("foo4.json", function(error, dict) {
 
             if (error) throw error;
 
-            
+            console.log(dict)
             
 
             const models = Object.keys(dict)
@@ -110,10 +110,12 @@
 
             const update_threshold_plot = (data, threshold_edge) => {
 
-                console.log(d3.max(data.dim2))
+
 
                 let max_y = d3.max([d3.max(data.dim1), d3.max(data.dim2), d3.max(data.dim3), d3.max(data.dim4)]);
-                const buffer = 50
+                console.log(max_y)
+                const buffer = max_y*(0.4)
+
                 
                 y_scale.domain([0, max_y+buffer]);
                 svg.selectAll(".myYaxis")
@@ -122,124 +124,59 @@
                     .call(yAxis);
 
 
-                let area1 = d3.area()
+                let area = function(dimn) {
+                    
+                    return d3.area()
                     .x(function(d, i) {return x_scale(i/nEdges); }) 
-                    .y0(function(d,i) { return y_scale(data.dim1[i] - d); })
-                    .y1(function(d,i) { return y_scale(data.dim1[i] + d); });  
-                let area2 = d3.area()
-                    .x(function(d, i) {return x_scale(i/nEdges); }) 
-                    .y0(function(d,i) { return y_scale(data.dim2[i] - d); })
-                    .y1(function(d,i) { return y_scale(data.dim2[i] + d); });  
-                let area3 = d3.area()
-                    .x(function(d, i) {return x_scale(i/nEdges); }) 
-                    .y0(function(d,i) { return y_scale(data.dim3[i] - d); })
-                    .y1(function(d,i) { return y_scale(data.dim3[i] + d); });  
-                let area4 = d3.area()
-                    .x(function(d, i) {return x_scale(i/nEdges); }) 
-                    .y0(function(d,i) { return y_scale(data.dim4[i] - d); })
-                    .y1(function(d,i) { return y_scale(data.dim4[i] + d); });  
+                    .y0(function(d,i) {
+                         return ((data[`dim${dimn}`][i] - d > 0) ? y_scale(data[`dim${dimn}`][i] - d) : y_scale(0)); })
+                    .y1(function(d,i) { return y_scale(data[`dim${dimn}`][i] + d); }); 
+                };
 
-                let line1 = svg.selectAll(".dim1").data([data.dim1]);
-                line1.enter()
-                    .append("path")
-                        .attr("class","dim1")
-                        .merge(line1)
+              
+
+                let lines = {line1: svg.selectAll(".dim1").data([data.dim1]),
+                     line2: svg.selectAll(".dim2").data([data.dim2]),
+                     line3: svg.selectAll(".dim3").data([data.dim3]),
+                     line4: svg.selectAll(".dim4").data([data.dim4])};
+
+                let std_areas = {std1: svg.selectAll(".std1").data([data.std1]),
+                     std2: svg.selectAll(".std2").data([data.std2]),
+                     std3: svg.selectAll(".std3").data([data.std3]),
+                     std4: svg.selectAll(".std4").data([data.std4])};
+
+
+                for (let index = 0; index < 4; index++) {
+
+
+                    lines[`line${index+1}`].enter()
+                        .append("path")
+                            .attr("class","dims")
+                            .attr("class",`dim${index+1}`)
+                            .merge(d3.selectAll(`.dim${index+1}`))
+                            .transition()
+                            .duration(1000)
+                            .attr("d", d3.line()
+                                .x(function(d, i) {return x_scale(i/nEdges); })
+                                .y(function(d) {return y_scale(d); }))
+                            .attr("stroke", betti_colors[index])
+                            .attr("fill", "none")
+                            .attr("stroke-width", 3);
+
+
+                    
+                    std_areas[`std${index+1}`].enter()
+                        .append("path")
+                        .attr("class","stds")
+                        .attr("class",`std${index+1}`)
+                        .merge(d3.selectAll(`.std${index+1}`))
                         .transition()
                         .duration(1000)
-                        .attr("d", d3.line()
-                            .x(function(d, i) {return x_scale(i/nEdges); })
-                            .y(function(d) {return y_scale(d); }))
-                        .attr("stroke", betti_colors[0])
-                        .attr("fill", "none")
-                        .attr("stroke-width", 3);
-
-                let std1 = svg.selectAll(".std1").data([data.std1])
-                std1.enter()
-                    .append("path")
-                        .attr("class","std1")
-                        .merge(std1)
-                        .transition()
-                        .duration(1000)
-                        .attr("d", area1)
+                        .attr("d",area(index+1))
                         .attr("opacity", 0.2)
-                        .attr("fill", betti_colors[0]);
-                        
+                        .attr("fill", betti_colors[index])
+                }
 
-                let line2 = svg.selectAll(".dim2").data([data.dim2]);
-                line2.enter()
-                    .append("path")
-                        .attr("class","dim2")
-                        .merge(line2)
-                        .transition()
-                        .duration(1000)
-                        .attr("d", d3.line()
-                            .x(function(d, i) {return x_scale(i/nEdges); })
-                            .y(function(d) {return y_scale(d); }))
-                        .attr("stroke", betti_colors[1])
-                        .attr("fill", "none")
-                        .attr("stroke-width", 3);
-
-                let std2 = svg.selectAll(".std2").data([data.std2])
-                std2.enter()
-                    .append("path")
-                        .attr("class","std2")
-                        .merge(std2)
-                        .transition()
-                        .duration(1000)
-                        .attr("d", area2)
-                        .attr("opacity", 0.2)
-                        .attr("fill", betti_colors[1]);
-
-                let line3 = svg.selectAll(".dim3").data([data.dim3]);
-                line3.enter()
-                    .append("path")
-                        .attr("class","dim3")
-                        .merge(line3)
-                        .transition()
-                        .duration(1000)
-                        .attr("d", d3.line()
-                            .x(function(d, i) {return x_scale(i/nEdges); })
-                            .y(function(d) {return y_scale(d); }))
-                        .attr("stroke", betti_colors[2])
-                        .attr("fill", "none")
-                        .attr("stroke-width", 3);
-
-                let std3 = svg.selectAll(".std3").data([data.std3])
-                std3.enter()
-                    .append("path")
-                        .attr("class","std3")
-                        .merge(std3)
-                        .transition()
-                        .duration(1000)
-                        .attr("d", area3)
-                        .attr("opacity", 0.2)
-                        .attr("fill", betti_colors[2]);
-
-                let line4 = svg.selectAll(".dim4").data([data.dim4]);
-                line4.enter()
-                    .append("path")
-                        .attr("class","dim4")
-                        .merge(line4)
-                        .transition()
-                        .duration(1000)
-                        .attr("d", d3.line()
-                            .x(function(d, i) {return x_scale(i/nEdges); })
-                            .y(function(d) {return y_scale(d); }))
-                        .attr("stroke", betti_colors[3])
-                        .attr("fill", "none")
-                        .attr("stroke-width", 3);
-
-
-                let std4 = svg.selectAll(".std4").data([data.std4])
-                std4.enter()
-                    .append("path")
-                        .attr("class","std4")
-                        .merge(std4)
-                        .transition()
-                        .duration(1000)
-                        .attr("d", area4)
-                        .attr("opacity", 0.2)
-                        .attr("fill", betti_colors[3]);
 
                 let threshold_line = svg.selectAll(".threshline").data([threshold_edge]);
                 threshold_line.enter()
@@ -248,9 +185,11 @@
                     .merge(threshold_line)
                     .transition()
                     .duration(1000)
-                    .attr("d", function(d) {console.log(d); return `M ${x_scale(d/nEdges)} ${y_scale(0)} L ${x_scale(d/nEdges)} ${y_scale(max_y)}`})
+                    .attr("d", function(d) {console.log(d); return `M ${x_scale(d/nEdges)} ${y_scale(0)} L ${x_scale(d/nEdges)} ${y_scale(max_y+buffer)}`})
                     .attr("stroke", "black")
                     .attr("stroke-width", 1)
+
+               
             };
 
             let edge_num = 242
@@ -258,9 +197,10 @@
             update_threshold_plot(dict[model][edge_num], edge_num);
 
 
-            const changed = function() {
+            let changed = function() {
                 let value = this.value;
                 console.log(value);
+                console.log(model)
                 edge_num = Number(threshold_vals[value]);
                 update_threshold_plot(dict[model][edge_num], edge_num);
 
@@ -268,11 +208,12 @@
 
 
             const dropdownChange = function() {
-                let model = this.value;
+                model = this.value;
                 console.log(model)
                 console.log(edge_num)
 
                 update_threshold_plot(dict[model][edge_num], edge_num);
+                
             };
 
 
@@ -298,10 +239,6 @@
                 });
 
 
-
-
-
-            
 
 
         })
