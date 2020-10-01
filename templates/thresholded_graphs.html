@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<style>
+    /* CSS */
+    h1 {
+        font-family: "Helvetica Neue", Helvetica, sans-serif;
+        font-weight: lighter;
+        color: blue;
+        font-size: 45px;
+    }
+
+    
+
+  
+
+  
+</style>
+
+<body style="background-color:rgb(250, 248, 239)">
+    <div id="title-div">
+        <h1> Thresholded graphs </h1>
+    </div>
+
+    <div id="svg-div">
+        <svg width="600" height="600" id="sc-svg"></svg>
+    </div>
+
+    <div id="dropdown"></div>
+
+    <input type="range" min="0" max="16" step="1" value="1">
+
+
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://unpkg.com/d3-simple-slider"></script>
+
+
+
+    <script>
+
+
+        // Inspired by https://bl.ocks.org/gordlea/27370d1eea8464b04538e6d8ced39e89
+        // and https://www.d3-graph-gallery.com/graph/line_change_data.html
+
+
+        svg = d3.select("svg")
+
+        var width = +svg.attr("width"),
+            height = +svg.attr("height");
+
+        console.log("hello")
+
+
+
+
+        d3.json("foo2.json", function(error, dict) {
+
+            if (error) throw error;
+
+            
+            
+
+            const models = Object.keys(dict)
+            console.log(models)
+            console.log("hello")
+
+            let model = "cosineGeometric"
+
+
+            // Pick one threshold and draw on the svg
+            let threshold_vals = Object.keys(dict[model])
+            let n_threshold_vals = threshold_vals.length
+            console.log(n_threshold_vals)
+            
+
+            // Set x and y scales
+            let x_scale = d3.scaleLinear()
+                .domain([0, 2415])
+                .range([100, 500]);
+
+            
+            let y_scale = d3.scaleLinear().range([500,100]);
+            let yAxis = d3.axisLeft().scale(y_scale);
+            svg.append("g")
+                .attr("class","myYaxis")
+                .attr("transform", `translate(100,0)`);
+
+            
+            // Draw line graph
+            let line = d3.line()
+                .x(function(d, i) {return x_scale(i); }) // set the x values for the line generator
+                .y(function(d) {return y_scale(d); }) // set the y values for the line generator 
+                .curve(d3.curveMonotoneX) // apply smoothing to the line
+
+               
+
+            // Draw axes
+            svg.append("g")
+                .attr("class", "xaxis")
+                .attr("transform", `translate(0,${height-100})`)
+                .call(d3.axisBottom(x_scale));
+
+            // svg.append("g")
+            //     .attr("class", "yaxis")
+            //     .attr("transform", `translate(100,0)`)
+            //     .call(d3.axisLeft(y_scale));
+
+
+            // Draw data
+            const betti_colors = ["blue", "green", "red", "pink"]
+
+            const update_threshold_plot = (data, threshold_edge) => {
+
+                console.log(d3.max(data.dim2))
+
+                let max_y = d3.max([d3.max(data.dim1), d3.max(data.dim2), d3.max(data.dim3), d3.max(data.dim4)]);
+                
+                y_scale.domain([0, max_y]);
+                svg.selectAll(".myYaxis")
+                    .transition()
+                    .duration(1000)
+                    .call(yAxis);
+
+                let line1 = svg.selectAll(".dim1").data([data.dim1]);
+                line1.enter()
+                    .append("path")
+                        .attr("class","dim1")
+                        .merge(line1)
+                        .transition()
+                        .duration(1000)
+                        .attr("d", d3.line()
+                            .x(function(d, i) {return x_scale(i); })
+                            .y(function(d) {return y_scale(d); }))
+                        .attr("stroke", betti_colors[0])
+                        .attr("fill", "none")
+                        .attr("stroke-width", 3);
+
+                let line2 = svg.selectAll(".dim2").data([data.dim2]);
+                line2.enter()
+                    .append("path")
+                        .attr("class","dim2")
+                        .merge(line2)
+                        .transition()
+                        .duration(1000)
+                        .attr("d", d3.line()
+                            .x(function(d, i) {return x_scale(i); })
+                            .y(function(d) {return y_scale(d); }))
+                        .attr("stroke", betti_colors[1])
+                        .attr("fill", "none")
+                        .attr("stroke-width", 3);
+
+                let line3 = svg.selectAll(".dim3").data([data.dim3]);
+                line3.enter()
+                    .append("path")
+                        .attr("class","dim3")
+                        .merge(line3)
+                        .transition()
+                        .duration(1000)
+                        .attr("d", d3.line()
+                            .x(function(d, i) {return x_scale(i); })
+                            .y(function(d) {return y_scale(d); }))
+                        .attr("stroke", betti_colors[2])
+                        .attr("fill", "none")
+                        .attr("stroke-width", 3);
+
+                let line4 = svg.selectAll(".dim4").data([data.dim4]);
+                line4.enter()
+                    .append("path")
+                        .attr("class","dim4")
+                        .merge(line4)
+                        .transition()
+                        .duration(1000)
+                        .attr("d", d3.line()
+                            .x(function(d, i) {return x_scale(i); })
+                            .y(function(d) {return y_scale(d); }))
+                        .attr("stroke", betti_colors[3])
+                        .attr("fill", "none")
+                        .attr("stroke-width", 3);
+
+                let threshold_line = svg.selectAll(".threshline").data([threshold_edge]);
+                threshold_line.enter()
+                    .append("path")
+                    .attr("class", "threshline")
+                    .merge(threshold_line)
+                    .transition()
+                    .duration(1000)
+                    .attr("d", function(d) {console.log(d); return `M ${x_scale(d)} ${y_scale(0)} L ${x_scale(d)} ${y_scale(max_y)}`})
+                    .attr("stroke", "black")
+                    .attr("stroke-width", 1)
+            };
+
+            let edge_num = 242
+            
+            update_threshold_plot(dict[model][edge_num], edge_num);
+
+
+            const changed = function() {
+                let value = this.value;
+                console.log(value);
+                edge_num = Number(threshold_vals[value]);
+                update_threshold_plot(dict[model][edge_num], edge_num);
+
+            };
+
+
+            const dropdownChange = function() {
+                let model = this.value;
+                console.log(model)
+                console.log(edge_num)
+
+                update_threshold_plot(dict[model][edge_num], edge_num);
+            };
+
+
+
+
+
+            d3.select("input")
+                .on("input", changed)
+                .on("change", changed);
+
+
+            
+            var dropdown = d3.select("#dropdown")
+                .insert("select", "svg")
+                .on("change", dropdownChange);
+
+            dropdown.selectAll("option")
+                .data(models)
+                .enter().append("option")
+                .attr("value", function (d) { return d; })
+                .text(function (d) {
+                    return d[0].toUpperCase() + d.slice(1,d.length); // capitalize 1st letter
+                });
+
+
+
+
+
+            
+
+
+        })
+
+       
+
+
+    </script>
+
+
+</body>
