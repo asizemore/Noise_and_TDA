@@ -28,7 +28,9 @@
 
     <div id="dropdown"></div>
 
+    <button id="back-button">Back</button>
     <input type="range" min="0" max="16" step="1" value="1">
+    <button id="next-button">Next</button>
 
 
     <script src="https://d3js.org/d3.v4.min.js"></script>
@@ -42,11 +44,13 @@
         // Inspired by https://bl.ocks.org/gordlea/27370d1eea8464b04538e6d8ced39e89
         // and https://www.d3-graph-gallery.com/graph/line_change_data.html
         // and https://bl.ocks.org/jadiehm/0d341b74bef30889c893a3b14cbeb974
+        // and https://bl.ocks.org/dimitardanailov/99950eee511375b97de749b597147d19
 
         svg = d3.select("svg")
 
         var width = +svg.attr("width"),
-            height = +svg.attr("height");
+            height = +svg.attr("height"),
+            activeClassName = 'active-d3-item';;
 
         console.log("hello")
 
@@ -178,30 +182,58 @@
                 }
 
 
+              
+
                 let threshold_line = svg.selectAll(".threshline").data([threshold_edge]);
                 threshold_line.enter()
                     .append("path")
                     .attr("class", "threshline")
-                    .merge(threshold_line)
+                    .merge(d3.selectAll(".threshline"))
                     .transition()
                     .duration(1000)
                     .attr("d", function(d) {console.log(d); return `M ${x_scale(d/nEdges)} ${y_scale(0)} L ${x_scale(d/nEdges)} ${y_scale(max_y+buffer)}`})
                     .attr("stroke", "black")
-                    .attr("stroke-width", 1)
+                    .attr("stroke-width", 2);
+
+
+
 
                
             };
 
             let edge_num = 242
+            let value_edge = 1
             
             update_threshold_plot(dict[model][edge_num], edge_num);
 
 
             let changed = function() {
-                let value = this.value;
-                console.log(value);
+                value_edge = this.value;
+                console.log(value_edge);
                 console.log(model)
-                edge_num = Number(threshold_vals[value]);
+                edge_num = Number(threshold_vals[value_edge]);
+                update_threshold_plot(dict[model][edge_num], edge_num);
+
+            };
+
+            let next_button = function() {
+                if (value_edge < (n_threshold_vals-1)) {
+                    value_edge++
+                }
+                console.log(value_edge);
+                console.log(model)
+                edge_num = Number(threshold_vals[value_edge]);
+                update_threshold_plot(dict[model][edge_num], edge_num);
+
+            };
+
+            let back_button = function() {
+                if (value_edge > 0) {
+                    value_edge--
+                }
+                console.log(value_edge);
+                console.log(model)
+                edge_num = Number(threshold_vals[value_edge]);
                 update_threshold_plot(dict[model][edge_num], edge_num);
 
             };
@@ -237,6 +269,12 @@
                 .text(function (d) {
                     return d[0].toUpperCase() + d.slice(1,d.length); // capitalize 1st letter
                 });
+
+            d3.select("#next-button")
+                .on("click",next_button)
+
+            d3.select("#back-button")
+                .on("click",back_button)
 
 
 
