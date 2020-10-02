@@ -36,6 +36,11 @@ save_dir = "$(homedir())/$(config["save_dir_results"])/$(NNODES)nodes"
 ### Locate data
 eirene_files = filter(x->occursin("eireneoutput",x), readdir(read_dir))
 eirene_files = filter(x -> occursin(DATE_STRING, x), eirene_files)
+
+### Optional filtering
+eirene_files = filter(x -> !occursin("randomized", x), eirene_files)
+####
+
 println("Located the following barcode files:")
 for eirene_file in eirene_files
     println(eirene_file)
