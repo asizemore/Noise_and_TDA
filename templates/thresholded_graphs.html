@@ -134,7 +134,7 @@
                             "translate(" + (margin) + " ," + 
                                         (height/2) + ")")
                     .style("text-anchor", "middle")
-                    .text("Betti_k");
+                    .text("β_k");
 
                 svg_no.append("text") 
                     .attr("class","axis-title")            
@@ -150,7 +150,7 @@
                             "translate(" + (margin) + " ," + 
                                         (height/2) + ")")
                     .style("text-anchor", "middle")
-                    .text("Betti_k");
+                    .text("β");
 
                 
                 // Draw line graph
@@ -172,17 +172,37 @@
                     .attr("transform", `translate(0,${height-100})`)
                     .call(d3.axisBottom(x_scale));
 
+                // Draw titles
+                svg.append("text") 
+                    .attr("class","title")            
+                    .attr("transform",
+                            "translate(" + (width/2) + " ," + 
+                                        (margin) + ")")
+                    .style("text-anchor", "middle")
+                    .text("Model + added noise");
+
+                svg_no.append("text") 
+                    .attr("class","title")            
+                    .attr("transform",
+                            "translate(" + (width/2) + " ," + 
+                                        (margin) + ")")
+                    .style("text-anchor", "middle")
+                    .text("Added noise only");
+    
+
                 
 
 
                 // Draw data
-                const betti_colors = ["blue", "green", "red", "pink"];
+                const betti_colors = ["#243A4C", "#406372", "#66939E", "#9BC3C6"];
+                const real_color = "#B48677";
+                const noise_color = "#BFA658";
                 const nEdges = 2415;
 
                 const update_threshold_plot = (data, data_no, threshold_edge) => {
 
 
-                    //////////// FINISH ADJUSTING y_scale. make y_scale_no
+                   
                     let max_y = d3.max([d3.max(data.dim1), d3.max(data.dim2), d3.max(data.dim3), d3.max(data.dim4)]);
                     let max_y_no = d3.max([d3.max(data_no.dim1), d3.max(data_no.dim2), d3.max(data_no.dim3), d3.max(data_no.dim4)]);
                     console.log(max_y)
@@ -318,14 +338,55 @@
                         .attr("stroke", "black")
                         .attr("stroke-width", 2);
 
+                    let model_rect = svg.selectAll(".real-rect").data([threshold_edge])
+                    model_rect.enter()
+                        .append("rect")
+                        .attr("class","real-rect")
+                        .merge(svg.selectAll(".real-rect"))
+                        .transition()
+                        .duration(1000)
+                        .attr("x", 100)
+                        .attr("y", `${height - 70}`)
+                        .attr("height", 7)
+                        .attr("fill", real_color)
+                        .attr("width", function() {return x_scale(threshold_edge/nEdges)- 100 - 5});
+
+                    let noise_rect = svg.selectAll(".noise-rect").data([threshold_edge])
+                    noise_rect.enter()
+                        .append("rect")
+                        .attr("class","noise-rect")
+                        .merge(svg.selectAll(".noise-rect"))
+                        .transition()
+                        .duration(1000)
+                        .attr("x", function() {return 5+ x_scale(threshold_edge/nEdges)})
+                        .attr("y", `${height - 70}`)
+                        .attr("height", 7)
+                        .attr("fill", noise_color)
+                        .attr("width", function() {return 500 - x_scale(threshold_edge/nEdges)});
+
+                    let noise_rect_no = svg_no.selectAll(".noise-rect").data([threshold_edge])
+                    noise_rect_no.enter()
+                        .append("rect")
+                        .attr("class","noise-rect")
+                        .merge(svg_no.selectAll(".noise-rect"))
+                        .transition()
+                        .duration(1000)
+                        .attr("x", 100)
+                        .attr("y", `${height - 70}`)
+                        .attr("height", 7)
+                        .attr("fill", noise_color)
+                        .attr("width", function() {return x_scale((nEdges - threshold_edge)/nEdges) - 100});
+
+
+
 
 
 
                 
                 };
 
-                let edge_num = 242
-                let value_edge = 1
+                let edge_num = 242;
+                let value_edge = 0;
                 
                 update_threshold_plot(dict[model][edge_num],dict_no[model][edge_num], edge_num);
 
