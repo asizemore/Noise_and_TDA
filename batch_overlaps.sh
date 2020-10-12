@@ -94,7 +94,7 @@
 ( /bin/echo -e "Executing at: \c"; date ) 1>&2
 /bin/echo "----- STDERR from /usr/bin/singularity below this line -----" 1>&2
 
-mydate="092420"
+mydate="101220"
 configfile="config${mydate}.json"
 
 for graph in processed_data/overlap_graphs/70nodes/*
@@ -102,14 +102,14 @@ do
 
     if [[ "$graph" == *"$mydate"* ]] ; then
 
-        if [[ "$graph" == *"disass"* ]] ; then
+
 
         echo $graph
         # Run PH and save PH
         echo "running ph"
         qsub code/run_ph_overlap.sh $graph $configfile
 
-        fi
+
 
     fi
 
