@@ -18,6 +18,7 @@
 
 
         d3.json("../processed_data/foo4_triangle.json", function(error, dict) {
+        // d3.json("files/theme/foo4_triangle.json", function(error, dict) {
 
             if (error) throw error;
 

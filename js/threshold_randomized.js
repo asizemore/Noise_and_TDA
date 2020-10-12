@@ -17,12 +17,14 @@
 
 
 
+        // d3.json("files/theme/foo4.json", function(error, dict) {
         d3.json("../processed_data/foo4.json", function(error, dict) {
 
             if (error) throw error;
 
             console.log(dict)
 
+            // d3.json("files/theme/foo4_randomized.json", function(error, dict_rand) {
             d3.json("../processed_data/foo4_randomized.json", function(error, dict_rand) {
 
                 if (error) throw error;
@@ -332,7 +334,20 @@
                         .attr("y", `${height - 70}`)
                         .attr("height", 7)
                         .attr("fill", real_color)
-                        .attr("width", function() {return x_scale(threshold_edge/nEdges) - 100});
+                        .attr("width", function() {return x_scale(threshold_edge/nEdges) - 100 - 5});
+
+                    let noise_rand_rect = svg_rand.selectAll(".nr-rect").data([threshold_edge])
+                        noise_rand_rect.enter()
+                            .append("rect")
+                            .attr("class","nr-rect")
+                            .merge(svg_rand.selectAll(".nr-rect"))
+                            .transition()
+                            .duration(1000)
+                            .attr("x", function() {return 5+ x_scale(threshold_edge/nEdges)})
+                            .attr("y", `${height - 70}`)
+                            .attr("height", 7)
+                            .attr("fill", noise_color)
+                            .attr("width", function() {return 500 - x_scale(threshold_edge/nEdges)});
 
 
 
