@@ -1,58 +1,4 @@
-<!DOCTYPE html>
-<meta charset="utf-8">
-
-<style>
-    /* CSS */
-    h1 {
-        font-family: "Helvetica Neue", Helvetica, sans-serif;
-        font-weight: lighter;
-        color: gray;
-        font-size: 45px;
-    }
-
-    #svg-div {
-        float: left;
-    }
-
-    #svg-no-div {
-        float: left;
-    }
-
-    
-
-  
-
-  
-</style>
-
-<body style="background-color:rgb(250, 248, 239)">
-    <div id="title-div">
-        <h1> All main thresholded graphs (Supplement) </h1>
-    </div>
-
-    <div id="svg-div">
-        <svg width="600" height="600" id="svg0"></svg>
-    </div>
-    <div id="svg-no-div">
-        <svg width="600" height="600" id="svg-no"></svg>
-    </div>
-
-    <div id="dropdown"></div>
-
-    <button id="back-button">Back</button>
-    <input type="range" min="0" max="16" step="1" value="1">
-    <button id="next-button">Next</button>
-
-
-    <script src="https://d3js.org/d3.v4.min.js"></script>
-    <script src="https://unpkg.com/d3-simple-slider"></script>
-
-
-
-    <script>
-
-
-        // Inspired by https://bl.ocks.org/gordlea/27370d1eea8464b04538e6d8ced39e89
+// Inspired by https://bl.ocks.org/gordlea/27370d1eea8464b04538e6d8ced39e89
         // and https://www.d3-graph-gallery.com/graph/line_change_data.html
         // and https://bl.ocks.org/jadiehm/0d341b74bef30889c893a3b14cbeb974
         // and https://bl.ocks.org/dimitardanailov/99950eee511375b97de749b597147d19
@@ -71,13 +17,15 @@
 
 
 
-        d3.json("foo4.json", function(error, dict) {
+        d3.json("files/theme/foo4.json", function(error, dict) {
+            // d3.json("../processed_data/foo4.json", function(error, dict) {
 
             if (error) throw error;
 
             console.log(dict)
 
-            d3.json("foo4_noiseOnly.json", function(error, dict_no) {
+            d3.json("files/theme/foo4_noiseOnly.json", function(error, dict_no) {
+            // d3.json("../processed_data/foo4_noiseOnly.json", function(error, dict_no) {
 
                 if (error) throw error;
 
@@ -465,11 +413,3 @@
 
             })
         })
-
-       
-
-
-    </script>
-
-
-</body>
