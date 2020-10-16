@@ -103,14 +103,12 @@ echo $graph
 
 
     if [[ "$graph" == *"$mydate"* ]] ; then
-        if [[ "$graph" != *"Triangle"* ]] ; then
-            if [[ "$graph" != *"clique"* ]] ; then
-                # Run PH and save PH
-                echo "running ph"
-                qsub code/run_ph_forward.sh $graph $configfile
-                # qsub code/run_ph_backward.sh $graph $configfile
-            fi
-        fi
+
+        # Run PH and save PH
+        echo "running ph"
+        qsub code/run_ph_forward.sh $graph $configfile
+        # qsub code/run_ph_backward.sh $graph $configfile
+
     fi
 
 done

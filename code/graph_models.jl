@@ -219,6 +219,8 @@ function make_dev_Geometric_configuration_model(nNodes,p,scale_factor)
     
     # Create a configuration model using the Geometric distribution with parameter p. To get enough edges,
     # scale by scale_factor
+    # Configuration based on the networkx implementation and [1] M.E.J. Newman, "The structure and function of complex networks",SIAM REVIEW 45-2, pp 167-256, 2003.
+    
     
     # Define distribution
     d = Geometric(p)
@@ -554,6 +556,29 @@ function make_clique(nNodes)
     end
 
     adj = adj+transpose(adj)
+
+    # Check for symmetry
+    tf = is_symmetric(adj)
+
+    return adj
+
+end
+
+
+function make_cliques(nNodes,m)
+
+
+    adj = make_clique(nNodes)
+
+    for r in 2:m
+
+        r_clique_adj = make_clique(nNodes)
+        perm = randperm(nNodes)
+        adj = adj .+ r_clique_adj[perm,perm]
+
+
+    end
+
 
     # Check for symmetry
     tf = is_symmetric(adj)
