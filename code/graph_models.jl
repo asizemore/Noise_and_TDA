@@ -153,49 +153,56 @@ end
 function make_dev_DiscreteUniform_configuration_model(nNodes,a,b)
     
     # Create a configuration model using the discrete uniform distribution between a and b.
+    # Configuration based on the networkx implementation and [1] M.E.J. Newman, "The structure and function of complex networks",SIAM REVIEW 45-2, pp 167-256, 2003.
     
     # Define distribution
     d = DiscreteUniform(a,b)
     strength_sequence = rand(d,nNodes)
-
-    stubs = deepcopy(strength_sequence)
-    adj = zeros(nNodes,nNodes)
-
-    nodes_left = []
-    # While stubs are left
-    while sum(stubs)>0
-
-        # Find which nodes have stubs left
-        nodes_left = findall(stubs.>0)
-
-        # If only one node is left, we did badly
-        if length(nodes_left) == 1
-            println("One node left - try again")
-            
-            # Currently this is a draft so we will allow it.
-            break
-        end
-
-
-        # nodes_left contains cartesian indices. Can access them with nodes_left[i][j]. Not anymore
-        node1,node2 = sample(nodes_left,2, replace = false)
-
-        # Add edge to adjacency matrix
-        adj[node1, node2] = adj[node1, node2] + 1 
-
-        # Update stubs
-        stubs[node1] = stubs[node1] - 1
-        stubs[node2] = stubs[node2] - 1
-
-        
-    end
-
-    # Now we only added edges to one side of the adjacency matrix.
-    # adj = adj+adj'
     
-    # Add noise
-    # adj = adj .+ (1/(nNodes^4))*rand(nNodes,nNodes)
-    adj = adj+transpose(adj)
+    adj = zeros(nNodes,nNodes)
+    
+    # Ensure sum of strength_sequence is even
+    while sum(strength_sequence)%2 == 1
+        strength_sequence = rand(d,nNodes)
+    
+    end
+    
+    # Create stubs array with stubs numbered by their parent node
+    stubs_array = []
+    for (node,strength) in enumerate(strength_sequence)
+        stubs_array = [stubs_array; node.*ones((strength))]
+    end
+    
+    # Shuffle array
+    stubs_array_shuffled = Int.(shuffle(stubs_array))
+    
+    # Add pairs of stubs to adjacency matrix
+    while !isempty(stubs_array_shuffled)
+        
+        node1 = pop!(stubs_array_shuffled)
+        node2 = pop!(stubs_array_shuffled)
+        
+        # Add to adjacency matrix if node1 neq node2. If node1=node2, return to array and shuffle or break
+        if node1 !== node2
+    
+            adj[node1, node2] = adj[node1, node2] + 1
+            adj[node2, node1] = adj[node1, node2]
+            
+        else
+        
+            append!(stubs_array_shuffled, node1)
+            append!(stubs_array_shuffled, node2)
+    
+            # If there are at least two non-identical nodes left, shuffle array. If not, break the loop.
+            # This could result in excatly one node having a strength less than that assigned at strength_sequence
+            (length(unique(stubs_array_shuffled))>1) ? shuffle!(stubs_array_shuffled) : break 
+    
+        end
+            
+    
+    end
+    
+    # Ensure diagonal is 0
     adj[diagind(adj)].=0
     
     # Check for symmetry
@@ -216,45 +223,51 @@ function make_dev_Geometric_configuration_model(nNodes,p,scale_factor)
     # Define distribution
     d = Geometric(p)
     strength_sequence = scale_factor*rand(d,nNodes)
-
-    stubs = deepcopy(strength_sequence)
-    adj = zeros(nNodes,nNodes)
-
-    nodes_left = []
-    # While stubs are left
-    while sum(stubs)>0
-
-        # Find which nodes have stubs left
-        nodes_left = findall(stubs.>0)
-
-        # If only one node is left, we did badly
-        if length(nodes_left) == 1
-            println("One node left - draft")
-            
-            # Currently this is a draft so we will allow it.
-            break
-        end
-
-
-        # nodes_left contains cartesian indices. Can access them with nodes_left[i][j]. Not anymore
-        node1,node2 = sample(nodes_left,2, replace = false)
-
-        # Add edge to adjacency matrix
-        adj[node1, node2] = adj[node1, node2] + 1 
-
-        # Update stubs
-        stubs[node1] = stubs[node1] - 1
-        stubs[node2] = stubs[node2] - 1
-
-        
-    end
-
-    # Now we only added edges to one side of the adjacency matrix.
-    # adj = adj+adj'
     
-    # Add noise
-    # adj = adj .+ (1/(nNodes^4))*rand(nNodes,nNodes)
-    adj = adj+transpose(adj)
+    adj = zeros(nNodes,nNodes)
+    
+    # Ensure sum of strength_sequence is even
+    while sum(strength_sequence)%2 == 1
+        strength_sequence = rand(d,nNodes)
+    
+    end
+    
+    # Create stubs array with stubs numbered by their parent node
+    stubs_array = []
+    for (node,strength) in enumerate(strength_sequence)
+        stubs_array = [stubs_array; node.*ones((strength))]
+    end
+    
+    # Shuffle array
+    stubs_array_shuffled = Int.(shuffle(stubs_array))
+    
+    # Add pairs of stubs to adjacency matrix
+    while !isempty(stubs_array_shuffled)
+        
+        node1 = pop!(stubs_array_shuffled)
+        node2 = pop!(stubs_array_shuffled)
+        
+        # Add to adjacency matrix if node1 neq node2. If node1=node2, return to array and shuffle or break
+        if node1 !== node2
+    
+            adj[node1, node2] = adj[node1, node2] + 1
+            adj[node2, node1] = adj[node1, node2]
+            
+        else
+        
+            append!(stubs_array_shuffled, node1)
+            append!(stubs_array_shuffled, node2)
+    
+            # If there are at least two non-identical nodes left, shuffle array. If not, break the loop.
+            # This could result in excatly one node having a strength less than that assigned at strength_sequence
+            (length(unique(stubs_array_shuffled))>1) ? shuffle!(stubs_array_shuffled) : break 
+    
+        end
+            
+    
+    end
+    
+    # Ensure diagonal is 0
     adj[diagind(adj)].=0
     
     # Check for symmetry

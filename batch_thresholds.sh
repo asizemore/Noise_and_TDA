@@ -102,7 +102,7 @@ do
 
     if [[ "$graph" == *"$mydate"* ]] ; then
 
-        if [[ "$graph" == *"$disassortative"* ]] ; then
+        if [[ "$graph" == *"disassortative"* ]] ; then
 
             echo $graph
             # Run PH and save PH
