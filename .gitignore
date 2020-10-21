@@ -11,6 +11,7 @@ matlab/*
 rootfs-4e452695-eee8-11ea-8cd2-c81f66ebeb97/*
 
 *.json
+*.csv
 .config/
 .cufflinks/
 .local/
