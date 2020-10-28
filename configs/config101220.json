@@ -34,7 +34,7 @@
             "geometricConf": {"fn": "make_dev_Geometric_configuration_model", "parameters": [0.01, 100], "name": "geometricConf", "createFlag": "create", "runFlag": "run"},
             "IID": {"fn": "make_iid_weighted_graph", "parameters": [], "name": "IID", "createFlag": "create", "runFlag": "run"},
             "RG": {"fn": "make_random_geometric", "parameters": [3], "name": "randomGeom", "createFlag": "create", "runFlag": "run"},
-            "discreteUniformConf": {"fn": "make_dev_DiscreteUniform_configuration_model", "parameters": [0, 1000], "name": "discreteUniformConf", "createFlag": "create", "runFlag": "run"},
+            "discreteUniformConf": {"fn": "make_dev_DiscreteUniform_configuration_model", "parameters": [0, 1000], "name": "discreteUniformConf", "createFlag": "hold", "runFlag": "run"},
             "cosineGeometric": {"fn": "make_cosine_geometric" , "parameters": [3] , "name": "cosineGeometric", "createFlag": "create", "runFlag": "run"},
             "RL": {"fn": "make_ring_lattice_wei", "parameters": [], "name": "ringLattice", "createFlag": "create", "runFlag": "run"},
             "DP": {"fn": "make_dot_product", "parameters": [3], "name": "dotProduct", "createFlag": "create", "runFlag": "run"},
