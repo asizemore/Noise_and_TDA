@@ -150,28 +150,53 @@ end
 
 
  
-function make_dev_DiscreteUniform_configuration_model(nNodes,a,b)
+function make_dev_DiscreteUniform_configuration_model(nNodes::Int64,a::Int64,b::Int64)
     
     # Create a configuration model using the discrete uniform distribution between a and b.
     # Configuration based on the networkx implementation and [1] M.E.J. Newman, "The structure and function of complex networks",SIAM REVIEW 45-2, pp 167-256, 2003.
     
     # Define distribution
     d = DiscreteUniform(a,b)
-    strength_sequence = rand(d,nNodes)
+    strength_sequence::Array{Int64,1} = rand(d,nNodes)
     
-    adj = zeros(nNodes,nNodes)
+    adj::Array{Float32,2} = zeros(nNodes,nNodes)
     
     # Ensure sum of strength_sequence is even
     while sum(strength_sequence)%2 == 1
         strength_sequence = rand(d,nNodes)
     
     end
+
+    println(sum(strength_sequence))
+
+    println(maximum(strength_sequence))
     
     # Create stubs array with stubs numbered by their parent node
-    stubs_array = []
+    stubs_array = Array{Int64,1}(undef,(sum(strength_sequence)))
     for (node,strength) in enumerate(strength_sequence)
-        stubs_array = [stubs_array; node.*ones((strength))]
+
+        if node==1
+            stubs_array[1:strength_sequence[node]] .= node
+        else
+            u = cumsum(strength_sequence[1:(node-1)])[end]+1
+            v = cumsum(strength_sequence[1:node])[end]
+            stubs_array[u:v] .= node
+        end
+
     end
+    # stubs_array = Array{Int32,1}(undef,(sum(strength_sequence)))
+    # for (node,strength) in enumerate(strength_sequence)
+    #     if node==1
+    #         stubs_array[1:strength_sequence[node]] .= node
+    #     else
+    #         stubs_array[(cumsum(strength_sequence[1:(node-1)])+1):cumsum(strength_sequence[1:node])] .= node
+    #     end
+
+    #     # stubs_array[] = [stubs_array; node.*ones(Int8, (strength))]
+    # end
+    # stubs_array = [node*ones(Int8, (strength)); for (node,strength) in enumerate(strength_sequence)]
+
+    println(size(stubs_array))
     
     # Shuffle array
     stubs_array_shuffled = Int.(shuffle(stubs_array))

@@ -110,6 +110,10 @@ for (graph_model, model_info) in GRAPH_MODELS
             weighted_graph_array[:,:,rep] = G_ii
             weighted_graph_array_draft[:,:,rep] = G_i
 
+            G_i = 0
+            G_ii = 0
+            GC.gc()
+
         end # ends replicate runs
 
         println("Finished creating $(NREPS) $(model_name) graphs with parameters $(model_parameters)")
