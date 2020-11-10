@@ -38,6 +38,8 @@ betti_files = filter(x -> occursin(DATE_STRING, x), betti_files)
 
 ## Exclude any?
 betti_files = filter(x -> !occursin("backward", x), betti_files)
+betti_files = filter(x -> !occursin("Triangle", x), betti_files)
+betti_files = filter(x -> !occursin("clique", x), betti_files)
 
 
 sort!(betti_files)

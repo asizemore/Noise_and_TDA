@@ -44,8 +44,8 @@ eirene_files = filter(x->occursin(DATE_STRING,x), eirene_files)
 
 ### Optional filtering
 # eirene_files = filter(x->!occursin("randomized",x), eirene_files)
-eirene_files = filter(x->!occursin("clique",x), eirene_files)
-eirene_files = filter(x->!occursin("Triangle",x), eirene_files)
+# eirene_files = filter(x->!occursin("clique",x), eirene_files)
+# eirene_files = filter(x->!occursin("Triangle",x), eirene_files)
 # eirene_files = filter(x->occursin("forward",x), eirene_files)
 ###
 
