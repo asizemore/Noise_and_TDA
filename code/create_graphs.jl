@@ -1,6 +1,5 @@
-# Creating graphs
-# Loads in all graph models generates .jl files for them. For Matlab files, loads in the matrices and saves them to a standard format
-# Run as "julia --color=yes code/create_graphs.jl config_DATE.json
+# Creating network models
+
 
 script_start_time = time()
 println("\nimporting packages...")

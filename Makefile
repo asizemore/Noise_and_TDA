@@ -1,7 +1,7 @@
 base_dir :=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
 local_name = noise_detection
-tag ?= ann-dev
+tag ?= deploy-01
 run_cmd ?= jupyter notebook
 
 .PHONY: build
