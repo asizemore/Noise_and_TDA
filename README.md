@@ -33,6 +33,13 @@ Parameters from config file: `NREPS`, `NNODES`, `DATE_STRING`, `NAMETAG_creategr
 Running this script will generate `NREPS` graphs for every model listed in `graph_models` with `create_flag` set to "create". See graph_models.jl for the list of network models available. All graphs will have `NNODES` nodes and parameters as listed in the configuration file. Graphs are saved as an `NNODES` x `NNODES` x `NREPS` array in a .jld file with name and location determined by `NAMETAG_creategraphs` and `save_dir_graphs`.
 
 
+*Step 3 - Threshold graphs - threshold-graphs.jl*
+
+Parameters from config file: `THRESHVEC`, `NNODES`, `DATE_STRING`, `SAVEDATA`, `SAVETAIL_threshold_graphs`, `HOMEDIR`
+
+At this step we 1) threshold the networks and 2) add noise to the empty edges and 3) create a randomized version of the network. For every edge density rho listed in `THRESHVEC` and every model network `G_i`, we create `G_thresholded` in which only the top rho fraction of edges is kept, based on edge weight. We create a randomized copy `G_randomized` that has the same edges as `G_threshold`, but the edge weights have been randomized. We add noise to both `G_threshold` and `G_randomized` such that the noisy edges only fill in those edges not present in the graphs and all noisy edge weights are less than any in these graphs. Finally, we extract the noisy edges and make `G_noiseOnly` which contains the isolated added noise network. All networks are saved as before in .jld files.
+
+
 
 
 
