@@ -1,11 +1,12 @@
-# Code for "Variability in higher order structure of noise added to weighted networks".
-### Blevins, Kim, and Bassett, arxiv 2021
+# Code for "Variability in higher order structure of noise added to weighted networks" arxiv 2021
 
------
-### Links
+
+
+### Resources
 - paper on arxiv
 - supplementary interactive visualizations [site](https://asizemore.github.io/noise_and_tda_supplement/)
 - persistent homology software used: [Eirene](https://github.com/Eetion/Eirene.jl)
+- configuration file [README](./configs/README.md)
 
 ----
 This repository contains all the code necessary to reproduce the results found in the "Variability in higher order structure of noise added to weighted networks" paper. 
