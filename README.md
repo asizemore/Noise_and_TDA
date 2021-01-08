@@ -15,6 +15,7 @@ Given the computational intensity of some of the code, the graph generation and 
 ## Pipeline
 ![Code pipeline overview](./images/code_structure-01.png)
 
+## Code for calculations
 ### *Step 0: Setting up the container*
 
 Included with the repository is all needed files to create a docker container in which to run this project. It is not necessary to run the code within the container, but it is highly recommended. 
@@ -57,11 +58,37 @@ Parameters from config file: `NNODES`, `DATE_STRING`, `SAVEDATA`, `MAXDIM`, `HOM
 Similar to step 4a, this script calculates the persistent homology for one graph model. However, the run_ph_threshold.jl script uses the `weighted_graph_array_noise` array and the run_ph_noiseOnly.jl script uses the `noise_only_array` stored within the graph .jld file for their computations.
 
 
-### *Step 5 - Calculate topological summaries - calculate_bettis.jl, calculate_betti_bars.jl
+### *Step 5 - Calculate topological summaries - calculate_bettis.jl, calculate_betti_bars.jl*
 
 Parameters from config file: `NNODES`, `DATE_STRING`, `SAVETAIL_bettis`
 
-For plotting and classification analyses, we need to calcualte the Betti curves and summariations of the barcode $\beta$. Both `calculate_bettis.jl` and `calculate_betti_bars.jl` will perform calculations for all files with the proper tag ("eireneoutput") located in the designated read directory. Results are saved as arrays in .jld files.
+For plotting and classification analyses, we need to calcualte the Betti curves and summariations of the barcode. Both `calculate_bettis.jl` and `calculate_betti_bars.jl` will perform calculations for all files with the proper tag ("eireneoutput") located in the designated read directory. Results are saved as arrays in .jld files.
+
+
+### *Step 6 - Write results to .mat format - writeForMatlab.jl*
+
+Parameters from config file: `NNODES`, `DATE_STRING`, `NNODES`, `SAVEDATA`, `MAXDIM`, `read_dir_results`, `save_dir_forMatlab`
+
+Writes all relevant results to .mat files for later analyses.
+
+### *Step 7 - Classification - classification_analysis.m*
+
+Reads in barcode summaries and performs a classification using a generative Gaussian mixture model. Additionally plots confusion matrices and accuracy distributions.
+
+## Code for plotting
+
+- Betti curves: `plotting_bettis.ipynb`
+- Network model properties: `graphs_check.ipynb`
+- Write data for [interactive visualizations](https://asizemore.github.io/noise_and_tda_supplement/): `write_data_to_supplement.ipynb`
+
+---
+
+## Additional notes
+
+### *Running locally - local_loop.jl, local_loop_thresholds.jl*
+
+Use these scripts to run persistent homology locally. These files help to run a designated script (such as `run_ph_forward.jl`) over all appropriate files found within a directory.
+
 
 
 
