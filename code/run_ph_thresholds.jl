@@ -46,21 +46,15 @@ const SAVEDATA = config["SAVEDATA"]    # Boolean to save data
 const MAXDIM = config["MAXDIM"]    # Maximum persistent homology dimension
 const SAVETAIL = config["SAVETAIL_ph_thresholds"]
 DATE_STRING = config["DATE_STRING"]
-const NAMEID = config["NAMEID_ph_thresholds"]
 HOMEDIR = config["HOMEDIR"]
 read_dir = "$(HOMEDIR)/$(config["read_dir_thresh"])/$(NNODES)nodes"
 save_dir = "$(HOMEDIR)/$(config["save_dir_results"])/$(NNODES)nodes"
 
 
-### Locate graphs to read
-# graph_files = filter(x->occursin("_graphs_",x), readdir(read_dir))
-# graph_files = filter(x -> occursin(DATE_STRING,x), graph_files)
-# graph_files = filter(x -> occursin("$(NAMEID)",x), graph_files)
-
+### Locate graph to read
 println("Located the following graph file:")
-# for graph_file in graph_files
-    println(graph_file)
-# end
+println(graph_file)
+
 
 
 ### Read in files and run PH

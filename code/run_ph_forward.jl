@@ -1,5 +1,5 @@
 ### Run persistent homology
-
+## Arguments: config_file, graph_file
 
 println("Running run_ph_forward.jl")
 
@@ -29,11 +29,7 @@ printstyled("Elapsed time = $(time() - script_start_time) seconds \n \n", color 
 
 
 
-
-
-
-
-### Set parameters
+### Set parameters -- use local loop arguments or those supplied by the shell script
 localARGS = @isdefined(loopARGS) ? loopARGS : ARGS
 println(localARGS)
 
@@ -54,30 +50,22 @@ const graph_file =  split(localARGS[2],"/")[end]
 
 
 ### Locate graphs to read
-# graph_files = filter(x->occursin("_graphs.jld",x), readdir(read_dir))
-# graph_files = filter(x -> occursin(DATE_STRING,x), graph_files)
 println("Located the following graph file:")
-# for graph_file in graph_files
-    println(graph_file)
-# end
+println(graph_file)
 
 
-### Read in files and run PH
+### Read in file and run PH
 const graph_model = split(graph_file, "_")[1]
 println("Identified the graph model: $(graph_model)")
 
 const nEdges = binomial(NNODES, 2)
-# add dimension 0?
 
-# printstyled("\nBeginning persistent homology\n\n", color = :pink)
-# Loop over graph files and run persistent homology. Store barcodes.
-# for (i,graph_file) in enumerate(graph_files)
+# Ensure we have the correct date
 if occursin(DATE_STRING,graph_file)
 
 
 
     # Load in weighted_graph_array
-
     const weighted_graph_array = load("$(read_dir)/$(graph_file)", "weighted_graph_array")
 
     # Ensure array is not all 0s
@@ -88,12 +76,10 @@ if occursin(DATE_STRING,graph_file)
     # Find number of reps
     const nReps = size(weighted_graph_array)[3]
 
-    # Precompile eirene? 
-
+    # Start persistent homology using Eirene
     println("Starting persistent homology for $(graph_model)\n")
 
     barcodeArray = createAndFillBarcodeArray(nReps,MAXDIM, weighted_graph_array)
-
 
     printstyled("Completed computations for $(graph_model).\n", color = :green)
 
