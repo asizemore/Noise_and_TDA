@@ -3,7 +3,7 @@
 
 
 ### Resources
-- paper on arxiv
+- arxiv [paper](https://arxiv.org/pdf/2101.03933.pdf)
 - supplementary interactive visualizations [site](https://asizemore.github.io/noise_and_tda_supplement/)
 - persistent homology software used: [Eirene](https://github.com/Eetion/Eirene.jl)
 - configuration file [README](./configs/README.md)
